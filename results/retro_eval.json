@@ -1,0 +1,1235 @@
+[
+{
+"cond": "A",
+"run": 1,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "006-cron-entry",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "008-logrotate",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 1,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "006-cron-entry",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "008-logrotate",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 2,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "005-nginx-8080",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "006-cron-entry",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "008-logrotate",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 3,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "005-nginx-8080",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "006-cron-entry",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "008-logrotate",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 4,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "003-permissions",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "005-nginx-8080",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "006-cron-entry",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "008-logrotate",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "A",
+"run": 5,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 1,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 1,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 1,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 1,
+"task": "004-user-group",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 1,
+"task": "005-nginx-8080",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 1,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 1,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 2,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 2,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 2,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 2,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 2,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 2,
+"task": "009-config-sed",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 2,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "004-user-group",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "005-nginx-8080",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "006-cron-entry",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "009-config-sed",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 3,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 4,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 4,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 4,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 4,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 4,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 5,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 5,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 5,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 5,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 5,
+"task": "009-config-sed",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "C",
+"run": 5,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 1,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 1,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 1,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 1,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 1,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 2,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 2,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 2,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 2,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 3,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 3,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 3,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 3,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 3,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 3,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 4,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 4,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 4,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 4,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 4,
+"task": "009-config-sed",
+"old_rc": 1,
+"new_rc": 1,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 4,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 5,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 5,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "D",
+"run": 5,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 1,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 1,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 1,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 1,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 1,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 1,
+"task": "009-config-sed",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 1,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 2,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 2,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 2,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 2,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 2,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 2,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 3,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 3,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 3,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 3,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 3,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 3,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 4,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 4,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 4,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 4,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 4,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 4,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 5,
+"task": "001-delete-old-logs",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 5,
+"task": "002-special-names",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 5,
+"task": "003-permissions",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 5,
+"task": "004-user-group",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 5,
+"task": "007-top-ips-500",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+},
+{
+"cond": "E",
+"run": 5,
+"task": "010-big-files",
+"old_rc": 0,
+"new_rc": 0,
+"tamper": false,
+"same": true
+}
+]

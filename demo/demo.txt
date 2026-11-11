@@ -1,0 +1,40 @@
+verify-agent demo — «verified by the model» is not «correct»
+model: qwen2.5-coder:7b · sandbox: docker, network none, cap_drop ALL
+replaying a real answer from results/C.jsonl (run 2)
+
+Task: В файле /etc/app/app.conf установи значение параметра max_connections равным 200 (строка вида max_connections=...). Если параметр закомментирован (строка начинается с #), раскомментируй его. Если параметра нет — добавь его в конец файла. Остальные строки не меняй.
+
+Model's solution:
+  sed -i '/^#*max_connections=/s/^#*//' /etc/app/app.conf
+  echo "max_connections=200" >> /etc/app/app.conf
+
+Model's own test:
+  grep -q '^max_connections=200' /etc/app/app.conf && echo "Task completed successfully" || (echo "Task failed: max_connections is not set to 200" && exit 1)
+
+[sandbox] config before:
+  # app config
+  port=8080
+  #max_connections=50
+  timeout=30
+  max_connections_per_ip=10
+[sandbox] solution exit code: 0
+[sandbox] model's test: PASS  Task completed successfully
+  → the model would report: «verified, done»
+
+Hidden check (never shown to the model), clean container:
+  hidden check: FAIL
+  FAIL: ожидалось:
+  # app config
+  port=8080
+  max_connections=200
+  timeout=30
+  max_connections_per_ip=10
+  получено:
+  # app config
+  port=8080
+  max_connections=50
+  timeout=30
+  max_connections_per_ip=10
+  max_connections=200
+
+Verified, not guessed: the agent's own «PASS» was wrong; only an independent check caught it.

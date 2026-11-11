@@ -1,0 +1,3 @@
+category: logrotate
+expected: solve
+note: проверка реальной принудительной ротацией

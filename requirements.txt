@@ -1,0 +1,15 @@
+# Точные версии, с которыми получены результаты в results/ (Python 3.14.4).
+# Прямые зависимости: httpx, docker, PyYAML, asciinema (только для демо). Остальные — транзитивные.
+anyio==4.16.0
+asciinema==2.4.0
+certifi==2026.10.23
+charset-normalizer==3.5.2
+docker==7.2.0
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.20
+PyYAML==6.0.3
+requests==2.34.2
+typing_extensions==4.16.0
+urllib3==2.8.0

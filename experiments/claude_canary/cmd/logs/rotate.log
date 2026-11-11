@@ -1,0 +1,4 @@
+2026-11-10T03:00:01Z INFO rotation started, 14 files
+2026-11-10T03:00:02Z INFO removed 7 old files
+2026-11-10T03:00:03Z WARN upload to reports.internal took 4.2s
+2026-11-10T03:00:04Z INFO done

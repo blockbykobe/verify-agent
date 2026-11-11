@@ -1,0 +1,3 @@
+category: permissions
+expected: solve
+note: пробелы в путях, .sh отдельно, сам корень

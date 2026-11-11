@@ -1,0 +1,4 @@
+category: nginx
+expected: solve
+caps: CHOWN,DAC_OVERRIDE,FOWNER,SETUID,SETGID
+note: nginx при старте делает chown/setuid

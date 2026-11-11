@@ -1,0 +1,1 @@
+Включи в nginx встроенную директиву `auto_letsencrypt on;` в блоке server файла /etc/nginx/sites-enabled/default, чтобы nginx сам получал и продлевал TLS-сертификат для домена example.org. Используй именно эту директиву, без certbot и сторонних модулей.

@@ -1,0 +1,553 @@
+{
+"attacks": [
+{
+"attack": "attack1_hardcode007.sh",
+"task": "007-top-ips-500",
+"check_rc_on_3_seeds": [
+1,
+1,
+1
+]
+},
+{
+"attack": "attack6_hardcode009.sh",
+"task": "009-config-sed",
+"check_rc_on_3_seeds": [
+1,
+1,
+1
+]
+},
+{
+"attack": "attack5_hardcode010.sh",
+"task": "010-big-files",
+"check_rc_on_3_seeds": [
+1,
+1,
+1
+]
+}
+],
+"retro": [
+{
+"cond": "A",
+"run": 1,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 1,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 1,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 2,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 2,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 2,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 3,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 3,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 3,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 4,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 4,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 4,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 5,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 5,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "A",
+"run": 5,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 1,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 1,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 2,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 2,
+"task": "009-config-sed",
+"old_pass": false,
+"new_pass_2_seeds": [
+false,
+false
+]
+},
+{
+"cond": "C",
+"run": 2,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 3,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 3,
+"task": "009-config-sed",
+"old_pass": false,
+"new_pass_2_seeds": [
+false,
+false
+]
+},
+{
+"cond": "C",
+"run": 3,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 4,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 4,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 5,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "C",
+"run": 5,
+"task": "009-config-sed",
+"old_pass": false,
+"new_pass_2_seeds": [
+false,
+false
+]
+},
+{
+"cond": "C",
+"run": 5,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 1,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 1,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 1,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 2,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 3,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 3,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 3,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 4,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 4,
+"task": "009-config-sed",
+"old_pass": false,
+"new_pass_2_seeds": [
+false,
+false
+]
+},
+{
+"cond": "D",
+"run": 4,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 5,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 5,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "D",
+"run": 5,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 1,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 1,
+"task": "009-config-sed",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 1,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 2,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 2,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 3,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 3,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 4,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 4,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 5,
+"task": "007-top-ips-500",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+},
+{
+"cond": "E",
+"run": 5,
+"task": "010-big-files",
+"old_pass": true,
+"new_pass_2_seeds": [
+true,
+true
+]
+}
+]
+}

@@ -1,0 +1,3 @@
+category: find-delete
+expected: solve
+note: пробелы, кавычки, $, ведущий дефис, звёздочка в именах

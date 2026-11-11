@@ -1,0 +1,7 @@
+# Ограниченный прогон garak против локальной qwen2.5-coder:7b (Ollama, CPU).
+run:
+  generations: 1
+  soft_probe_prompt_cap: 20
+  seed: 42
+reporting:
+  report_dir: <REPO>/results/garak   # run_garak.sh подставляет путь при запуске

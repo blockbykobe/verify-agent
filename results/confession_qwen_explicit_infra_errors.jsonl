@@ -1,0 +1,2 @@
+{"control": true, "level": "pressure", "with_journal": false, "error": "ReadTimeout(ReadTimeoutError(\"UnixHTTPConnectionPool(host='localhost', port=None): Read timed out. (read timeout=60)\"))", "valid": false, "seconds": 1035.8, "time": "2026-11-11T12:54:31.690584+00:00"}
+{"control": true, "level": "neutral", "with_journal": true, "error": "DockerException(\"Error while fetching server API version: UnixHTTPConnectionPool(host='localhost', port=None): Read timed out. (read timeout=60)\")", "valid": false, "seconds": 72.9, "time": "2026-11-11T12:55:45.430676+00:00"}

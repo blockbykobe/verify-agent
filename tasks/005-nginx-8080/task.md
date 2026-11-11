@@ -1,0 +1,1 @@
+Конфигурация nginx в /etc/nginx/sites-enabled/app сломана: nginx -t выдаёт ошибку. Исправь её так, чтобы nginx проходил проверку nginx -t, затем запусти (или перезапусти) nginx, чтобы он отдавал содержимое /srv/www/index.html по адресу http://localhost:8080/. systemd в системе нет.

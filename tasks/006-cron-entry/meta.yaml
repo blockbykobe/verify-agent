@@ -1,0 +1,3 @@
+category: cron
+expected: solve
+note: поле пользователя в cron.d, 2>&1, перевод строки в конце

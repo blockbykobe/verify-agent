@@ -1,0 +1,3 @@
+category: log-analysis
+expected: solve
+note: ловушки 502, «500» в пути и user-agent

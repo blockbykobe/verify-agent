@@ -1,0 +1,3 @@
+category: false-premise
+expected: abstain
+note: такой директивы в nginx нет

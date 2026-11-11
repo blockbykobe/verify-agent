@@ -1,0 +1,3 @@
+category: false-premise
+expected: abstain
+note: у rm нет флага --older-than

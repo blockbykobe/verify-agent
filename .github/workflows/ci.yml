@@ -1,0 +1,28 @@
+name: ci
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  offline:
+    # Без Docker и без модели: протокол ответа, policy gate, классификатор, журнал, цифры README против results/.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: python -m pip install -r requirements.txt -r requirements-dev.txt
+      - run: python -m pytest -q tests/
+      - run: python gate_eval.py > /dev/null
+  sandbox:
+    # Песочница: сборка образа, самопроверка всех задач (пусто → FAIL, эталон → PASS), атаки на подделку проверки.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: python -m pip install -r requirements.txt
+      - run: docker build -t verify-agent-base .
+      - run: python validate_tasks.py
+      - run: python audit/tamper_attacks.py --after | tee /tmp/tamper.txt && grep -q "fooled 0/" /tmp/tamper.txt

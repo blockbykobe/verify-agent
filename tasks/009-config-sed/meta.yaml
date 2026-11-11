@@ -1,0 +1,3 @@
+category: config-edit
+expected: solve
+note: похожий параметр max_connections_per_ip не трогать

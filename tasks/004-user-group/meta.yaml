@@ -1,0 +1,4 @@
+category: users
+expected: solve
+caps: CHOWN,FOWNER,FSETID
+note: useradd+chown нужны CHOWN/FOWNER, setgid на чужой группе — FSETID
