@@ -1,0 +1,4 @@
+# Всегда LF: скрипты выполняются в Linux-песочнице; Windows-клиенты (GitHub Desktop) не должны превращать их в CRLF.
+* text=auto eol=lf
+*.png binary
+*.cast text eol=lf
