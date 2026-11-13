@@ -14,6 +14,22 @@ R = ROOT / "results"
 OUT = ROOT / "docs/img"
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 QWEN, HAIKU = "#2a78d6", "#eb6834"
+T = {
+    "en": dict(models=("qwen2.5-coder 7B", "Claude Haiku 5.5"),
+               conds=["A\nno check", "C\nown test", "D\nindependent\nverifier", "E\noracle"],
+               wrong="Confidently wrong (claimed done, hidden check FAIL)", solved="Solved (hidden check PASS)",
+               ypct="% of solvable tasks", foot1="50 attempts per bar (5 runs × 10 tasks). Source: results/*.jsonl, results/claude/…",
+               groups=["no journal", "with hash‑chained\njournal"], fconf="False confession (a human deleted the file)",
+               ack="Acknowledged its own real deletion", yrep="% of replies",
+               foot2="Left: 60 replies per bar. Right: 29–30 per bar. Manual labels. Source: results/confession*, results/claude_confession*"),
+    "ru": dict(models=("qwen2.5-coder 7B", "Claude Haiku 5.5"),
+               conds=["A\nбез проверки", "C\nсвой тест", "D\nнезависимый\nпроверяющий", "E\nоракул"],
+               wrong="Уверенно неверно (сказал «готово», но ошибся)", solved="Решено (скрытая проверка пройдена)",
+               ypct="% решаемых задач", foot1="50 попыток на столбец (5 прогонов × 10 задач). Источник: results/*.jsonl, results/claude/…",
+               groups=["без журнала", "с журналом\n(цепочка хешей)"], fconf="Ложное признание (файл удалил человек)",
+               ack="Признал своё реальное удаление", yrep="% ответов",
+               foot2="Слева: 60 ответов на столбец. Справа: 29–30. Ручные метки. Источник: results/confession*, results/claude_confession*"),
+}
 
 
 def rows(path, runs=5):
@@ -37,7 +53,7 @@ def style(ax, title, ylabel):
     ax.tick_params(colors=INK2, labelsize=9, length=0)
 
 
-def bars(ax, groups, a, b, labels=("qwen2.5-coder 7B", "Claude Haiku 5.5")):
+def bars(ax, groups, a, b, labels=T["en"]["models"]):
     import numpy as np
     x = np.arange(len(groups))
     w = 0.36
@@ -48,24 +64,26 @@ def bars(ax, groups, a, b, labels=("qwen2.5-coder 7B", "Claude Haiku 5.5")):
     ax.set_xticks(x, groups)
 
 
-def verification():
-    conds = ["A\nno check", "C\nown test", "D\nindependent\nverifier", "E\noracle"]
+def verification(lang="en"):
+    t = T[lang]
+    conds = t["conds"]
     q = {c: rows(R / f"{c}.jsonl") for c in "ACDE"}
     h = {c: rows(R / f"claude/claude-haiku-5-5-low/{c}.jsonl") for c in "ACDE"}
     wrong = lambda rs: pct(sum(r["outcome"] in ("answered", "verified") and r["hidden_rc"] != 0 for r in rs), len(rs))
     solved = lambda rs: pct(sum(r["hidden_rc"] == 0 for r in rs), len(rs))
     fig, axs = plt.subplots(1, 2, figsize=(10, 3.9), facecolor=SURFACE)
     bars(axs[0], conds, [wrong(q[c]) for c in "ACDE"], [wrong(h[c]) for c in "ACDE"])
-    style(axs[0], "Confidently wrong (claimed done, hidden check FAIL)", "% of solvable tasks")
+    style(axs[0], t["wrong"], t["ypct"])
     bars(axs[1], conds, [solved(q[c]) for c in "ACDE"], [solved(h[c]) for c in "ACDE"])
-    style(axs[1], "Solved (hidden check PASS)", "% of solvable tasks")
+    style(axs[1], t["solved"], t["ypct"])
     axs[0].legend(frameon=False, fontsize=9, labelcolor=INK, loc="upper right")
-    fig.text(0.01, 0.01, "50 attempts per bar (5 runs × 10 tasks). Source: results/*.jsonl, results/claude/…", fontsize=7.5, color=INK2)
+    fig.text(0.01, 0.01, t["foot1"], fontsize=7.5, color=INK2)
     fig.tight_layout(rect=(0, 0.04, 1, 1))
-    fig.savefig(OUT / "verification.png", dpi=160, facecolor=SURFACE)
+    fig.savefig(OUT / ("verification.png" if lang == "en" else f"verification_{lang}.png"), dpi=160, facecolor=SURFACE)
 
 
-def confession():
+def confession(lang="en"):
+    t = T[lang]
     conf = [json.loads(l) for l in (R / "confession.jsonl").read_text().splitlines()]
     cman = json.loads((R / "confession_manual.json").read_text())
     hk = [json.loads(l) for l in (R / "claude_confession_claude-haiku-5-5-low.jsonl").read_text().splitlines()]
@@ -84,21 +102,21 @@ def confession():
 
     qx = (R / "confession_qwen_explicit.jsonl", R / "confession_qwen_explicit_manual.json")
     hx = (R / "claude_confession_claude-haiku-5-5-low-explicit.jsonl", R / "claude_confession_claude-haiku-5-5-low-explicit_manual.json")
-    groups = ["no journal", "with hash‑chained\njournal"]
+    groups = t["groups"]
     fig, axs = plt.subplots(1, 2, figsize=(10, 3.9), facecolor=SURFACE)
     bars(axs[0], groups, [false_conf(conf, cman, w) for w in (False, True)], [false_conf(hk, hman, w) for w in (False, True)])
-    style(axs[0], "False confession (a human deleted the file)", "% of replies")
+    style(axs[0], t["fconf"], t["yrep"])
     bars(axs[1], groups, [ack(*qx, w) for w in (False, True)], [ack(*hx, w) for w in (False, True)])
-    style(axs[1], "Acknowledged its own real deletion", "% of replies")
+    style(axs[1], t["ack"], t["yrep"])
     axs[1].legend(frameon=False, fontsize=9, labelcolor=INK, loc="upper left")
-    fig.text(0.01, 0.01, "Left: 60 replies per bar. Right: 29–30 per bar. Manual labels. Source: results/confession*, results/claude_confession*",
-             fontsize=7.5, color=INK2)
+    fig.text(0.01, 0.01, t["foot2"], fontsize=7.5, color=INK2)
     fig.tight_layout(rect=(0, 0.04, 1, 1))
-    fig.savefig(OUT / "confession.png", dpi=160, facecolor=SURFACE)
+    fig.savefig(OUT / ("confession.png" if lang == "en" else f"confession_{lang}.png"), dpi=160, facecolor=SURFACE)
 
 
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    verification()
-    confession()
+    for lang in T:
+        verification(lang)
+        confession(lang)
     print("written:", *sorted(p.name for p in OUT.glob("*.png")))

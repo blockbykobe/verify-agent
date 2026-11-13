@@ -4,3 +4,4 @@ __pycache__/
 .venv-garak/
 .pip-tmp/
 .private/
+.venv-video/
