@@ -37,6 +37,7 @@ GOOD, BAD, WARN = (46, 204, 113), (240, 82, 82), (240, 186, 40)
 PANEL = (24, 31, 62)
 TERM = (9, 12, 22)
 SYM = set("✓✗⚠▌")
+NOLIG = ["-liga", "-calt"]  # в коде «<!--» и «-->» должны выглядеть как есть, без лигатур-стрелок
 
 # ---------------------------------------------------------------- шрифты (с запасным DejaVu для символов)
 _fc: dict = {}
@@ -157,13 +158,13 @@ def text(c: Ctx, xy, s, size, col=TXT, a=1.0, bold=False, mono=False, anchor="la
     y += dy * (1 - a)
     rs = runs(s, f, size, bold)
     if len(rs) == 1:
-        c.d.text((x, y), s, font=rs[0][1], fill=rgba(col, a), anchor=anchor)
+        c.d.text((x, y), s, font=rs[0][1], fill=rgba(col, a), anchor=anchor, features=NOLIG if mono else None)
         return
     total = sum(ff.getlength(r) for r, ff in rs)
     h = anchor[0]
     x0 = x - (total / 2 if h == "m" else total if h == "r" else 0)
     for r, ff in rs:
-        c.d.text((x0, y), r, font=ff, fill=rgba(col, a), anchor="l" + anchor[1])
+        c.d.text((x0, y), r, font=ff, fill=rgba(col, a), anchor="l" + anchor[1], features=NOLIG if mono and ff is f else None)
         x0 += ff.getlength(r)
 
 
@@ -746,10 +747,31 @@ def tts_xtts(texts, py, speaker, cache):
     return out
 
 
+def squeeze_silence(frames, sr, max_gap=0.5, thr=600, edge=0.08):
+    """Обрезать тишину по краям и сжать паузы внутри фразы до max_gap (нейроголос иногда «зависает» на секунды)."""
+    import array
+    a = array.array("h", frames)
+    win = sr // 50  # 20 мс
+    loud = [max(map(abs, a[i:i + win]), default=0) > thr for i in range(0, len(a), win)]
+    if not any(loud):
+        return frames
+    first, last = loud.index(True), len(loud) - 1 - loud[::-1].index(True)
+    keep, run, maxw = [], 0, int(max_gap * 50)
+    for k in range(max(0, first - int(edge * 50)), min(len(loud), last + 1 + int(edge * 50))):
+        run = 0 if loud[k] else run + 1
+        if run <= maxw:
+            keep.append(k)
+    out = array.array("h")
+    for k in keep:
+        out.extend(a[k * win:(k + 1) * win])
+    return out.tobytes()
+
+
 def read_wav(p):
     with wave.open(str(p)) as w:
         assert w.getnchannels() == 1 and w.getsampwidth() == 2, p
-        return w.getframerate(), w.readframes(w.getnframes())
+        sr, fr = w.getframerate(), w.readframes(w.getnframes())
+    return sr, (squeeze_silence(fr, sr) if Path(p).name.startswith("xtts_") else fr)
 
 
 # ---------------------------------------------------------------- рендер
