@@ -5,3 +5,4 @@ __pycache__/
 .pip-tmp/
 .private/
 .venv-video/
+.venv-tts/
