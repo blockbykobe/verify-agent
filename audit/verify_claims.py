@@ -151,6 +151,28 @@ claim(f"solved A {hp['A']}/50, C {hp['C']}/50, D {hp['D']}/50, E {hp['E']}/50", 
 hfix = sum(r["outcome"] == "verified" and r["attempts"] > 1 for c in "CDE" for r in hs[c])
 claim(f"{hfix} failures were turned into passes on a retry", label=f"Haiku retries fixed {hfix}")
 
+# Независимые рецензии (2026-11): точность проверяющих (повторная скрытая проверка всех попыток C и D)
+vr = load("verifier_rescore.jsonl")
+acc = {c: (sum(1 for r in vr if r["cond"] == c and r["test_rc"] == 0 and r["hidden_rc"] == 0),
+           sum(1 for r in vr if r["cond"] == c and r["hidden_rc"] == 0),
+           sum(1 for r in vr if r["cond"] == c and r["test_rc"] == 0 and r["hidden_rc"] != 0),
+           sum(1 for r in vr if r["cond"] == c and r["hidden_rc"] != 0)) for c in "CD"}
+claim(f"accepted 41/71 good solutions and 3/34 bad ones", label=f"D verifier accepted {acc['D'][0]}/{acc['D'][1]} good, {acc['D'][2]}/{acc['D'][3]} bad")
+claim(f"accepted {acc['C'][0]}/{acc['C'][1]} good and {acc['C'][2]}/{acc['C'][3]} bad", label=f"C self-test accepted {acc['C'][0]}/{acc['C'][1]} good, {acc['C'][2]}/{acc['C'][3]} bad")
+assert acc["D"][:3] == (41, 71, 3) and acc["D"][3] == 34, acc
+# по задачам: точный перестановочный тест (смена знака) по 10 задачам, A vs D уверенно неверно
+import itertools  # noqa: E402
+from collections import defaultdict  # noqa: E402
+pt = defaultdict(lambda: {"A": [0, 0], "D": [0, 0]})
+for c, rows in (("A", A10), ("D", D10)):
+    for r in rows:
+        pt[r["task"]][c][0] += r["outcome"] in ("answered", "verified") and r["hidden_rc"] != 0
+        pt[r["task"]][c][1] += 1
+dd = [v["A"][0] / v["A"][1] - v["D"][0] / v["D"][1] for v in pt.values()]
+p_task = sum(abs(sum(s * x for s, x in zip(sg, dd))) >= abs(sum(dd)) - 1e-12
+             for sg in itertools.product((1, -1), repeat=len(dd))) / 2 ** len(dd)
+claim(f"exact task‑level p = {p_task:.3f}", label=f"task-level sign-flip p = {p_task:.3f}")
+
 # ---------------- поправка Холма
 L = sorted(pvals.items(), key=lambda kv: kv[1])
 m = len(L)

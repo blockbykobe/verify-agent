@@ -133,6 +133,18 @@
   {
    "ok": true,
    "claim": "Haiku retries fixed 16"
+  },
+  {
+   "ok": true,
+   "claim": "D verifier accepted 41/71 good, 3/34 bad"
+  },
+  {
+   "ok": true,
+   "claim": "C self-test accepted 26/28 good, 8/18 bad"
+  },
+  {
+   "ok": true,
+   "claim": "task-level sign-flip p = 0.125"
   }
  ]
 }
