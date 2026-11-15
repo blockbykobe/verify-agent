@@ -1,6 +1,6 @@
 # Independent reviews and what was done about them (November 2026)
 
-After publication the project was reviewed by seven AI reviewers. Three were run by the author in other chats
+After publication the project was reviewed by eight AI reviewers. Four were run by the author in other chats
 (Gemini; Claude Sonnet 5.5, Claude Haiku 5.5 and Claude Fable 5.2 in claude.ai), four were run as separate agents
 inside the project session (Claude Opus 5.5, Sonnet 5.5, Fable 5.2, Haiku 5.5), each read-only, with a narrow brief.
 One more reviewer (a third-party tool) returned a generic review without opening the repository.
@@ -12,11 +12,11 @@ so this is independence of context, not of model family. Gemini is the only revi
 | # | Finding | Reviewer(s) | Check | Status |
 |---|---|---|---|---|
 | 1 | Per-attempt Fisher p (2·10⁻⁶) treats 10 runs of the same task as independent (pseudoreplication) | Gemini, Fable (chat), Sonnet (chat), Haiku (chat) | `audit/task_level.py`: per-task sign-flip test | **Fixed.** Task-level analysis is now primary |
-| 2 | D's gain comes mostly from refusing whole hard tasks | Fable (chat), Sonnet (chat), Haiku (chat) | per-task table; per-task random-refusal placebo | **Confirmed.** Within tasks D ≈ random refusal (placebo 6.2 vs D 5 errors) |
+| 2 | D's gain comes mostly from refusing whole hard tasks | Fable (chat), Sonnet (chat), Haiku (chat) | per-task table; per-task random-refusal placebo | **Confirmed.** Within tasks D ≈ random refusal (placebo 6.2 vs D 5 errors: about the same) |
 | 3 | README said the oracle in E shows an expected-vs-actual diff; the code shows only FAIL + own stdout | Fable (chat) | `experiment.py` `FEEDBACK_EXT` | **Fixed** (README error) |
 | 4 | Hidden check of task 004 did not test "system group/user, no home directory" | Sonnet (agent) | read `check.sh` vs `task.md`; re-ran all stored scripts | **Fixed** (`audit/rescore_checks_v2.py`): 17 qwen verdicts PASS→FAIL, all on 004; Haiku unchanged. Checks of 003 (owners) and 006 (mode as octal) also tightened; no verdict changed |
 | 5 | Verifier accuracy unknown | Fable (chat) | `audit/verifier_accuracy.py`: hidden check on every C/D attempt | **Done.** D accepted 39/58 good, 5/47 bad; C accepted 25/26 good, 9/20 bad |
-| 6 | Unequal attempts (A: 1, C/D/E: ≤3); qwen retried after FAIL in only 4/84 cases | Gemini, Opus (agent) | recount from `history` | **Accepted**, wording changed ("did not retry", not "cannot learn") |
+| 6 | Unequal attempts (A: 1, C/D/E: ≤3); qwen retried after FAIL in only 6/84 cases | Gemini, Opus (agent) | recount from `history` | **Accepted**, wording changed ("did not retry", not "cannot learn") |
 | 7 | Haiku results rest on one task (nginx); 3 of 16 "fixes" changed only the self-test | Fable (chat), Opus (agent) | recount | **Confirmed**, wording changed |
 | 8 | Haiku's self-tests "never wrong" ignores 3 false rejections | Opus (agent) | recount | **Fixed** |
 | 9 | Percentile bootstrap over 10 tasks is too narrow | Opus (agent) | t-interval over tasks | **Fixed** (t-interval reported) |
@@ -31,6 +31,7 @@ so this is independence of context, not of model family. Gemini is the only revi
 | 18 | README/README_ru mismatches (missing sections, wrong "mostly hedged", p written two ways, a broken path) | Haiku (agent) | diff | **Fixed** |
 | 19 | Generic review asking for sections that already exist | third-party tool | — | **Rejected** (did not read the repository) |
 | 20 | "20/27 vs 20/30" discrepancy | Haiku (chat) | two different experiments, labelled in the file | **Rejected** |
+| 21 | Second pass on the revised README (Opus agent, ~170 numbers recomputed): per-task "within a task" range was 0.44–0.62, not 0.50–0.62; the task-level sign-flip test was presented as pre-registered; ground truth changed (v2 checks) after the plan was committed; reviewer count; "p = 0.062 instead of 2·10⁻⁶" mixed check versions; 4/84 vs 6/84; "no better than random" too strong | Opus (agent) | recomputed | **Fixed**; deviations from the plan are now stated in the README |
 
 What changed in the headline: qwen without checking was confidently wrong 36/100 times (27/100 before the 004
 fix); with the independent verifier 5/100. Counted per task the difference is suggestive, not conclusive

@@ -206,6 +206,15 @@ def report() -> str:
     obs2 = abs(sum(dd))
     p2 = sum(abs(sum(sg * x for sg, x in zip(signs, dd))) >= obs2 - 1e-12
              for signs in itertools.product((1, -1), repeat=len(dd))) / 2 ** len(dd)
+    L += ["\n## Дополнительно (не из плана): внутри каждой задачи, отдельно по решателю\n",
+          "В плане «внутри задачи» считалось по парам всех смешанных задач вместе; это всё ещё смешивает задачи. "
+          "Ниже — BA в каждой задаче отдельно.\n", "| Решатель | Тесты писал | BA по задачам | Среднее |", "|---|---|---|---|"]
+    for sv in ("qwen", "haiku"):
+        mixed = [t for t in tasks if len({p["good"] for p in by[t] if p["solver"] == sv}) == 2]
+        for vf in ("qwen", "haiku"):
+            vals = [ba([p for p in by[t] if p["solver"] == sv and p["verifier"] == vf])[2] for t in mixed]
+            L.append(f"| {sv} | {vf} | {', '.join(f'{t[:3]}: {v:.2f}' for t, v in zip(mixed, vals))} | "
+                     f"{sum(vals) / len(vals):.2f} |" if vals else f"| {sv} | {vf} | — | — |")
     L.append(f"\nЗадач, где есть и верные, и неверные решения: {len(dd)}; тесты Haiku лучше в {sum(x > 0 for x in dd)}, "
              f"тесты qwen лучше в {sum(x < 0 for x in dd)}; точный тест со сменой знака p = {p2:.3f} "
              f"(минимально возможное при {len(dd)} задачах — {2 / 2 ** len(dd):.3f}). «—» — в задаче нет неверных решений.")
