@@ -157,6 +157,22 @@
   {
    "ok": true,
    "claim": "cross-verifier solutions 262"
+  },
+  {
+   "ok": true,
+   "claim": "1d validity qwen2.5-coder:14b 23/98"
+  },
+  {
+   "ok": true,
+   "claim": "1d validity llama3.1:8b 3/99"
+  },
+  {
+   "ok": true,
+   "claim": "1d validity gemma2:9b 10/100"
+  },
+  {
+   "ok": true,
+   "claim": "human labels n=60"
   }
  ]
 }

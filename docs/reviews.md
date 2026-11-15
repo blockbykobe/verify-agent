@@ -32,6 +32,8 @@ so this is independence of context, not of model family. Gemini is the only revi
 | 19 | Generic review asking for sections that already exist | third-party tool | — | **Rejected** (did not read the repository) |
 | 20 | "20/27 vs 20/30" discrepancy | Haiku (chat) | two different experiments, labelled in the file | **Rejected** |
 | 21 | Second pass on the revised README (Opus agent, ~170 numbers recomputed): per-task "within a task" range was 0.44–0.62, not 0.50–0.62; the task-level sign-flip test was presented as pre-registered; ground truth changed (v2 checks) after the plan was committed; reviewer count; "p = 0.062 instead of 2·10⁻⁶" mixed check versions; 4/84 vs 6/84; "no better than random" too strong | Opus (agent) | recomputed | **Fixed**; deviations from the plan are now stated in the README |
+| 22 | Only two verifiers in Experiment 1c; they differ in vendor, size and serving | Haiku (chat), Opus (agent) | Experiment 1d, pre-registered: four more local verifiers | **Done.** All local models (7B–14B, three vendors) near chance inside a task; vendor does not explain the gap |
+| 23 | Confession labels made by an AI only | Sonnet (chat), Haiku (chat), Opus (agent) | blind human relabelling of 60 replies by the owner | **Done.** κ = 0.44; 13/14 false confessions confirmed; 4 missed confessions among 30 unread rule denials |
 
 What changed in the headline: qwen without checking was confidently wrong 36/100 times (27/100 before the 004
 fix); with the independent verifier 5/100. Counted per task the difference is suggestive, not conclusive

@@ -193,6 +193,18 @@ claim(f"{nsol} unique: {sum(1 for k in tr if k[0] == 'qwen')} qwen, {sum(1 for k
 # ---------------- поправка Холма
 L = sorted(pvals.items(), key=lambda kv: kv[1])
 m = len(L)
+# Эксперимент 1d и ручная разметка — пересчёт по сырым файлам
+import importlib.util as _iu  # noqa: E402
+_mv = R / "more_verifiers.jsonl"
+if _mv.exists():
+    mv = [json.loads(l) for l in _mv.read_text().splitlines()]
+    for vmodel, _lbl in (("qwen2.5-coder:14b", "23/98"), ("llama3.1:8b", "3/99"), ("gemma2:9b", "10/100")):
+        vv = [r for r in mv if r["kind"] == "validity" and r["verifier"] == vmodel]
+        ok = sum(r["ref_rc"] == 0 and r["noop_rc"] != 0 for r in vv)
+        claim(f"| {ok}/{len(vv)} |", label=f"1d validity {vmodel} {ok}/{len(vv)}")
+hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
+claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
+
 print("p-values (Fisher exact, two-sided) with Holm correction over", m, "comparisons:")
 running = 0.0
 holm = {}
