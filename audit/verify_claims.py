@@ -237,6 +237,12 @@ claim(f"the chance of {_m.group(1)} or fewer is p = {_m.group(2)}", label=f"extr
 claim(f"вероятность получить {_m.group(1)} или меньше — p = {_m.group(2).replace('.', ',')}", where=README_RU, label="RU: random refusal p")
 _m = _re.search(r"\| qwen \| qwen \| \d+ \| \d+ \((\d+)%\) \|", _ex)
 claim(f"qwen's tests falsely accepted {_m.group(1)}%", label=f"extra: qwen false accept {_m.group(1)}%")
+_mc = [json.loads(l) for l in (R / "mutation_checks.jsonl").read_text().splitlines()]
+_k = sum(r["hidden_rc"] != 0 for r in _mc)
+claim(f"wrote {len(_mc)} near‑miss solutions, each violating one requirement of `task.md`; the hidden checks rejected {_k}",
+      label=f"mutation test {_k}/{len(_mc)}")
+claim(f"написал {len(_mc)} «почти верных» решений, каждое нарушает одно требование `task.md`; скрытые проверки отклонили {_k}",
+      where=README_RU, label="RU: mutation test")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 

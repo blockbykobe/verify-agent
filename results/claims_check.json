@@ -236,6 +236,14 @@
   },
   {
    "ok": true,
+   "claim": "mutation test 38/40"
+  },
+  {
+   "ok": true,
+   "claim": "RU: mutation test"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]

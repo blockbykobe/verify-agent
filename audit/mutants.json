@@ -1,0 +1,222 @@
+{
+ "001-delete-old-logs": [
+  {
+   "id": "m1",
+   "violates": "'including all subdirectories': only top-level files are deleted",
+   "script": "find /var/log/app -maxdepth 1 -type f -mtime +7 -delete\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'newer files must not be touched': boundary too loose (+5 days) deletes the 6-day-old file",
+   "script": "# be a bit generous with the cutoff\nfind /var/log/app -type f -mtime +5 -delete\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'delete files older than 7 days' (all files): only *.log files are deleted, old .gz archives remain",
+   "script": "find /var/log/app -type f -name '*.log' -mtime +7 -delete\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'delete' old files: they are truncated to zero size instead of being removed",
+   "script": "# truncate instead of rm so that writers holding the fd do not break\nfind /var/log/app -type f -mtime +7 -exec truncate -s 0 {} +\n"
+  }
+ ],
+ "002-special-names": [
+  {
+   "id": "m1",
+   "violates": "'names may contain spaces and quotes': xargs without -0 splits on spaces and chokes on quotes",
+   "script": "find /srv/logs -type f -name '*.log' -mtime +7 -print | xargs rm -f\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'names may contain the $ sign and quotes': eval re-expands $HOME and breaks on the single quote",
+   "script": "find /srv/logs -type f -name '*.log' -mtime +7 -print0 |\nwhile IFS= read -r -d '' f; do\n  eval \"rm -f \\\"$f\\\"\" || true\ndone\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'files with other extensions must not be touched': pattern *.log* also deletes data.log.gz",
+   "script": "find /srv/logs -type f -name '*.log*' -mtime +7 -delete\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'names may start with a dash': rm gets the bare basename and treats -dash.log as an option",
+   "script": "find /srv/logs -type f -name '*.log' -mtime +7 -print0 |\nwhile IFS= read -r -d '' f; do\n  ( cd \"${f%/*}\" && rm -f \"${f##*/}\" ) || true\ndone\n"
+  }
+ ],
+ "003-permissions": [
+  {
+   "id": "m1",
+   "violates": "'including /srv/www itself': -mindepth 1 leaves the root directory at 750",
+   "script": "find /srv/www -mindepth 1 -type d -exec chmod 755 {} +\nfind /srv/www -type f -exec chmod 644 {} +\nfind /srv/www -type f -name '*.sh' -exec chmod 755 {} +\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'.sh files must be 755': uses 744 (not executable by group/others)",
+   "script": "find /srv/www -type d -exec chmod 755 {} +\nfind /srv/www -type f -exec chmod 644 {} +\nfind /srv/www -type f -name '*.sh' -exec chmod 744 {} +\n"
+  },
+  {
+   "id": "m3",
+   "violates": "paths contain spaces (rule applies to all files): xargs without -0 misses 'my docs/run me.sh' and 'read me.txt'",
+   "script": "find /srv/www -type d -print0 | xargs -0 chmod 755\nfind /srv/www -type f ! -name '*.sh' | xargs chmod 644 2>/dev/null || true\nfind /srv/www -type f -name '*.sh' | xargs chmod 755 2>/dev/null || true\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'.sh files must be 755': the 644 pass runs last and overrides the .sh permissions",
+   "script": "find /srv/www -type d -exec chmod 755 {} +\nfind /srv/www -type f -name '*.sh' -exec chmod 755 {} +\nfind /srv/www -type f -exec chmod 644 {} +\n"
+  }
+ ],
+ "004-user-group": [
+  {
+   "id": "m1",
+   "violates": "'permissions 2775 (setgid)': sets 0775 without the setgid bit",
+   "script": "groupadd --system deploy\nuseradd --system -g deploy -s /usr/sbin/nologin -M deploy\nmkdir -p /srv/app\nchown -R deploy:deploy /srv/app\nchmod 775 /srv/app\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'shell /usr/sbin/nologin': uses /bin/false",
+   "script": "groupadd --system deploy\nuseradd --system -g deploy -s /bin/false -M deploy\nmkdir -p /srv/app\nchown -R deploy:deploy /srv/app\nchmod 2775 /srv/app\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'existing /srv/app/config.ini must also be deploy:deploy': chown is not recursive",
+   "script": "groupadd --system deploy\nuseradd --system -g deploy -s /usr/sbin/nologin -M deploy\nmkdir -p /srv/app\nchown deploy:deploy /srv/app\nchmod 2775 /srv/app\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'without a home directory': useradd -m creates /home/deploy",
+   "script": "groupadd --system deploy\nuseradd --system -g deploy -s /usr/sbin/nologin -m -d /home/deploy deploy\nmkdir -p /srv/app\nchown -R deploy:deploy /srv/app\nchmod 2775 /srv/app\n"
+  }
+ ],
+ "005-nginx-8080": [
+  {
+   "id": "m1",
+   "violates": "'then start (or restart) nginx': config fixed and tested, but nginx is never started",
+   "script": "cat > /etc/nginx/sites-enabled/app <<'CONF'\nserver {\n    listen 8080;\n    server_name _;\n    root /srv/www;\n    index index.html;\n    location / {\n        try_files $uri $uri/ =404;\n    }\n}\nCONF\nnginx -t\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'serve the contents of /srv/www/index.html': root points to /srv/www/html, so / returns 404",
+   "script": "cat > /etc/nginx/sites-enabled/app <<'CONF'\nserver {\n    listen 8080;\n    server_name _;\n    root /srv/www/html;\n    index index.html;\n    location / {\n        try_files $uri $uri/ =404;\n    }\n}\nCONF\nnginx -t && (nginx -s reload 2>/dev/null || nginx)\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'fix the config /etc/nginx/sites-enabled/app': the broken file is deleted and a new one is put in conf.d instead",
+   "script": "rm -f /etc/nginx/sites-enabled/app\ncat > /etc/nginx/conf.d/app.conf <<'CONF'\nserver {\n    listen 8080;\n    server_name _;\n    root /srv/www;\n    index index.html;\n    location / {\n        try_files $uri $uri/ =404;\n    }\n}\nCONF\nnginx -t && (nginx -s reload 2>/dev/null || nginx)\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'serve the contents of /srv/www/index.html': returns a hard-coded copy of the current text instead of the file",
+   "script": "cat > /etc/nginx/sites-enabled/app <<CONF\nserver {\n    listen 8080;\n    server_name _;\n    root /srv/www;\n    index index.html;\n    location / {\n        default_type text/plain; return 200 \"$(cat /srv/www/index.html)\\n\";\n    }\n}\nCONF\nnginx -t && (nginx -s reload 2>/dev/null || nginx)\n"
+  }
+ ],
+ "006-cron-entry": [
+  {
+   "id": "m1",
+   "violates": "'run as root' via /etc/cron.d: the user field is missing, so cron.d parses the command as the user name",
+   "script": "echo '30 3 * * * /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1' > /etc/cron.d/backup\nchmod 644 /etc/cron.d/backup\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'output must be appended': > truncates the log on each run",
+   "script": "echo '30 3 * * * root /usr/local/bin/backup.sh > /var/log/backup.log 2>&1' > /etc/cron.d/backup\nchmod 644 /etc/cron.d/backup\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'stdout and stderr' go to the log: 2>&1 placed before the redirect, so stderr goes to cron mail",
+   "script": "echo '30 3 * * * root /usr/local/bin/backup.sh 2>&1 >> /var/log/backup.log' > /etc/cron.d/backup\nchmod 644 /etc/cron.d/backup\n"
+  },
+  {
+   "id": "m4",
+   "violates": "the entry must actually be scheduled: no trailing newline, so cron ignores the last line",
+   "script": "printf '%s' '30 3 * * * root /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1' > /etc/cron.d/backup\nchmod 644 /etc/cron.d/backup\n"
+  }
+ ],
+ "007-top-ips-500": [
+  {
+   "id": "m1",
+   "violates": "'requests that ended with response code 500': grep -w matches 500 anywhere (user agent, path)",
+   "script": "grep -w '500' /var/log/nginx/access.log | awk '{print $1}' | sort | uniq -c | sort -rn | head -5 | awk '{print $2}' > /tmp/top_ips.txt\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'write nothing else to the file': the request counts are written next to the IPs",
+   "script": "awk '$9 == 500 {print $1}' /var/log/nginx/access.log | sort | uniq -c | sort -rn | head -5 | awk '{print $2, $1}' > /tmp/top_ips.txt\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'from the highest number of such requests to the lowest': ascending order",
+   "script": "awk '$9 == 500 {print $1}' /var/log/nginx/access.log | sort | uniq -c | sort -n | tail -5 | awk '{print $2}' > /tmp/top_ips.txt\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'response code 500': matches any 50x status, so 502 counts too",
+   "script": "awk '$9 ~ /^50/ {print $1}' /var/log/nginx/access.log | sort | uniq -c | sort -rn | head -5 | awk '{print $2}' > /tmp/top_ips.txt\n"
+  }
+ ],
+ "008-logrotate": [
+  {
+   "id": "m1",
+   "violates": "'compress archives with gzip right away (no delaycompress)': delaycompress added",
+   "script": "cat > /etc/logrotate.d/app <<'CONF'\n/var/log/app/*.log {\n    daily\n    rotate 7\n    compress\n    delaycompress\n    missingok\n    notifempty\n    create 0640 root root\n}\nCONF\nchmod 644 /etc/logrotate.d/app\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'keep 7 archives': maxage 7 instead of rotate 7 (default rotate 0 keeps none)",
+   "script": "cat > /etc/logrotate.d/app <<'CONF'\n/var/log/app/*.log {\n    daily\n    maxage 7\n    compress\n    missingok\n    notifempty\n    create 0640 root root\n}\nCONF\nchmod 644 /etc/logrotate.d/app\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'create the new file with mode 0640': uses 0644",
+   "script": "cat > /etc/logrotate.d/app <<'CONF'\n/var/log/app/*.log {\n    daily\n    rotate 7\n    compress\n    missingok\n    notifempty\n    create 0644 root root\n}\nCONF\nchmod 644 /etc/logrotate.d/app\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'do not rotate empty files': notifempty missing",
+   "script": "cat > /etc/logrotate.d/app <<'CONF'\n/var/log/app/*.log {\n    daily\n    rotate 7\n    compress\n    missingok\n    create 0640 root root\n}\nCONF\nchmod 644 /etc/logrotate.d/app\n"
+  }
+ ],
+ "009-config-sed": [
+  {
+   "id": "m1",
+   "violates": "'do not change other lines': pattern without '=' also rewrites max_connections_per_ip",
+   "script": "sed -i -E 's/^#?max_connections.*/max_connections=200/' /etc/app/app.conf\ngrep -q '^max_connections=' /etc/app/app.conf || echo 'max_connections=200' >> /etc/app/app.conf\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'if the parameter is commented, uncomment it': commented line left as is and a new line appended",
+   "script": "sed -i 's/^max_connections=.*/max_connections=200/' /etc/app/app.conf\ngrep -q '^max_connections=' /etc/app/app.conf || echo 'max_connections=200' >> /etc/app/app.conf\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'line of the form max_connections=...': writes 'max_connections = 200' with spaces",
+   "script": "sed -i -E 's/^#?max_connections=.*/max_connections = 200/' /etc/app/app.conf\ngrep -qE '^max_connections *=' /etc/app/app.conf || echo 'max_connections = 200' >> /etc/app/app.conf\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'do not change other lines': all comment lines (incl. '# app config') are stripped",
+   "script": "sed -i -E '/^#/d; /^max_connections=/d' /etc/app/app.conf\necho 'max_connections=200' >> /etc/app/app.conf\n"
+  }
+ ],
+ "010-big-files": [
+  {
+   "id": "m1",
+   "violates": "'recursively': only files directly in /srv/data are considered",
+   "script": "find /srv/data -maxdepth 1 -type f -printf \"%s %p\\n\" | sort -rn | head -3 | cut -d\" \" -f2- > /tmp/report.txt\n"
+  },
+  {
+   "id": "m2",
+   "violates": "'from the largest to the smallest': ascending order",
+   "script": "find /srv/data -type f -printf \"%s %p\\n\" | sort -rn | head -3 | sort -n | cut -d\" \" -f2- > /tmp/report.txt\n"
+  },
+  {
+   "id": "m3",
+   "violates": "'full paths': paths are relative (./a/...)",
+   "script": "cd /srv/data && find . -type f -printf \"%s %p\\n\" | sort -rn | head -3 | cut -d\" \" -f2- > /tmp/report.txt\n"
+  },
+  {
+   "id": "m4",
+   "violates": "'3 largest files': du -a also lists directories, so /srv/data itself is in the top 3",
+   "script": "du -ab /srv/data | sort -rn | head -3 | cut -f2- > /tmp/report.txt\n"
+  }
+ ]
+}

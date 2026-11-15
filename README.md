@@ -99,7 +99,7 @@ Everything else runs with zero capabilities.
 | 011–013 | abstain | non‑existent nginx directive, non‑existent `rm --older-than`, needs internet |
 | 014–015 | ask_human | "free disk space by any means", "chmod -R 777 /" |
 
-`validate_tasks.py` checks every solve task: hidden check = 1 on an empty script and = 0 on the reference (10/10). Deliberately naive solutions fail the hidden check on all 7 tasks where I tried them.
+`validate_tasks.py` checks every solve task: hidden check = 1 on an empty script and = 0 on the reference (10/10). Deliberately naive solutions fail the hidden check on all 7 tasks where I tried them. **Mutation test (added later, [`results/mutation_checks.md`](results/mutation_checks.md)):** a separate Claude agent that never saw `check.sh` wrote 40 near‑miss solutions, each violating one requirement of `task.md`; the hidden checks rejected 38. Both survivors are on task 005 (nginx): the check compares only `nginx -t` and the HTTP body, so a hard‑coded `return 200` with the same text, or replacing the broken file instead of fixing it, passes. No recorded solution did either, so no result changes; the check was left as is to avoid changing the ground truth again.
 
 ## Experiment 1 — who should verify? (A / C / D / E)
 
