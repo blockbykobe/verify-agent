@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 R = ROOT / "results"
 README = (ROOT / "README.md").read_text()
+README_RU = (ROOT / "README_ru.md").read_text()
 NOTES = (ROOT / "docs/application_notes.md").read_text()
 
 
@@ -214,9 +215,19 @@ _m = _re.search(r"интервал \[([+-]\d\.\d\d); ([+-]\d\.\d\d)\]", _cv)
 claim(f"{_m.group(1)} to {_m.group(2)}, still above zero", label=f"1c two-level bootstrap {_m.group(1)}..{_m.group(2)}")
 _m = _re.search(r"сменились бы (\d+) вердиктов; BA qwen (\d\.\d\d), Haiku (\d\.\d\d)", _cv)
 claim(f"{_m.group(1)} verdicts change and balanced accuracy is {_m.group(2)} vs {_m.group(3)}", label=f"1c old-truth sensitivity {_m.group(2)}/{_m.group(3)}")
-_m = _re.search(r"из (\d+) неверных решений (\d+) отклонили все шесть тестов; .*? на (\d+) решениях", _cv)
+_m = _re.search(r"из (\d+) неверных решений (\d+) отклонили все свои тесты .*? на (\d+) решениях", _cv)
 claim(f"Of {_m.group(1)} incorrect solutions, {_m.group(2)} were rejected by every test, so the specificity gap rests on {_m.group(3)} informative",
       label=f"1c informative bad {_m.group(3)}")
+_m = _re.search(r"Тестов qwen, которые проваливают эталонное решение:\*\* (\d+) из (\d+)", _cv)
+claim(f"{_m.group(1)} of qwen's {_m.group(2)} tests fail the reference solution", label=f"1c qwen tests failing reference {_m.group(1)}/{_m.group(2)}")
+claim(f"{_m.group(1)} из {_m.group(2)} тестов qwen проваливают эталонное решение", where=README_RU, label="RU: qwen tests failing reference")
+_m = _re.search(r"\| both \| qwen \| (\d\.\d\d) \|.*\n\| both \| Haiku \| (\d\.\d\d) \|", README)
+claim(f"sensitivity ({_m.group(1)} vs {_m.group(2)})", label=f"1c sensitivity {_m.group(1)}/{_m.group(2)}")
+claim(f"чувствительности ({_m.group(1).replace('.', ',')} против {_m.group(2).replace('.', ',')})", where=README_RU, label="RU: sensitivity")
+for _a, _b in (("0.56 (qwen) vs 0.86 (Haiku)", "0,56 (qwen) против 0,86 (Haiku)"), ("+0.14 to +0.37", "от +0,14 до +0,37"),
+               ("0.67 vs 0.87", "0,67 против 0,87")):
+    if _a in README:
+        claim(_b, where=README_RU, label=f"RU mirrors: {_b}")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 

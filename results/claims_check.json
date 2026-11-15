@@ -192,6 +192,34 @@
   },
   {
    "ok": true,
+   "claim": "1c qwen tests failing reference 54/100"
+  },
+  {
+   "ok": true,
+   "claim": "RU: qwen tests failing reference"
+  },
+  {
+   "ok": true,
+   "claim": "1c sensitivity 0.48/0.79"
+  },
+  {
+   "ok": true,
+   "claim": "RU: sensitivity"
+  },
+  {
+   "ok": true,
+   "claim": "RU mirrors: 0,56 (qwen) \u043f\u0440\u043e\u0442\u0438\u0432 0,86 (Haiku)"
+  },
+  {
+   "ok": true,
+   "claim": "RU mirrors: \u043e\u0442 +0,14 \u0434\u043e +0,37"
+  },
+  {
+   "ok": true,
+   "claim": "RU mirrors: 0,67 \u043f\u0440\u043e\u0442\u0438\u0432 0,87"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]

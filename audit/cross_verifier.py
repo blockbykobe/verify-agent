@@ -6,6 +6,7 @@
 
   python audit/cross_verifier.py            # прогон (дописывает кэш, можно прерывать и продолжать)
   python audit/cross_verifier.py --report   # только отчёт
+  python audit/cross_verifier.py --truth-v1  # правда по старым проверкам 003/004/006 (Docker), затем отчёт
 """
 from __future__ import annotations
 
@@ -278,17 +279,23 @@ def report() -> str:
     for r in rawp:
         rej[(r["solver"], r["task"], r["sid"])].append(r["test_rc"] != 0)
     informative = [k for k in bad if not all(rej[k])]
+    ntests = sorted({len(rej[k]) for k in bad})
+    inf_solvers = sorted({k[0] for k in informative})
+    bad_h_tasks = sorted({k[1][:3] for k in bad if k[0] == "haiku"})
     L += ["\n## Дополнительно (не из плана, после рецензии Opus 5.5)\n",
           f"* **BA, усреднённая по задачам** (по {len(mixed)} задачам с хорошими и плохими решениями, оба решателя): "
           f"qwen {tavg['qwen']:.2f}, Haiku {tavg['haiku']:.2f}. Сводная BA (0.67 против 0.90) зависит от того, сколько уникальных "
           "решений у каждой задачи; усреднение по задачам даёт ту же картину.",
           f"* **Двухуровневый бутстрэп** (задачи, внутри них тесты и решения): разница BA Haiku − qwen, 95% интервал "
           f"[{d3[int(.025 * len(d3))]:+.2f}; {d3[int(.975 * len(d3)) - 1]:+.2f}] ({len(d3)} выборок). Интервал шире, чем бутстрэп только по "
-          "задачам, но ноль не содержит.",
-          f"* **Где на самом деле различие:** из {len(bad)} неверных решений {len(bad) - len(informative)} отклонили все шесть тестов; "
-          f"разница в специфичности держится на {len(informative)} решениях qwen "
+          "задачам, но ноль не содержит. Это приближение: каждое решение прогонялось лишь с 3 тестами каждого проверяющего, "
+          "поэтому пары «решение × тест» без данных пропускаются.",
+          f"* **Где на самом деле различие:** из {len(bad)} неверных решений {len(bad) - len(informative)} отклонили все свои тесты "
+          f"(по {'/'.join(map(str, ntests))} на решение); "
+          f"разница в специфичности держится на {len(informative)} решениях (решатель: {', '.join(inf_solvers)}) "
           f"({', '.join(f'{t}: {c}' for t, c in sorted(Counter(k[1][:3] for k in informative).items()))}). "
-          "Все неверные решения Haiku — в задаче 005. Главная разница — в чувствительности (тесты qwen часто валят верные решения).",
+          f"Все неверные решения Haiku-решателя — в задачах: {', '.join(bad_h_tasks)}. "
+          "Главная разница — в чувствительности (тесты qwen часто валят верные решения).",
           f"* **Тестов qwen, которые проваливают эталонное решение:** "
           f"{sum(r['ref_rc'] != 0 for r in rows if r['kind'] == 'validity' and r['verifier'] == 'qwen')} из 100."]
     tv1 = truth_v1() if (R / "cross_verifier_truth_v1.jsonl").exists() else None
@@ -308,7 +315,11 @@ def report() -> str:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
+    ap.add_argument("--truth-v1", action="store_true", help="пересчитать results/cross_verifier_truth_v1.jsonl")
     a = ap.parse_args()
-    if not a.report:
+    if a.truth_v1:
+        (R / "cross_verifier_truth_v1.jsonl").unlink(missing_ok=True)
+        truth_v1()
+    elif not a.report:
         run()
     print(report())
