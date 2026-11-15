@@ -202,6 +202,9 @@ if _mv.exists():
         vv = [r for r in mv if r["kind"] == "validity" and r["verifier"] == vmodel]
         ok = sum(r["ref_rc"] == 0 and r["noop_rc"] != 0 for r in vv)
         claim(f"| {ok}/{len(vv)} |", label=f"1d validity {vmodel} {ok}/{len(vv)}")
+    vv = [r for r in mv if r["kind"] == "validity" and r["verifier"] == "claude-haiku-5-5-run2"]
+    ok2 = sum(r["ref_rc"] == 0 and r["noop_rc"] != 0 for r in vv)
+    claim(f"with {ok2}/{len(vv)} valid tests (first run 43/50)", label=f"Haiku run2 validity {ok2}/{len(vv)}")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 

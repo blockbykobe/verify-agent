@@ -32,8 +32,9 @@ sys.path.insert(0, str(ROOT / "audit"))
 R = ROOT / "results"
 GEN = R / "verifiers"
 SCORE = R / "more_verifiers.jsonl"
-MODELS = ["qwen2.5-coder:7b", "llama3.1:8b", "gemma2:9b", "qwen2.5-coder:14b"]
+MODELS = ["qwen2.5-coder:7b", "llama3.1:8b", "gemma2:9b", "qwen2.5-coder:14b", "qwen2.5-coder:32b", "claude-haiku-5-5-run2"]
 N_TESTS = 10
+N_BY_MODEL = {"qwen2.5-coder:32b": 5, "claude-haiku-5-5-run2": 5}  # дополнение к плану: 32B медленная, 5 тестов на задачу
 TEMPERATURE = 0.7  # как в experiment.py
 PAUSE = 60  # с между моделями — видеокарта остывает
 
@@ -42,16 +43,17 @@ def fname(model):
     return GEN / (model.replace(":", "_").replace("/", "_") + ".jsonl")
 
 
-def generate(url):
+def generate(url, only=None):
     from prompts import SYSTEM_VERIFIER
     from sandbox import code_blocks, load_tasks, policy_gate
     tasks = [t for t in load_tasks() if t.expected == "solve"]
     GEN.mkdir(parents=True, exist_ok=True)
-    for mi, model in enumerate(MODELS):
+    models = [m for m in MODELS if (not only or m in only) and not m.startswith("claude")]
+    for mi, model in enumerate(models):
         out = fname(model)
         done = {(r["task"], r["i"]) for r in map(json.loads, out.read_text().splitlines())} if out.exists() else set()
         for t in tasks:
-            for i in range(N_TESTS):
+            for i in range(N_BY_MODEL.get(model, N_TESTS)):
                 if (t.name, i) in done:
                     continue
                 raw, test = "", None
@@ -71,9 +73,46 @@ def generate(url):
                                        ensure_ascii=False) + "\n")
             print(f"{model} {t.name} done", flush=True)
         httpx.post(f"{url}/api/generate", json={"model": model, "keep_alive": 0}, timeout=60)  # выгрузить из видеопамяти
-        if mi < len(MODELS) - 1:
+        if mi < len(models) - 1:
             print(f"pause {PAUSE}s", flush=True)
             time.sleep(PAUSE)
+
+
+def generate_claude(max_usd=0.5):
+    """Второй прогон Haiku-проверяющего: те же настройки, что в эксперименте 1b (claude_experiment.py, условие D)."""
+    import os
+    import anthropic
+    from claude_confession import PRICES
+    from prompts import SYSTEM_VERIFIER
+    from sandbox import code_blocks, load_tasks, policy_gate
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        raise SystemExit("ANTHROPIC_API_KEY не задан")
+    model_id, name = "claude-haiku-5-5", "claude-haiku-5-5-run2"
+    client = anthropic.Anthropic()
+    pin, pout = PRICES[model_id]
+    spent, out = 0.0, fname(name)
+    GEN.mkdir(parents=True, exist_ok=True)
+    done = {(r["task"], r["i"]) for r in map(json.loads, out.read_text().splitlines())} if out.exists() else set()
+    for t in [t for t in load_tasks() if t.expected == "solve"]:
+        for i in range(N_BY_MODEL[name]):
+            if (t.name, i) in done:
+                continue
+            raw, test = "", None
+            for _ in range(2):
+                if spent >= max_usd:
+                    raise SystemExit(f"budget ${max_usd} reached")
+                r = client.with_options(timeout=300, max_retries=4).messages.create(
+                    model=model_id, max_tokens=8000, system=SYSTEM_VERIFIER,
+                    messages=[{"role": "user", "content": t.text}], output_config={"effort": "low"})
+                spent += r.usage.input_tokens * pin / 1e6 + r.usage.output_tokens * pout / 1e6
+                raw = "".join(b.text for b in r.content if b.type == "text")
+                blocks = [b for lang, b in code_blocks(raw) if lang in ("bash", "sh", "shell", "")]
+                if blocks and not policy_gate(blocks[0]):
+                    test = blocks[0]
+                    break
+            with out.open("a") as f:
+                f.write(json.dumps({"model": name, "task": t.name, "i": i, "test": test, "raw": raw}, ensure_ascii=False) + "\n")
+        print(f"{name} {t.name} done, spent ≈ ${spent:.3f}", flush=True)
 
 
 def tests_of(model):
@@ -91,7 +130,7 @@ def score():
     sols = cv.solutions()
     done = {(r["kind"], r["verifier"], r["task"], r.get("sid"), r["tid"]) for r in
             map(json.loads, SCORE.read_text().splitlines())} if SCORE.exists() else set()
-    for model in MODELS:
+    for model in [m for m in MODELS if fname(m).exists()]:
         tests = tests_of(model)
         rng = random.Random(2026)
         jobs = []
@@ -177,11 +216,15 @@ def report() -> str:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("step", choices=["generate", "score", "report"])
+    ap.add_argument("step", choices=["generate", "generate-claude", "score", "report"])
     ap.add_argument("--url", default="http://192.168.50.22:11434")
+    ap.add_argument("--only", nargs="*")
     a = ap.parse_args()
     if a.step == "generate":
-        generate(a.url)
+        generate(a.url, a.only)
+    elif a.step == "generate-claude":
+        sys.path.insert(0, str(ROOT / "experiments"))
+        generate_claude()
     elif a.step == "score":
         score()
     print(report())

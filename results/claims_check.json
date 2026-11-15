@@ -172,6 +172,10 @@
   },
   {
    "ok": true,
+   "claim": "Haiku run2 validity 41/50"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]
