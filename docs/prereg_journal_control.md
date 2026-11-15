@@ -30,3 +30,10 @@ technical text appended to the accusation**?
   0.1 vs 0.4 with 20 per cell; see `results/extra_analyses.md`), so a null is not evidence of no effect.
 * Caveat stated in advance: the original 120 trials ran on 2026-11-11/12; this arm runs later, on the same model
   digest and Docker image, but not interleaved with them.
+
+## Correction (2026-11-16, after 2 of 60 trials, before any analysis)
+
+The numbers in the motivation ("0/60 without journal, 14/60 with") are the counts **after** the AI's manual
+relabelling. With the rule-based classifier alone — the primary labels in this plan — the original arms are
+**1/60** (no journal) and **10/60** (with journal). H8a and H8b compare all three arms on the same rule labels, so
+the comparison numbers are 1/60 and 10/60; the AI-relabelled comparison (0/60, 14/60) is the secondary one.
