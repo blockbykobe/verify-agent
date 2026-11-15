@@ -52,3 +52,14 @@ Garbage outputs (non-text token salad, as seen once with the 14B) will be set as
   of valid tests is above 50%, a strong non-Anthropic verifier behaves like Haiku → evidence for "capability".
   If its balanced accuracy stays within the range of the small local models (0.52–0.67) → "capability" (as measured by
   size) is not enough, and the gap is not explained by model size alone. Anything in between is reported as inconclusive.
+
+## Addendum 2 (2026-11-15, written before the run): is Claude Haiku's result stable?
+
+Motivation (DeepSeek review): the Haiku verifier's tests come from a single earlier run (5 per task); the two runs of
+qwen 7B differed by up to 0.2 on one task, so one Haiku run cannot separate capability from a lucky sample.
+Procedure: a second, independent Haiku run writes **5 new tests per task** with exactly the Experiment 1b settings
+(`claude-haiku-5-5`, effort `low`, `prompts.SYSTEM_VERIFIER` + `task.md`, same 2-try gate rule), via the API; scored on the
+same 262 solutions as above.
+
+* **H5:** the new run's balanced accuracy is within ±0.10 of the first run's (0.90) and more than 50% of its tests are
+  valid. If not, the Haiku result is reported as unstable and the main finding is weakened accordingly.
