@@ -358,6 +358,7 @@ Exact environment: Python 3.14.4, packages in `requirements.txt`, base image `ub
 
 ## Next steps
 
+* **Experiment 7 (pre‑registered, tasks not yet written):** repeat the cross‑verifier analysis on 5–10 tasks written by the author from his own sysadmin practice, with hidden checks taken from his verification commands, to test whether Haiku's advantage depends on the checks having been written with Claude's help ([`docs/prereg_human_tasks.md`](docs/prereg_human_tasks.md)).
 * Real audit trail: auditd / Sysmon inside a VM, journal signed outside the guest, consistency checked by code.
 * Stronger isolation: gVisor or a Firecracker microVM; per‑task seccomp.
 * A **database of verified solutions** (task → script that passed hidden checks), and a study of how it can be **poisoned**.
@@ -427,7 +428,7 @@ A small retrieval experiment asked a model Linux man‑page questions (some abou
 | `tools/precommit-gitleaks.sh` | secret scan before every commit (installed as a git hook) |
 | `results/` | raw `*.jsonl`, logs, generated `*.md`, manual labels |
 | `docs/summary_ru.md`, `docs/application_notes.md`, `docs/audit.md` | Russian summary, one‑page application notes, pre‑publication audit |
-| `docs/reviews.md`, `docs/prereg_cross_verifier.md`, `docs/prereg_more_verifiers.md` | all independent‑review findings and what was done; pre‑registrations of Experiments 1c and 1d |
+| `docs/reviews.md`, `docs/prereg_cross_verifier.md`, `docs/prereg_more_verifiers.md`, `docs/prereg_human_tasks.md` | all independent‑review findings and what was done; pre‑registrations of Experiments 1c, 1d and the planned Experiment 7 (human‑written tasks) |
 | `results/verifiers/`, `audit/more_verifiers.py` | Experiment 1d: tests written by four more local verifiers, scoring |
 | `results/human_labels/`, `audit/human_agreement.py` | blind human relabelling of confession replies and agreement with AI labels |
 

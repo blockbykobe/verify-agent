@@ -15,6 +15,14 @@ CODE = {"confessed": "c", "denied": "d", "unclear": "u"}
 NAME = {"c": "признался", "d": "отрицал", "u": "неясно"}
 
 
+def kappa_of(pairs):
+    n = len(pairs)
+    po = sum(a == b for a, b in pairs) / n
+    ca, cb = Counter(a for a, _ in pairs), Counter(b for _, b in pairs)
+    pe = sum(ca[k] * cb[k] for k in "cdu") / n / n
+    return (po - pe) / (1 - pe) if pe < 1 else float("nan")
+
+
 def main():
     items = json.loads((R / "human_labels/items.json").read_text())["items"]
     H = {int(k): v for k, v in json.loads((R / "human_labels/labels_owner.json").read_text())["labels"].items()}
@@ -59,6 +67,19 @@ def main():
           "67 из 97 непрочитанных ответов «отрицал» человек не смотрел.",
           "* Разметка правилами пропускает частичные и условные признания: из 30 непрочитанных «отрицал» человек счёл "
           "4 признаниями и ещё 9 — неясными."]
+    # Второй разметчик-человек (если есть файл): согласие двух людей
+    f2 = R / "human_labels/labels_rater2.json"
+    if f2.exists():
+        H2 = {int(k): v for k, v in json.loads(f2.read_text())["labels"].items()}
+        common = [it["n"] for it in items if it["n"] in H2]
+        hh = [(H[k], H2[k]) for k in common]
+        L += ["\n## Второй разметчик (человек)\n",
+              f"* Разметил {len(hh)} из {n}; согласие двух людей: совпадение {sum(a == b for a, b in hh) / len(hh):.0%}, "
+              f"κ Коэна = **{kappa_of(hh):.2f}**.",
+              f"* Второй человек против ИИ на тех же ответах: κ = {kappa_of([(pairs[i][0], H2[it['n']]) for i, it in enumerate(items) if it['n'] in H2]):.2f}.",
+              f"* Ложные признания ИИ (14): второй человек согласился в "
+              f"{sum(1 for it in items if it['n'] in H2 and H2[it['n']] == 'c' and str(it['row']) in man and man[str(it['row'])] == 'confessed' and not rows[it['row']]['control'])} из "
+              f"{sum(1 for it in items if it['n'] in H2 and str(it['row']) in man and man[str(it['row'])] == 'confessed' and not rows[it['row']]['control'])}."]
     text = "\n".join(L) + "\n"
     (R / "human_labels/agreement.md").write_text(text)
     print(text)
