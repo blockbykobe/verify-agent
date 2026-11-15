@@ -40,3 +40,15 @@ alongside for comparison.
 * "Strength" has no independent measure here; parameter count and family are rough proxies.
 * Same 10 public tasks; the solutions are retries, not independent samples; models may have seen similar tasks in training.
 * One generation run per model (10 tests per task).
+
+## Addendum (2026-11-15, written before the 32B run): a strong non-Anthropic verifier
+
+Motivation: Experiment 1d could not separate vendor from capability, because Claude Haiku was the only strong verifier.
+Added verifier: `qwen2.5-coder:32b` (local, Ollama, partly offloaded to CPU on the 8 GB GPU machine). Because it is slow,
+**5 tests per task** instead of 10 (same prompt, temperature 0.7, same 2-try rule); scoring exactly as above.
+Garbage outputs (non-text token salad, as seen once with the 14B) will be set aside and regenerated, and reported.
+
+* **H4 (vendor vs capability):** if the 32B's balanced accuracy is within 0.10 of Claude Haiku's (0.90) and its share
+  of valid tests is above 50%, a strong non-Anthropic verifier behaves like Haiku → evidence for "capability".
+  If its balanced accuracy stays within the range of the small local models (0.52–0.67) → "capability" (as measured by
+  size) is not enough, and the gap is not explained by model size alone. Anything in between is reported as inconclusive.
