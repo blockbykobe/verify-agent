@@ -14,7 +14,7 @@ import hashlib
 import json
 import random
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -114,6 +114,30 @@ def run():
             f.write(json.dumps(rec) + "\n")
         if n % 25 == 0 or n == len(todo):
             print(f"{n}/{len(todo)}", flush=True)
+
+
+def truth_v1():
+    """Правда по СТАРЫМ проверкам 003/004/006 (до исправления в 6546ff7) — для проверки чувствительности (рецензия Opus)."""
+    import subprocess
+    from sandbox import evaluate, load_tasks
+    out = R / "cross_verifier_truth_v1.jsonl"
+    if out.exists():
+        return {(r["solver"], r["task"], r["sid"]): r["hidden_rc"] == 0 for r in map(json.loads, out.read_text().splitlines())}
+    fixed = ["003-permissions", "004-user-group", "006-cron-entry"]
+    old = {t: subprocess.run(["git", "show", f"6546ff7^:tasks/{t}/check.sh"], capture_output=True, text=True, check=True,
+                             cwd=ROOT).stdout for t in fixed}
+    tasks = {t.name: t for t in load_tasks()}
+    for t in fixed:
+        orig = tasks[t].file
+        tasks[t].file = (lambda o, src: (lambda name: src if name == "check.sh" else o(name)))(orig, old[t])
+    res = {}
+    with out.open("w") as f:
+        for s in solutions():
+            if s["task"] in fixed:
+                rc, _ = evaluate(tasks[s["task"]], s["script"])
+                f.write(json.dumps({"solver": s["solver"], "task": s["task"], "sid": s["sid"], "hidden_rc": rc}) + "\n")
+                res[(s["solver"], s["task"], s["sid"])] = rc == 0
+    return res
 
 
 def ba(pairs):
@@ -218,6 +242,64 @@ def report() -> str:
     L.append(f"\nЗадач, где есть и верные, и неверные решения: {len(dd)}; тесты Haiku лучше в {sum(x > 0 for x in dd)}, "
              f"тесты qwen лучше в {sum(x < 0 for x in dd)}; точный тест со сменой знака p = {p2:.3f} "
              f"(минимально возможное при {len(dd)} задачах — {2 / 2 ** len(dd):.3f}). «—» — в задаче нет неверных решений.")
+    # ---- дополнительно, НЕ из плана (рецензия Opus 5.5): единицы анализа, двухуровневый бутстрэп, версия правды
+    mixed = [t for t in tasks if len({p["good"] for p in by[t]}) == 2]
+    tavg = {v: sum(ba([p for p in by[t] if p["verifier"] == v])[2] for t in mixed) / len(mixed) for v in ("qwen", "haiku")}
+    rawp = [r for r in rows if r["kind"] == "pair" and (r["solver"], r["task"], r["sid"]) in truth]
+    rng2 = random.Random(1)
+    sols_by_task = defaultdict(list)
+    for k in truth:
+        sols_by_task[k[1]].append(k)
+    tests_by = defaultdict(set)
+    for r in rawp:
+        tests_by[(r["task"], r["verifier"])].add(r["tid"])
+    idx = defaultdict(list)
+    for r in rawp:
+        idx[(r["task"], r["verifier"], r["tid"])].append(r)
+    d3 = []
+    for _ in range(2000):
+        ps = []
+        for t in (rng2.choice(tasks) for _ in tasks):
+            ss = [rng2.choice(sols_by_task[t]) for _ in sols_by_task[t]]
+            sset = Counter(ss)
+            for v in ("qwen", "haiku"):
+                pool = sorted(tests_by[(t, v)])
+                for tid in (rng2.choice(pool) for _ in pool):
+                    for r in idx[(t, v, tid)]:
+                        k = (r["solver"], r["task"], r["sid"])
+                        ps += [{"verifier": v, "pass": r["test_rc"] == 0, "good": truth[k]}] * sset.get(k, 0)
+        bh = ba([p for p in ps if p["verifier"] == "haiku"])[2]
+        bq = ba([p for p in ps if p["verifier"] == "qwen"])[2]
+        if bh == bh and bq == bq:
+            d3.append(bh - bq)
+    d3.sort()
+    bad = [k for k, v in truth.items() if not v]
+    rej = defaultdict(list)
+    for r in rawp:
+        rej[(r["solver"], r["task"], r["sid"])].append(r["test_rc"] != 0)
+    informative = [k for k in bad if not all(rej[k])]
+    L += ["\n## Дополнительно (не из плана, после рецензии Opus 5.5)\n",
+          f"* **BA, усреднённая по задачам** (по {len(mixed)} задачам с хорошими и плохими решениями, оба решателя): "
+          f"qwen {tavg['qwen']:.2f}, Haiku {tavg['haiku']:.2f}. Сводная BA (0.67 против 0.90) зависит от того, сколько уникальных "
+          "решений у каждой задачи; усреднение по задачам даёт ту же картину.",
+          f"* **Двухуровневый бутстрэп** (задачи, внутри них тесты и решения): разница BA Haiku − qwen, 95% интервал "
+          f"[{d3[int(.025 * len(d3))]:+.2f}; {d3[int(.975 * len(d3)) - 1]:+.2f}] ({len(d3)} выборок). Интервал шире, чем бутстрэп только по "
+          "задачам, но ноль не содержит.",
+          f"* **Где на самом деле различие:** из {len(bad)} неверных решений {len(bad) - len(informative)} отклонили все шесть тестов; "
+          f"разница в специфичности держится на {len(informative)} решениях qwen "
+          f"({', '.join(f'{t}: {c}' for t, c in sorted(Counter(k[1][:3] for k in informative).items()))}). "
+          "Все неверные решения Haiku — в задаче 005. Главная разница — в чувствительности (тесты qwen часто валят верные решения).",
+          f"* **Тестов qwen, которые проваливают эталонное решение:** "
+          f"{sum(r['ref_rc'] != 0 for r in rows if r['kind'] == 'validity' and r['verifier'] == 'qwen')} из 100."]
+    tv1 = truth_v1() if (R / "cross_verifier_truth_v1.jsonl").exists() else None
+    if tv1:
+        t1 = dict(truth)
+        t1.update(tv1)
+        p1 = [{"verifier": r["verifier"], "task": r["task"], "pass": r["test_rc"] == 0, "good": t1[(r["solver"], r["task"], r["sid"])]} for r in rawp]
+        b1 = {v: ba([p for p in p1 if p["verifier"] == v])[2] for v in ("qwen", "haiku")}
+        ch = sum(1 for k, v in tv1.items() if v != truth[k])
+        L.append(f"* **Чувствительность к версии правды:** со СТАРЫМИ проверками 003/004/006 (из плана) сменились бы {ch} вердиктов; "
+                 f"BA qwen {b1['qwen']:.2f}, Haiku {b1['haiku']:.2f} (разница {b1['haiku'] - b1['qwen']:+.2f}). Вывод не зависит от исправления.")
     text = "\n".join(L) + "\n"
     (R / "cross_verifier.md").write_text(text)
     return text

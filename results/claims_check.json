@@ -176,6 +176,22 @@
   },
   {
    "ok": true,
+   "claim": "1c task-averaged BA 0.56/0.86"
+  },
+  {
+   "ok": true,
+   "claim": "1c two-level bootstrap +0.14..+0.37"
+  },
+  {
+   "ok": true,
+   "claim": "1c old-truth sensitivity 0.67/0.87"
+  },
+  {
+   "ok": true,
+   "claim": "1c informative bad 23"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]

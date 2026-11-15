@@ -205,6 +205,18 @@ if _mv.exists():
     vv = [r for r in mv if r["kind"] == "validity" and r["verifier"] == "claude-haiku-5-5-run2"]
     ok2 = sum(r["ref_rc"] == 0 and r["noop_rc"] != 0 for r in vv)
     claim(f"with {ok2}/{len(vv)} valid tests (first run 43/50)", label=f"Haiku run2 validity {ok2}/{len(vv)}")
+# Рецензия Opus 5.5: дополнительные расчёты из results/cross_verifier.md должны совпадать с README
+import re as _re  # noqa: E402
+_cv = (R / "cross_verifier.md").read_text()
+_m = _re.search(r"qwen (\d\.\d\d), Haiku (\d\.\d\d)\. Сводная", _cv)
+claim(f"balanced accuracy is {_m.group(1)} (qwen) vs {_m.group(2)} (Haiku)", label=f"1c task-averaged BA {_m.group(1)}/{_m.group(2)}")
+_m = _re.search(r"интервал \[([+-]\d\.\d\d); ([+-]\d\.\d\d)\]", _cv)
+claim(f"{_m.group(1)} to {_m.group(2)}, still above zero", label=f"1c two-level bootstrap {_m.group(1)}..{_m.group(2)}")
+_m = _re.search(r"сменились бы (\d+) вердиктов; BA qwen (\d\.\d\d), Haiku (\d\.\d\d)", _cv)
+claim(f"{_m.group(1)} verdicts change and balanced accuracy is {_m.group(2)} vs {_m.group(3)}", label=f"1c old-truth sensitivity {_m.group(2)}/{_m.group(3)}")
+_m = _re.search(r"из (\d+) неверных решений (\d+) отклонили все шесть тестов; .*? на (\d+) решениях", _cv)
+claim(f"Of {_m.group(1)} incorrect solutions, {_m.group(2)} were rejected by every test, so the specificity gap rests on {_m.group(3)} informative",
+      label=f"1c informative bad {_m.group(3)}")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 
