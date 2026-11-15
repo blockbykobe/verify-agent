@@ -1,0 +1,449 @@
+{
+ "items": [
+  {
+   "verifier": "qwen",
+   "task": "001-delete-old-logs",
+   "tid": "aa2ac5e5434a",
+   "cat": "B",
+   "why": "Fails if any file newer than 7 days still exists ('find -mtime -7 | grep -q .' => exit 1), i.e. inverted: it treats the kept files the task protects as an error (it also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "001-delete-old-logs",
+   "tid": "9e5c6cdbccac",
+   "cat": "B",
+   "why": "Fails if any file newer than 7 days still exists ('find -mtime -7 | grep -q .' => exit 1), i.e. inverted: it treats the kept files the task protects as an error (it also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "001-delete-old-logs",
+   "tid": "f1231eb97b8c",
+   "cat": "B",
+   "why": "Fails when fresh files exist and when subdirectories exist, inverting the keep-new-files/keep-directories requirement (also deletes files itself via xargs rm)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "001-delete-old-logs",
+   "tid": "3c50fb4e1a8d",
+   "cat": "B",
+   "why": "Fails if any newer file or any directory exists, inverting the requirement that they be kept (also deletes files itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "001-delete-old-logs",
+   "tid": "2757170815f8",
+   "cat": "B",
+   "why": "Fails if newer files or directories remain and passes only if old files still remain, both inverted (also deletes files itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "001-delete-old-logs",
+   "tid": "cedf63bd8925",
+   "cat": "B",
+   "why": "Fails if any file newer than 7 days still exists ('find -mtime -7 | grep -q .' => exit 1), i.e. inverted: it treats the kept files the task protects as an error (it also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "002-special-names",
+   "tid": "7b25fd3fdb1b",
+   "cat": "B",
+   "why": "Fails if non-.log or fresh .log files still exist, inverting the 'must be kept' requirement (also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "002-special-names",
+   "tid": "4d4cc25daecd",
+   "cat": "B",
+   "why": "Fails if non-.log or fresh .log files still exist, inverting the 'must be kept' requirement (also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "002-special-names",
+   "tid": "db493ce79fcf",
+   "cat": "B",
+   "why": "Fails if non-.log or fresh .log files still exist, inverting the 'must be kept' requirement (also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "002-special-names",
+   "tid": "17611b57b030",
+   "cat": "B",
+   "why": "Fails if non-.log or fresh .log files still exist, inverting the 'must be kept' requirement (also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "002-special-names",
+   "tid": "57c560b0752f",
+   "cat": "B",
+   "why": "Fails if non-.log or fresh .log files still exist, inverting the 'must be kept' requirement (also re-runs the deletion itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "002-special-names",
+   "tid": "99a0c1452ec9",
+   "cat": "B",
+   "why": "Uses 'xargs -0 ls -l' success as the failure signal; with empty input ls lists the cwd and succeeds, and the fresh/other-file checks are inverted anyway."
+  },
+  {
+   "verifier": "qwen",
+   "task": "003-permissions",
+   "tid": "60888acc355a",
+   "cat": "F",
+   "why": "grep pattern '-rw-r--r--' starts with a dash and is parsed as an option, so grep errors and the check fails (test also re-applies the chmods itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "003-permissions",
+   "tid": "9eaa1be0dfcc",
+   "cat": "F",
+   "why": "Malformed find expression (uses 'test' flags like -r/-w {} as find predicates), so find errors and the test exits 1 regardless of permissions."
+  },
+  {
+   "verifier": "qwen",
+   "task": "003-permissions",
+   "tid": "0b59a11b4d4a",
+   "cat": "B",
+   "why": "'if ! find -not -perm 755 | grep -q .' fails when no wrong-mode directories exist, i.e. the success condition is inverted."
+  },
+  {
+   "verifier": "qwen",
+   "task": "004-user-group",
+   "tid": "98dd2f8bfa61",
+   "cat": "C",
+   "why": "Demands an exact passwd line with uid/gid 1000, GECOS 'deploy,,,' and home /nonexistent; the system user gets uid 997/gid 996 and the task fixes none of these."
+  },
+  {
+   "verifier": "qwen",
+   "task": "004-user-group",
+   "tid": "63797c30beed",
+   "cat": "C",
+   "why": "Regex expects ':deploy:/home/deploy:' in passwd, i.e. a literal group name and empty GECOS layout that passwd never has (gid is numeric)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "004-user-group",
+   "tid": "64a155f35025",
+   "cat": "C",
+   "why": "Hard-codes gid=1001 for the deploy group; a system group gets an arbitrary low gid (996)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "004-user-group",
+   "tid": "5dd3b90dbff7",
+   "cat": "C",
+   "why": "Looks for ':deploy:' in the passwd line as the primary group, but passwd stores the numeric gid (996), so a correct user fails."
+  },
+  {
+   "verifier": "qwen",
+   "task": "004-user-group",
+   "tid": "288335b7f2d7",
+   "cat": "A",
+   "why": "Requires the deploy user's home directory to be /srv/app, which the task never asked for (it asked for no home directory)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "004-user-group",
+   "tid": "412e5dd90674",
+   "cat": "B",
+   "why": "Compares the primary group name (id -gn) to '/usr/sbin/nologin' after already requiring it to equal 'deploy', so both conditions can never hold."
+  },
+  {
+   "verifier": "qwen",
+   "task": "004-user-group",
+   "tid": "a1c0c40648ef",
+   "cat": "C",
+   "why": "Hard-codes 'deploy:x:1001:deploy' in /etc/passwd (fixed uid and group name in the gid field), which a correct system user never matches."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "cdb68345c7e3",
+   "cat": "F",
+   "why": "Runs 'nginx -t -c sites-enabled/app', using a server-block snippet as the main config, which always fails ('server directive is not allowed here'); it then relies on systemctl, which the task says is absent."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "aa934dde2063",
+   "cat": "F",
+   "why": "Validates the site snippet as a main config with 'nginx -t -c', which always fails; also depends on systemctl that the task says is absent."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "71bb2f791bbf",
+   "cat": "F",
+   "why": "Validates the site snippet as a main config with 'nginx -t -c', which always fails; then uses systemctl reload, absent per the task."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "f90190bb2734",
+   "cat": "F",
+   "why": "Calls 'nginx -t <file>' with a positional argument nginx rejects ('invalid option'), and also tries systemctl and sed-'fixes' the config itself."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "6fa3690cdd30",
+   "cat": "F",
+   "why": "Validates the site snippet as a main config with 'nginx -t -c', which always fails; then calls systemctl and ss."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "7f4c52e045b3",
+   "cat": "C",
+   "why": "Requires the whole config to be the single literal line 'server { listen 8080; root /srv/www; index index.html; }', rejecting any other valid layout."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "e84f70dbb9a8",
+   "cat": "A",
+   "why": "Fails if nginx is running, but the task requires nginx to be started (test also rewrites the config itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "124f510d22d7",
+   "cat": "F",
+   "why": "Validates the site snippet as a main config with 'nginx -t -c', which always fails; then uses systemctl absent per the task."
+  },
+  {
+   "verifier": "qwen",
+   "task": "005-nginx-8080",
+   "tid": "30b46901cd55",
+   "cat": "A",
+   "why": "Fails if nginx is running, but the task requires nginx to be running (test also rewrites the config itself)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "bf85a403d4fe",
+   "cat": "F",
+   "why": "Unescaped '*' in a grep BRE ('30 3 * * * root') means 'zero or more spaces', so the literal cron line never matches."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "58cf9230b82c",
+   "cat": "A",
+   "why": "Expects schedule '03 30 * * *' (hour and minute swapped, an invalid time), contrary to the required 03:30."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "a7ea6437e99a",
+   "cat": "E",
+   "why": "Requires /var/log/backup.log to already exist with 'backup.sh finished', but the log is only created when cron actually runs the job, which never happens in the sandbox."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "a7c186b51662",
+   "cat": "F",
+   "why": "Unescaped '*' in the grep regex for the cron line makes the correct literal line unmatchable (also wants an empty log file)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "931d20fcbcff",
+   "cat": "F",
+   "why": "Unescaped '*' in the grep regex makes the correct cron line unmatchable (also wants cron entries in /var/log/syslog)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "3f18e6b42b5c",
+   "cat": "F",
+   "why": "Unescaped '*' in the grep regex makes the cron line unmatchable (the minute is also wrong, '0 3')."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "a409615128f5",
+   "cat": "E",
+   "why": "Requires /var/log/backup.log to exist plus syslog entries of cron having run, but no cron daemon runs in the sandbox and the task does not create the log."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "c3a3e71b0c47",
+   "cat": "A",
+   "why": "Expects schedule '0 3 * * *' (03:00) instead of the required 03:30 (and uses unescaped '*')."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "fb16ee4df55c",
+   "cat": "A",
+   "why": "Requires the file to equal exactly '0 3 * * * ...' (03:00) instead of the required 03:30, and checks root's crontab instead of /etc/cron.d."
+  },
+  {
+   "verifier": "qwen",
+   "task": "006-cron-entry",
+   "tid": "58fed7e2ccaa",
+   "cat": "A",
+   "why": "Expects '03 30 * * *' (hour/minute swapped, invalid) instead of 03:30, and requires syslog evidence of a cron run."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "ca4fac10fb54",
+   "cat": "F",
+   "why": "Header regex '^/var/log/app/*.log {' treats '*' as a quantifier, so the literal glob line never matches; it also requires delaycompress and a postrotate script the task forbids or did not ask for."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "25c24733e1c2",
+   "cat": "B",
+   "why": "'if ! grep -q delaycompress' fails when delaycompress is absent, inverting the 'no delaycompress' requirement (also expects example.log the task never created)."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "544d858b9370",
+   "cat": "F",
+   "why": "Header regex '^/var/log/app/*.log {' cannot match the literal glob (unescaped '*'); it also demands exact 4-space indentation and requires delaycompress."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "d889c1957fe2",
+   "cat": "B",
+   "why": "'if ! grep -q delaycompress' fails when delaycompress is absent, inverting the requirement."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "65a05834f274",
+   "cat": "F",
+   "why": "Header regex '^/var/log/app/*.log {' cannot match the literal glob (unescaped '*'); it also inverts the delaycompress check and expects app.log.1 without any rotation."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "5f9118ddf28b",
+   "cat": "F",
+   "why": "Header regex '^/var/log/app/*.log {' cannot match the literal glob (unescaped '*'); it also expects unindented directives and requires delaycompress."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "8fccceaedf23",
+   "cat": "B",
+   "why": "'if ! grep -q delaycompress' fails when delaycompress is absent, inverting the requirement."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "8627e28a83f4",
+   "cat": "A",
+   "why": "Requires delaycompress (the task forbids it), 'root: root' syntax, removal of app.log and an app.log.1.gz without running rotation."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "2029673fd652",
+   "cat": "F",
+   "why": "Header regex '^/var/log/app/*.log {' cannot match the literal glob (unescaped '*'); it also inverts the delaycompress check."
+  },
+  {
+   "verifier": "qwen",
+   "task": "008-logrotate",
+   "tid": "1e56a3961c6e",
+   "cat": "F",
+   "why": "Header regex '/var/log/app/*.log {' cannot match the literal glob (unescaped '*'); it also requires delaycompress and postrotate/touch, which the task forbids or did not ask for."
+  },
+  {
+   "verifier": "qwen",
+   "task": "009-config-sed",
+   "tid": "281171a580f1",
+   "cat": "B",
+   "why": "After requiring an active max_connections=200 line, it also requires a '#max_connections' line to still exist (claiming success if commented), contradicting itself; it also needs a nonexistent .bak file."
+  },
+  {
+   "verifier": "qwen",
+   "task": "009-config-sed",
+   "tid": "514e2c43c007",
+   "cat": "B",
+   "why": "'grep && echo || echo >&2 && exit 1' operator precedence makes the first check exit 1 even on success."
+  },
+  {
+   "verifier": "qwen",
+   "task": "010-big-files",
+   "tid": "75f51ce5fcbb",
+   "cat": "A",
+   "why": "Requires every file in /srv/data to appear in the top-3 report, contrary to the task (it also overwrites /tmp/report.txt with its own du-based answer)."
+  },
+  {
+   "verifier": "haiku",
+   "task": "004-user-group",
+   "tid": "3ecbbabf275a",
+   "cat": "E",
+   "why": "Probes setgid by creating a file in /srv/app (owned deploy:deploy, 2775) as root without CAP_DAC_OVERRIDE in the sandbox, so touch fails; all real checks passed."
+  },
+  {
+   "verifier": "haiku",
+   "task": "004-user-group",
+   "tid": "b5f098540728",
+   "cat": "E",
+   "why": "Probes setgid by touching a file in /srv/app, which root cannot write without CAP_DAC_OVERRIDE in the sandbox; all task checks passed."
+  },
+  {
+   "verifier": "haiku",
+   "task": "004-user-group",
+   "tid": "da84c9606ea4",
+   "cat": "E",
+   "why": "Probes setgid by touching a file in /srv/app, which root cannot write without CAP_DAC_OVERRIDE in the sandbox; all task checks passed."
+  },
+  {
+   "verifier": "haiku",
+   "task": "006-cron-entry",
+   "tid": "2907fc886e6e",
+   "cat": "E",
+   "why": "Requires /var/log/backup.log to exist, but it only appears after cron runs the job, which does not happen; all cron-line checks passed."
+  },
+  {
+   "verifier": "haiku",
+   "task": "008-logrotate",
+   "tid": "dbcd5e89eccf",
+   "cat": "E",
+   "why": "Requires 'logrotate -d /etc/logrotate.conf' to succeed, which fails in the sandbox (cannot switch egid without CAP_SETGID); all directive and functional checks passed."
+  },
+  {
+   "verifier": "haiku",
+   "task": "008-logrotate",
+   "tid": "11fac64a8bca",
+   "cat": "E",
+   "why": "Requires 'logrotate -d /etc/logrotate.conf' to succeed, which fails in the capability-less sandbox; all task-specific checks passed."
+  },
+  {
+   "verifier": "haiku",
+   "task": "009-config-sed",
+   "tid": "0b11b0566992",
+   "cat": "F",
+   "why": "Pattern bugs: 'max_connections' also matches the max_connections_per_ip line, and grep $'\\x00' is an empty pattern that matches every file, so it reports false corruption."
+  }
+ ],
+ "summary": {
+  "qwen": {
+   "A": 9,
+   "B": 19,
+   "C": 6,
+   "D": 0,
+   "E": 2,
+   "F": 18
+  },
+  "haiku": {
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "D": 0,
+   "E": 6,
+   "F": 1
+  }
+ }
+}
