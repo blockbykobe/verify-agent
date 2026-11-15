@@ -1,0 +1,162 @@
+{
+ "awk": {
+  "chars": 64165,
+  "sha256": "ab7472636280adcc94671b61f8a4e6bf81665e9d7b71f1a8c54e9bb437882eb6"
+ },
+ "chage": {
+  "chars": 5377,
+  "sha256": "e309916b36911360e442f07e63d7f600eb25235f2163980c9cd67c262583fb5c"
+ },
+ "chmod": {
+  "chars": 3242,
+  "sha256": "099493adccbdc4f96b282805f354ca063d3f04e7be403ce19a662dbe08c27c90"
+ },
+ "chown": {
+  "chars": 3197,
+  "sha256": "ae6d9611b03ee2b4a356cebe4cd87e4994cc389d60755535cdc70a44af73eaa0"
+ },
+ "cp": {
+  "chars": 6858,
+  "sha256": "dce90ece015d79805fae079b6296532020d7460e50e41f005e0745494c515c57"
+ },
+ "crontab": {
+  "chars": 7645,
+  "sha256": "82b8d09511410abc7c4dc368e7844321414ca356fb54181236022a0c6feb2ff2"
+ },
+ "curl": {
+  "chars": 316160,
+  "sha256": "0862c42596d0f2ab65a8ebd2f74718e041ad68238cab4ffb05bb93dba09adc8b"
+ },
+ "cut": {
+  "chars": 6628,
+  "sha256": "c56d78d7d68ceed7f61b7ef22f9e5936b07a6de47b259852092b641c996e8a51"
+ },
+ "df": {
+  "chars": 4283,
+  "sha256": "fe67799f7e755e6b0d73e7cc07cd026d322713a5ee4f4cfe422633fa3d7ad775"
+ },
+ "du": {
+  "chars": 6097,
+  "sha256": "25690dbfd08eda059a52ee6367e5356761857d1a9760903ef16ea88d0a90b1c7"
+ },
+ "find": {
+  "chars": 88577,
+  "sha256": "619d3c16b50b76dffadf9129e081a9035aa6a9e8b7087d07e68ce725a49a6991"
+ },
+ "grep": {
+  "chars": 32729,
+  "sha256": "7cc28b35f69eeee940851cb83f23d5a6a141824a50229e818b1d265118f33101"
+ },
+ "groupadd": {
+  "chars": 6284,
+  "sha256": "e4336270fb96a9244c976594071bd34b8ae759aed8d630e490a496709b9819a0"
+ },
+ "gzip": {
+  "chars": 18263,
+  "sha256": "033a9755fb835647c6df94d38f846eeffa905533c58d2dfa47f5821b76af9a8d"
+ },
+ "head": {
+  "chars": 1992,
+  "sha256": "80db97dfc2299f8ecca047f8f0bebe84734309e631b43f7a863417298f20012b"
+ },
+ "ip": {
+  "chars": 9477,
+  "sha256": "5584185467c56a33573a7f83dc851daf1204dd248f8e0594e3c91416fbe4241c"
+ },
+ "journalctl": {
+  "chars": 48867,
+  "sha256": "b6ca004ba76f960e1bcd544cf36120d605bc6e3daef014afba7da3963ece2c62"
+ },
+ "kill": {
+  "chars": 3166,
+  "sha256": "52127f493f2f04c293656427a48709885244f104913e7a0010b373d6153f2198"
+ },
+ "ln": {
+  "chars": 3597,
+  "sha256": "e454ac186dbbe0c5b6b22d624ce7d86a0b770c9ab282429d47b9c2ffa748087b"
+ },
+ "logrotate": {
+  "chars": 31152,
+  "sha256": "d2f79e6838c8594936b9bcf4c01d5a24a0d38e47b9bc455f597c8f62215bb00a"
+ },
+ "mkdir": {
+  "chars": 1836,
+  "sha256": "b73a8f193cbe4dcac800bff3df13968383dd493cfa100dc7ea4d9b891238990c"
+ },
+ "mount": {
+  "chars": 112624,
+  "sha256": "19a57b9c88b3717ea459d5a684b772e159f955ca51966d3ec8ed1ea37e95146a"
+ },
+ "mv": {
+  "chars": 3921,
+  "sha256": "b69d69c29a36616d2840e4ae8b417422b36a5dc6aef554c04e2b0a32e2c9ad20"
+ },
+ "passwd": {
+  "chars": 8279,
+  "sha256": "ced65605d6070671cd8eda9a298654bc4bebbcdb9135a30bbd10e000c72006d4"
+ },
+ "ps": {
+  "chars": 55548,
+  "sha256": "3288b4c2193b3e15d7293f2c02c61420346558751faa10f770f61556f4ff5bf1"
+ },
+ "rm": {
+  "chars": 3791,
+  "sha256": "34f22bcd113eff0eacf3bc9351952ac49b1bb3fed95ee7a44012d0f421438dfb"
+ },
+ "rsync": {
+  "chars": 262918,
+  "sha256": "3f18ee718f10b7fe7f8f64f127990572aab6ecd8325194c0f96cb698c4edafbe"
+ },
+ "sed": {
+  "chars": 11367,
+  "sha256": "33707efc46311ad88b87cde6269540c02f3cc35021dd6700f3d6f805d4f1e98b"
+ },
+ "sort": {
+  "chars": 6166,
+  "sha256": "918ed1727bb7931f5e152c48e63c5a77a1d1db5887b2c89b199f56ec0f313afa"
+ },
+ "ss": {
+  "chars": 18763,
+  "sha256": "b7db9e0604aee0f286e775c421890a9ac749dd4593201e4f65fadf994b98e850"
+ },
+ "ssh-keygen": {
+  "chars": 45138,
+  "sha256": "ff9eb9b677bad2fbdfea804e2ba73801a8e4993da353c0eb75362e1bf1bf4f4e"
+ },
+ "stat": {
+  "chars": 4287,
+  "sha256": "4d9ce1694bbf4c338600e1ca154ba8cc110a0f814b87f34e640df50059844eca"
+ },
+ "systemctl": {
+  "chars": 123321,
+  "sha256": "249200f3dd407c557c5f6f74e874497a9483c76dc9607d59225ec15d7d1e8d5b"
+ },
+ "tail": {
+  "chars": 3652,
+  "sha256": "ecce2842dd89b9dab85e643480d6f9c7287ef80eb48de1702af506b23eb12c8a"
+ },
+ "tar": {
+  "chars": 44790,
+  "sha256": "ec5eb32bec3c8d40753a88b0e59e644a4ad72dc1ec7f6687b6b88d8bda9efffb"
+ },
+ "touch": {
+  "chars": 2851,
+  "sha256": "263d1c54d91db8765eb27295ebe416e51bc939967dafd2c061534de96097cfb1"
+ },
+ "uniq": {
+  "chars": 3116,
+  "sha256": "018eb648a4eb8f57b5aa882767c6f9af75bc62df514dd98edc708b07db832315"
+ },
+ "useradd": {
+  "chars": 21462,
+  "sha256": "0ffdd6b5c1d3e6264ef5110e2b8102343e27e97e1dff23d342df732396c57f49"
+ },
+ "usermod": {
+  "chars": 13838,
+  "sha256": "fe72f3a7ff4196500d110fbb36bc462fd684e4da2b2520aef21aa693d99cb28a"
+ },
+ "xargs": {
+  "chars": 16692,
+  "sha256": "6a55e50fef2fe297b16bfb40d373eb6a7862d0a5fca74eaf3195d1bd2f4602f2"
+ }
+}

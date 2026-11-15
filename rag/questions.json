@@ -1,0 +1,579 @@
+[
+ {
+  "id": "a01",
+  "kind": "answerable",
+  "source": "find",
+  "question": "Which find test matches files whose data was last modified n days ago?",
+  "gold": [
+   "-mtime"
+  ]
+ },
+ {
+  "id": "a02",
+  "kind": "answerable",
+  "source": "find",
+  "question": "Which find action deletes the files it finds?",
+  "gold": [
+   "-delete"
+  ]
+ },
+ {
+  "id": "a03",
+  "kind": "answerable",
+  "source": "find",
+  "question": "Which find test matches a file name pattern case-insensitively?",
+  "gold": [
+   "-iname"
+  ]
+ },
+ {
+  "id": "a04",
+  "kind": "answerable",
+  "source": "find",
+  "question": "Which find option limits how many directory levels below the starting points are searched?",
+  "gold": [
+   "-maxdepth"
+  ]
+ },
+ {
+  "id": "a05",
+  "kind": "answerable",
+  "source": "chmod",
+  "question": "Which chmod option changes files and directories recursively?",
+  "gold": [
+   "-R",
+   "--recursive"
+  ]
+ },
+ {
+  "id": "a06",
+  "kind": "answerable",
+  "source": "chown",
+  "question": "Which chown option changes the owner of a symbolic link itself instead of the file it points to?",
+  "gold": [
+   "-h",
+   "--no-dereference"
+  ]
+ },
+ {
+  "id": "a07",
+  "kind": "answerable",
+  "source": "useradd",
+  "question": "Which useradd option creates the user's home directory if it does not exist?",
+  "gold": [
+   "-m",
+   "--create-home"
+  ]
+ },
+ {
+  "id": "a08",
+  "kind": "answerable",
+  "source": "useradd",
+  "question": "Which useradd option sets the user's login shell?",
+  "gold": [
+   "-s",
+   "--shell"
+  ]
+ },
+ {
+  "id": "a09",
+  "kind": "answerable",
+  "source": "usermod",
+  "question": "Which usermod option, used together with -G, adds the user to supplementary groups without removing them from other groups?",
+  "gold": [
+   "-a",
+   "--append",
+   "-aG"
+  ]
+ },
+ {
+  "id": "a10",
+  "kind": "answerable",
+  "source": "tar",
+  "question": "Which tar option filters the archive through gzip?",
+  "gold": [
+   "-z",
+   "--gzip",
+   "--gunzip"
+  ]
+ },
+ {
+  "id": "a11",
+  "kind": "answerable",
+  "source": "tar",
+  "question": "Which tar option changes to a directory before extracting or archiving?",
+  "gold": [
+   "-C",
+   "--directory"
+  ]
+ },
+ {
+  "id": "a12",
+  "kind": "answerable",
+  "source": "grep",
+  "question": "Which grep option searches directories recursively?",
+  "gold": [
+   "-r",
+   "--recursive",
+   "-R",
+   "--dereference-recursive"
+  ]
+ },
+ {
+  "id": "a13",
+  "kind": "answerable",
+  "source": "grep",
+  "question": "Which grep option prints only the names of files that contain matches?",
+  "gold": [
+   "-l",
+   "--files-with-matches"
+  ]
+ },
+ {
+  "id": "a14",
+  "kind": "answerable",
+  "source": "grep",
+  "question": "Which grep option selects non-matching lines?",
+  "gold": [
+   "-v",
+   "--invert-match"
+  ]
+ },
+ {
+  "id": "a15",
+  "kind": "answerable",
+  "source": "sed",
+  "question": "Which sed option edits files in place?",
+  "gold": [
+   "-i",
+   "--in-place"
+  ]
+ },
+ {
+  "id": "a16",
+  "kind": "answerable",
+  "source": "ln",
+  "question": "Which ln option makes symbolic links instead of hard links?",
+  "gold": [
+   "-s",
+   "--symbolic"
+  ]
+ },
+ {
+  "id": "a17",
+  "kind": "answerable",
+  "source": "du",
+  "question": "Which du option displays only a total for each argument?",
+  "gold": [
+   "-s",
+   "--summarize"
+  ]
+ },
+ {
+  "id": "a18",
+  "kind": "answerable",
+  "source": "df",
+  "question": "Which df option prints sizes in powers of 1024 in human readable format (e.g. 1K 234M 2G)?",
+  "gold": [
+   "-h",
+   "--human-readable"
+  ]
+ },
+ {
+  "id": "a19",
+  "kind": "answerable",
+  "source": "rsync",
+  "question": "Which rsync option deletes extraneous files from the destination directory?",
+  "gold": [
+   "--delete"
+  ]
+ },
+ {
+  "id": "a20",
+  "kind": "answerable",
+  "source": "ss",
+  "question": "Which ss option displays only listening sockets?",
+  "gold": [
+   "-l",
+   "--listening"
+  ]
+ },
+ {
+  "id": "a21",
+  "kind": "answerable",
+  "source": "tail",
+  "question": "Which tail option outputs appended data as the file grows?",
+  "gold": [
+   "-f",
+   "--follow"
+  ]
+ },
+ {
+  "id": "a22",
+  "kind": "answerable",
+  "source": "sort",
+  "question": "Which sort option compares according to string numerical value?",
+  "gold": [
+   "-n",
+   "--numeric-sort"
+  ]
+ },
+ {
+  "id": "a23",
+  "kind": "answerable",
+  "source": "uniq",
+  "question": "Which uniq option prefixes lines by the number of occurrences?",
+  "gold": [
+   "-c",
+   "--count"
+  ]
+ },
+ {
+  "id": "a24",
+  "kind": "answerable",
+  "source": "cut",
+  "question": "Which cut option sets the field delimiter?",
+  "gold": [
+   "-d",
+   "--delimiter"
+  ]
+ },
+ {
+  "id": "a25",
+  "kind": "answerable",
+  "source": "xargs",
+  "question": "Which xargs option makes input items terminated by a null character instead of whitespace?",
+  "gold": [
+   "-0",
+   "--null"
+  ]
+ },
+ {
+  "id": "a26",
+  "kind": "answerable",
+  "source": "gzip",
+  "question": "Which gzip option keeps (does not delete) the input files?",
+  "gold": [
+   "-k",
+   "--keep"
+  ]
+ },
+ {
+  "id": "a27",
+  "kind": "answerable",
+  "source": "journalctl",
+  "question": "Which journalctl option shows entries on or newer than a specified date?",
+  "gold": [
+   "-S",
+   "--since"
+  ]
+ },
+ {
+  "id": "a28",
+  "kind": "answerable",
+  "source": "systemctl",
+  "question": "Which systemctl command enables a unit so it starts at boot?",
+  "gold": [
+   "enable"
+  ]
+ },
+ {
+  "id": "a29",
+  "kind": "answerable",
+  "source": "passwd",
+  "question": "Which passwd option locks the password of the named account?",
+  "gold": [
+   "-l",
+   "--lock"
+  ]
+ },
+ {
+  "id": "a30",
+  "kind": "answerable",
+  "source": "chage",
+  "question": "Which chage option sets the maximum number of days during which a password is valid?",
+  "gold": [
+   "-M",
+   "--maxdays"
+  ]
+ },
+ {
+  "id": "a31",
+  "kind": "answerable",
+  "source": "ssh-keygen",
+  "question": "Which ssh-keygen option specifies the type of key to create?",
+  "gold": [
+   "-t"
+  ]
+ },
+ {
+  "id": "a32",
+  "kind": "answerable",
+  "source": "mkdir",
+  "question": "Which mkdir option creates parent directories as needed without error if they exist?",
+  "gold": [
+   "-p",
+   "--parents"
+  ]
+ },
+ {
+  "id": "a33",
+  "kind": "answerable",
+  "source": "touch",
+  "question": "Which touch option changes only the access time?",
+  "gold": [
+   "-a"
+  ]
+ },
+ {
+  "id": "a34",
+  "kind": "answerable",
+  "source": "stat",
+  "question": "Which stat option uses a specified FORMAT instead of the default?",
+  "gold": [
+   "-c",
+   "--format",
+   "--printf"
+  ]
+ },
+ {
+  "id": "a35",
+  "kind": "answerable",
+  "source": "crontab",
+  "question": "Which crontab option displays the current crontab?",
+  "gold": [
+   "-l"
+  ]
+ },
+ {
+  "id": "a36",
+  "kind": "answerable",
+  "source": "head",
+  "question": "Which head option prints the first NUM lines instead of the first 10?",
+  "gold": [
+   "-n",
+   "--lines"
+  ]
+ },
+ {
+  "id": "t01",
+  "kind": "trap",
+  "source": "chmod",
+  "question": "Which chmod option makes a backup copy of each file before changing its permissions?",
+  "gold": []
+ },
+ {
+  "id": "t02",
+  "kind": "trap",
+  "source": "grep",
+  "question": "Which grep option searches inside zip archives directly?",
+  "gold": []
+ },
+ {
+  "id": "t03",
+  "kind": "trap",
+  "source": "tar",
+  "question": "Which tar option scans the archive for viruses while extracting?",
+  "gold": []
+ },
+ {
+  "id": "t04",
+  "kind": "trap",
+  "source": "find",
+  "question": "Which find action e-mails the list of found files to an address?",
+  "gold": []
+ },
+ {
+  "id": "t05",
+  "kind": "trap",
+  "source": "useradd",
+  "question": "Which useradd option sets a disk quota for the new user?",
+  "gold": []
+ },
+ {
+  "id": "t06",
+  "kind": "trap",
+  "source": "sed",
+  "question": "Which sed option undoes the last in-place edit of a file?",
+  "gold": []
+ },
+ {
+  "id": "t07",
+  "kind": "trap",
+  "source": "gzip",
+  "question": "Which gzip option switches the compression algorithm to zstd?",
+  "gold": []
+ },
+ {
+  "id": "t08",
+  "kind": "trap",
+  "source": "crontab",
+  "question": "Which crontab option schedules a job to run exactly once after N minutes?",
+  "gold": []
+ },
+ {
+  "id": "t09",
+  "kind": "trap",
+  "source": "rsync",
+  "question": "Which rsync option encrypts the files with a password on the destination?",
+  "gold": []
+ },
+ {
+  "id": "t10",
+  "kind": "trap",
+  "source": "du",
+  "question": "Which du option skips files older than N days?",
+  "gold": []
+ },
+ {
+  "id": "t11",
+  "kind": "trap",
+  "source": "mkdir",
+  "question": "Which mkdir option sets the owner (user) of the new directory?",
+  "gold": []
+ },
+ {
+  "id": "t12",
+  "kind": "trap",
+  "source": "tail",
+  "question": "Which tail option highlights the word ERROR in color?",
+  "gold": []
+ },
+ {
+  "id": "t13",
+  "kind": "trap",
+  "source": "journalctl",
+  "question": "Which journalctl option sends the log to a Telegram chat?",
+  "gold": []
+ },
+ {
+  "id": "t14",
+  "kind": "trap",
+  "source": "systemctl",
+  "question": "Which systemctl command rolls a service back to the previous package version?",
+  "gold": []
+ },
+ {
+  "id": "t15",
+  "kind": "trap",
+  "source": "chown",
+  "question": "Which chown option changes the owner only of files larger than N megabytes?",
+  "gold": []
+ },
+ {
+  "id": "t16",
+  "kind": "trap",
+  "source": "sort",
+  "question": "Which sort option removes lines longer than N characters?",
+  "gold": []
+ },
+ {
+  "id": "p01",
+  "kind": "answerable",
+  "source": "find",
+  "question": "With find, how do I match files modified more than 30 days ago? Which test?",
+  "gold": [
+   "-mtime"
+  ],
+  "paraphrase_of": "a01"
+ },
+ {
+  "id": "p02",
+  "kind": "answerable",
+  "source": "chmod",
+  "question": "How do I apply chmod to a directory and everything inside it? Which option?",
+  "gold": [
+   "-R",
+   "--recursive"
+  ],
+  "paraphrase_of": "a05"
+ },
+ {
+  "id": "p03",
+  "kind": "answerable",
+  "source": "useradd",
+  "question": "When adding a user with useradd, which flag makes sure the home directory gets created?",
+  "gold": [
+   "-m",
+   "--create-home"
+  ],
+  "paraphrase_of": "a07"
+ },
+ {
+  "id": "p04",
+  "kind": "answerable",
+  "source": "grep",
+  "question": "How do I make grep look through all files under a directory tree? Which option?",
+  "gold": [
+   "-r",
+   "--recursive",
+   "-R",
+   "--dereference-recursive"
+  ],
+  "paraphrase_of": "a12"
+ },
+ {
+  "id": "p05",
+  "kind": "answerable",
+  "source": "sed",
+  "question": "How can sed modify a file directly instead of printing to stdout? Which option?",
+  "gold": [
+   "-i",
+   "--in-place"
+  ],
+  "paraphrase_of": "a15"
+ },
+ {
+  "id": "p06",
+  "kind": "answerable",
+  "source": "rsync",
+  "question": "When mirroring with rsync, which option removes files on the receiver that no longer exist on the sender?",
+  "gold": [
+   "--delete"
+  ],
+  "paraphrase_of": "a19"
+ },
+ {
+  "id": "p07",
+  "kind": "answerable",
+  "source": "sort",
+  "question": "Which sort flag sorts 2, 10, 100 as numbers rather than as text?",
+  "gold": [
+   "-n",
+   "--numeric-sort"
+  ],
+  "paraphrase_of": "a22"
+ },
+ {
+  "id": "p08",
+  "kind": "answerable",
+  "source": "gzip",
+  "question": "How do I compress a file with gzip but keep the original file? Which option?",
+  "gold": [
+   "-k",
+   "--keep"
+  ],
+  "paraphrase_of": "a26"
+ },
+ {
+  "id": "p09",
+  "kind": "answerable",
+  "source": "systemctl",
+  "question": "Which systemctl verb makes a service start automatically on boot?",
+  "gold": [
+   "enable"
+  ],
+  "paraphrase_of": "a28"
+ },
+ {
+  "id": "p10",
+  "kind": "answerable",
+  "source": "mkdir",
+  "question": "Which mkdir flag lets me create a/b/c in one go?",
+  "gold": [
+   "-p",
+   "--parents"
+  ],
+  "paraphrase_of": "a32"
+ }
+]

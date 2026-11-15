@@ -1,7 +1,7 @@
 #!/bin/bash
 f=/etc/cron.d/backup
 [ -f $f ] || { echo "FAIL: нет $f"; exit 1; }
-mode=$(stat -c %a $f); [ "$mode" -le 644 ] && [ "$(stat -c %U $f)" = root ] || { echo "FAIL: права $mode / владелец (cron игнорирует group/other-writable)"; exit 1; }
+mode=$(stat -c %a $f); [ $(( 0$mode & 022 )) -eq 0 ] && [ "$(stat -c %U $f)" = root ] || { echo "FAIL: права $mode / владелец (cron игнорирует group/other-writable)"; exit 1; }
 line=$(grep -vE '^\s*(#|$|[A-Z_]+=)' $f)
 [ "$(echo "$line" | wc -l)" = 1 ] || { echo "FAIL: ожидается ровно одна задача, есть:"; echo "$line"; exit 1; }
 read -r m h dom mon dow user cmd <<<"$line"

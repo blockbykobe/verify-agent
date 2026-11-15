@@ -1,46 +1,46 @@
 {
  "pvalues": {
-  "A vs D confidently wrong": 0.0018071316144391053,
-  "A vs C solved": 0.06305158806354853,
-  "A vs D solved": 0.014229065110278402,
-  "A vs E solved": 0.3951601805044689,
+  "A vs D confidently wrong": 0.0001964027153840787,
+  "A vs C solved": 0.3138258792957575,
+  "A vs D solved": 0.10850774859690616,
+  "A vs E solved": 0.4192917886888186,
   "confession: false, no journal vs journal": 5.1824155482699914e-05,
   "confession: true, no journal vs journal": 2.0407914830693502e-10,
-  "A vs D confidently wrong, 10 runs": 1.6405448102405996e-06
+  "A vs D confidently wrong, 10 runs": 4.0804953995796e-08
  },
  "holm": {
   "confession: true, no journal vs journal": 1.428554038148545e-09,
-  "A vs D confidently wrong, 10 runs": 9.843268861443597e-06,
+  "A vs D confidently wrong, 10 runs": 2.44829723974776e-07,
   "confession: false, no journal vs journal": 0.00025912077741349957,
-  "A vs D confidently wrong": 0.007228526457756421,
-  "A vs D solved": 0.042687195330835204,
-  "A vs C solved": 0.12610317612709707,
-  "A vs E solved": 0.3951601805044689
+  "A vs D confidently wrong": 0.0007856108615363148,
+  "A vs D solved": 0.3255232457907185,
+  "A vs C solved": 0.627651758591515,
+  "A vs E solved": 0.627651758591515
  },
  "claims": [
   {
    "ok": true,
-   "claim": "solved A 36, C 26, D 23, E 31"
+   "claim": "solved A 31, C 25, D 22, E 26"
   },
   {
    "ok": true,
-   "claim": "confidently wrong A 12, C 8, D 1, E 0"
+   "claim": "confidently wrong A 17, C 9, D 2, E 5"
   },
   {
    "ok": true,
-   "claim": "accuracy row {'A': 72, 'C': 52, 'D': 46, 'E': 62}"
+   "claim": "accuracy row {'A': 62, 'C': 50, 'D': 44, 'E': 52}"
   },
   {
    "ok": true,
-   "claim": "C verified-but-wrong 8/34"
+   "claim": "C verified-but-wrong 9/34"
   },
   {
    "ok": true,
-   "claim": "D verified-but-wrong 1/24"
+   "claim": "D verified-but-wrong 2/24"
   },
   {
    "ok": true,
-   "claim": "E verified-but-wrong 0/31"
+   "claim": "E verified-but-wrong 5/31"
   },
   {
    "ok": true,
@@ -124,7 +124,7 @@
   },
   {
    "ok": true,
-   "claim": "qwen 10 runs conf-wrong A 27/100 D 3/100"
+   "claim": "qwen 10 runs conf-wrong A 36/100 D 5/100"
   },
   {
    "ok": true,
@@ -136,15 +136,27 @@
   },
   {
    "ok": true,
-   "claim": "D verifier accepted 41/71 good, 3/34 bad"
+   "claim": "D verifier accepted 39/58 good, 5/47 bad"
   },
   {
    "ok": true,
-   "claim": "C self-test accepted 26/28 good, 8/18 bad"
+   "claim": "C self-test accepted 25/26 good, 9/20 bad"
   },
   {
    "ok": true,
-   "claim": "task-level sign-flip p = 0.125"
+   "claim": "task-level sign-flip p = 0.062"
+  },
+  {
+   "ok": true,
+   "claim": "cross-verifier BA haiku 0.90 qwen 0.67"
+  },
+  {
+   "ok": true,
+   "claim": "test validity qwen 9/100, haiku 43/50"
+  },
+  {
+   "ok": true,
+   "claim": "cross-verifier solutions 262"
   }
  ]
 }

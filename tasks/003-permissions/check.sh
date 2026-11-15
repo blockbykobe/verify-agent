@@ -6,4 +6,6 @@ while IFS= read -r -d '' p; do
   [ "$m" = "$want" ] || { echo "FAIL: $p имеет $m, нужно $want"; rc=1; }
 done < <(find /srv/www -print0)
 [ "$(find /srv/www -type f | wc -l)" = 5 ] || { echo "FAIL: изменилось число файлов"; rc=1; }
+# v2 (после рецензии): «Владельцев не меняй» — setup создаёт всё от root
+[ -z "$(find /srv/www \( ! -user root -o ! -group root \) -print -quit)" ] || { echo "FAIL: изменён владелец"; rc=1; }
 [ $rc -eq 0 ] && echo OK; exit $rc

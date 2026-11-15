@@ -1,0 +1,39 @@
+# Independent reviews and what was done about them (November 2026)
+
+After publication the project was reviewed by seven AI reviewers. Three were run by the author in other chats
+(Gemini; Claude Sonnet 5.5, Claude Haiku 5.5 and Claude Fable 5.2 in claude.ai), four were run as separate agents
+inside the project session (Claude Opus 5.5, Sonnet 5.5, Fable 5.2, Haiku 5.5), each read-only, with a narrow brief.
+One more reviewer (a third-party tool) returned a generic review without opening the repository.
+
+**Rule:** no finding was accepted on the reviewer's word. Each was checked against the data or the code first;
+the "Check" column says how. All Claude reviewers are the same model family as the agent that built the project,
+so this is independence of context, not of model family. Gemini is the only reviewer from another vendor.
+
+| # | Finding | Reviewer(s) | Check | Status |
+|---|---|---|---|---|
+| 1 | Per-attempt Fisher p (2·10⁻⁶) treats 10 runs of the same task as independent (pseudoreplication) | Gemini, Fable (chat), Sonnet (chat), Haiku (chat) | `audit/task_level.py`: per-task sign-flip test | **Fixed.** Task-level analysis is now primary |
+| 2 | D's gain comes mostly from refusing whole hard tasks | Fable (chat), Sonnet (chat), Haiku (chat) | per-task table; per-task random-refusal placebo | **Confirmed.** Within tasks D ≈ random refusal (placebo 6.2 vs D 5 errors) |
+| 3 | README said the oracle in E shows an expected-vs-actual diff; the code shows only FAIL + own stdout | Fable (chat) | `experiment.py` `FEEDBACK_EXT` | **Fixed** (README error) |
+| 4 | Hidden check of task 004 did not test "system group/user, no home directory" | Sonnet (agent) | read `check.sh` vs `task.md`; re-ran all stored scripts | **Fixed** (`audit/rescore_checks_v2.py`): 17 qwen verdicts PASS→FAIL, all on 004; Haiku unchanged. Checks of 003 (owners) and 006 (mode as octal) also tightened; no verdict changed |
+| 5 | Verifier accuracy unknown | Fable (chat) | `audit/verifier_accuracy.py`: hidden check on every C/D attempt | **Done.** D accepted 39/58 good, 5/47 bad; C accepted 25/26 good, 9/20 bad |
+| 6 | Unequal attempts (A: 1, C/D/E: ≤3); qwen retried after FAIL in only 4/84 cases | Gemini, Opus (agent) | recount from `history` | **Accepted**, wording changed ("did not retry", not "cannot learn") |
+| 7 | Haiku results rest on one task (nginx); 3 of 16 "fixes" changed only the self-test | Fable (chat), Opus (agent) | recount | **Confirmed**, wording changed |
+| 8 | Haiku's self-tests "never wrong" ignores 3 false rejections | Opus (agent) | recount | **Fixed** |
+| 9 | Percentile bootstrap over 10 tasks is too narrow | Opus (agent) | t-interval over tasks | **Fixed** (t-interval reported) |
+| 10 | Confession: journal shifts the threshold to agree with any accusation, not "truthfulness"; 23% vs 0% uses different denominators; pressure split 3/20, 3/20, 8/20 | Sonnet (chat), Haiku (chat), Opus (agent) | recount | **Accepted**, rewritten as hit / false-alarm rates; experiment 2 marked preliminary |
+| 11 | Confession classifier misses partial confessions | Haiku (chat) | `confession.classify` on example sentences | **Confirmed.** Human blind relabelling planned |
+| 12 | Evidence flag in confession replies is lexical (27/60 is an upper bound; strict 19/60) | Sonnet (agent) | — | **Accepted** as limitation |
+| 13 | Injection: isolation prompt effect n.s. (p ≈ 0.6); gate's 16/16 only on an unobfuscated payload; 2 of 3 injections never appeared | Sonnet (chat), Haiku (chat), Opus (agent) | recount | **Accepted**, wording changed; marked preliminary |
+| 14 | Experiment 4: one obvious lure, 5 agents per cell, model not verified; 0/20 means upper bound ≈ 16% | Sonnet (chat), Haiku (chat) | Wilson interval | **Accepted**, marked preliminary |
+| 15 | Runs from two harness versions (pre/post seeded hardened check) are pooled | Sonnet (agent) | `hidden_log` prefix | **Accepted** as limitation |
+| 16 | E's "honest refusal" cell is A's behaviour (no check.sh on abstain tasks) | Sonnet (agent) | `experiment.py` | **Accepted**, footnoted |
+| 17 | Experiment 6 (RAG pilot): Haiku answers lost by a JSON parser bug; retry does not retrieve new evidence; quote verifier both too lax and too strict; J not paired with D; D_src uses gold metadata | Fable (agent) | reproduced on stored rows | **Confirmed.** Experiment 6 stopped; reported as a pilot; v2 needs a redesign |
+| 18 | README/README_ru mismatches (missing sections, wrong "mostly hedged", p written two ways, a broken path) | Haiku (agent) | diff | **Fixed** |
+| 19 | Generic review asking for sections that already exist | third-party tool | — | **Rejected** (did not read the repository) |
+| 20 | "20/27 vs 20/30" discrepancy | Haiku (chat) | two different experiments, labelled in the file | **Rejected** |
+
+What changed in the headline: qwen without checking was confidently wrong 36/100 times (27/100 before the 004
+fix); with the independent verifier 5/100. Counted per task the difference is suggestive, not conclusive
+(exact sign-flip p = 0.062), and inside a task the weak verifier did not separate good from bad solutions better
+than random refusal. Whether a *stronger* verifier does is tested in the pre-registered cross-verifier analysis
+([`prereg_cross_verifier.md`](prereg_cross_verifier.md), results in [`../results/cross_verifier.md`](../results/cross_verifier.md)).

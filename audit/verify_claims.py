@@ -54,7 +54,7 @@ def per_run_mean(c, f):
 
 
 acc = {c: per_run_mean(c, lambda r: r["hidden_rc"] == 0) for c in "ACDE"}
-claim(f"**{acc['A']}%** ± 4 | {acc['C']}% ± 4 | {acc['D']}% ± 11 | {acc['E']}% ± 4", label=f"accuracy row {acc}")
+claim(f"**{acc['A']}%** ± 4 | {acc['C']}% ± 0 | {acc['D']}% ± 9 | {acc['E']}% ± 4", label=f"accuracy row {acc}")
 for c in "CDE":
     ver = [r for r in solve[c] if r["outcome"] == "verified"]
     fp = sum(r["hidden_rc"] != 0 for r in ver)
@@ -142,14 +142,14 @@ A10 = [r for r in load("A.jsonl") if r["expected"] == "solve"]
 D10 = [r for r in load("D.jsonl") if r["expected"] == "solve"]
 wA10 = sum(r["outcome"] == "answered" and r["hidden_rc"] != 0 for r in A10)
 wD10 = sum(r["outcome"] == "verified" and r["hidden_rc"] != 0 for r in D10)
-claim(f"confidently wrong {wA10}/{len(A10)} (A) vs {wD10}/{len(D10)} (D)", label=f"qwen 10 runs conf-wrong A {wA10}/{len(A10)} D {wD10}/{len(D10)}")
+claim(f"confidently wrong {wA10}/{len(A10)} vs {wD10}/{len(D10)}", label=f"qwen 10 runs conf-wrong A {wA10}/{len(A10)} D {wD10}/{len(D10)}")
 pvals["A vs D confidently wrong, 10 runs"] = fisher(wA10, len(A10) - wA10, wD10, len(D10) - wD10)
 HD = R / "claude/claude-haiku-5-5-low"
 hs = {c: [json.loads(l) for l in (HD / f"{c}.jsonl").read_text().splitlines() if json.loads(l)["expected"] == "solve"] for c in "ACDE"}
 hp = {c: sum(r["hidden_rc"] == 0 for r in hs[c]) for c in "ACDE"}
-claim(f"solved A {hp['A']}/50, C {hp['C']}/50, D {hp['D']}/50, E {hp['E']}/50", label=f"Haiku agent solved {hp}")
+claim(f"| Solved (hidden check PASS) | {hp['A']} | **{hp['C']}** | {hp['D']} | {hp['E']} |", label=f"Haiku agent solved {hp}")
 hfix = sum(r["outcome"] == "verified" and r["attempts"] > 1 for c in "CDE" for r in hs[c])
-claim(f"{hfix} failures were turned into passes on a retry", label=f"Haiku retries fixed {hfix}")
+claim(f"{hfix} failures turned into passes on a retry", label=f"Haiku retries fixed {hfix}")
 
 # Независимые рецензии (2026-11): точность проверяющих (повторная скрытая проверка всех попыток C и D)
 vr = load("verifier_rescore.jsonl")
@@ -157,9 +157,8 @@ acc = {c: (sum(1 for r in vr if r["cond"] == c and r["test_rc"] == 0 and r["hidd
            sum(1 for r in vr if r["cond"] == c and r["hidden_rc"] == 0),
            sum(1 for r in vr if r["cond"] == c and r["test_rc"] == 0 and r["hidden_rc"] != 0),
            sum(1 for r in vr if r["cond"] == c and r["hidden_rc"] != 0)) for c in "CD"}
-claim(f"accepted 41/71 good solutions and 3/34 bad ones", label=f"D verifier accepted {acc['D'][0]}/{acc['D'][1]} good, {acc['D'][2]}/{acc['D'][3]} bad")
+claim(f"accepted {acc['D'][0]}/{acc['D'][1]} good attempts and {acc['D'][2]}/{acc['D'][3]} bad ones", label=f"D verifier accepted {acc['D'][0]}/{acc['D'][1]} good, {acc['D'][2]}/{acc['D'][3]} bad")
 claim(f"accepted {acc['C'][0]}/{acc['C'][1]} good and {acc['C'][2]}/{acc['C'][3]} bad", label=f"C self-test accepted {acc['C'][0]}/{acc['C'][1]} good, {acc['C'][2]}/{acc['C'][3]} bad")
-assert acc["D"][:3] == (41, 71, 3) and acc["D"][3] == 34, acc
 # по задачам: точный перестановочный тест (смена знака) по 10 задачам, A vs D уверенно неверно
 import itertools  # noqa: E402
 from collections import defaultdict  # noqa: E402
@@ -171,7 +170,25 @@ for c, rows in (("A", A10), ("D", D10)):
 dd = [v["A"][0] / v["A"][1] - v["D"][0] / v["D"][1] for v in pt.values()]
 p_task = sum(abs(sum(s * x for s, x in zip(sg, dd))) >= abs(sum(dd)) - 1e-12
              for sg in itertools.product((1, -1), repeat=len(dd))) / 2 ** len(dd)
-claim(f"exact task‑level p = {p_task:.3f}", label=f"task-level sign-flip p = {p_task:.3f}")
+claim(f"**p = {p_task:.3f}**", label=f"task-level sign-flip p = {p_task:.3f}")
+
+# Эксперимент 1c: перекрёстная проверка (results/cross_verifier.jsonl)
+sys.path.insert(0, str(ROOT / "audit"))
+import cross_verifier as cv  # noqa: E402
+cvr = load("cross_verifier.jsonl")
+tr = {(r["solver"], r["task"], r["sid"]): r["hidden_rc"] == 0 for r in cvr if r["kind"] == "truth"}
+cp = [{"solver": r["solver"], "task": r["task"], "verifier": r["verifier"], "pass": r["test_rc"] == 0,
+       "good": tr[(r["solver"], r["task"], r["sid"])]} for r in cvr if r["kind"] == "pair"]
+ba_q = cv.ba([x for x in cp if x["verifier"] == "qwen"])[2]
+ba_h = cv.ba([x for x in cp if x["verifier"] == "haiku"])[2]
+claim(f"balanced accuracy {ba_h:.2f} vs {ba_q:.2f}", label=f"cross-verifier BA haiku {ba_h:.2f} qwen {ba_q:.2f}")
+val = [r for r in cvr if r["kind"] == "validity"]
+vq = sum(r["ref_rc"] == 0 and r["noop_rc"] != 0 for r in val if r["verifier"] == "qwen")
+vh = sum(r["ref_rc"] == 0 and r["noop_rc"] != 0 for r in val if r["verifier"] == "haiku")
+claim(f"only {vq} of qwen's 100 tests passed the reference solution and failed an empty one; {vh} of Haiku's 50 did",
+      label=f"test validity qwen {vq}/100, haiku {vh}/50")
+nsol = len({k for k in tr})
+claim(f"{nsol} unique: {sum(1 for k in tr if k[0] == 'qwen')} qwen, {sum(1 for k in tr if k[0] == 'haiku')} Haiku", label=f"cross-verifier solutions {nsol}")
 
 # ---------------- поправка Холма
 L = sorted(pvals.items(), key=lambda kv: kv[1])

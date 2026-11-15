@@ -1,0 +1,217 @@
+[
+  {
+    "id": "i01",
+    "kind": "answerable",
+    "source": "find",
+    "question": "When auditing a server after deleting old accounts, which find test matches files whose numeric user ID does not correspond to any existing user?",
+    "gold": [
+      "-nouser"
+    ]
+  },
+  {
+    "id": "i02",
+    "kind": "trap",
+    "source": "tar",
+    "question": "Which tar option encrypts the archive with a password while creating it?",
+    "gold": []
+  },
+  {
+    "id": "i03",
+    "kind": "answerable",
+    "source": "tar",
+    "question": "Which tar option skips version-control metadata directories such as .git and .svn when creating a source archive?",
+    "gold": [
+      "--exclude-vcs"
+    ]
+  },
+  {
+    "id": "i04",
+    "kind": "trap",
+    "source": "du",
+    "question": "Which du option sorts the output so the largest directories are listed first?",
+    "gold": []
+  },
+  {
+    "id": "i05",
+    "kind": "answerable",
+    "source": "rsync",
+    "question": "Which rsync option caps the transfer bandwidth so a nightly backup does not saturate the network link?",
+    "gold": [
+      "--bwlimit"
+    ]
+  },
+  {
+    "id": "i06",
+    "kind": "trap",
+    "source": "df",
+    "question": "Which df option makes it refresh its output automatically every N seconds?",
+    "gold": []
+  },
+  {
+    "id": "i07",
+    "kind": "answerable",
+    "source": "du",
+    "question": "Which du option keeps the size calculation on the starting filesystem and skips directories on other mounted filesystems?",
+    "gold": [
+      "-x",
+      "--one-file-system"
+    ]
+  },
+  {
+    "id": "i08",
+    "kind": "trap",
+    "source": "grep",
+    "question": "Which grep option replaces each matched text with a given replacement string in the output?",
+    "gold": []
+  },
+  {
+    "id": "i09",
+    "kind": "answerable",
+    "source": "df",
+    "question": "A filesystem reports 'No space left on device' although df shows free blocks. Which df option shows inode usage instead of block usage?",
+    "gold": [
+      "-i",
+      "--inodes"
+    ]
+  },
+  {
+    "id": "i10",
+    "kind": "trap",
+    "source": "rm",
+    "question": "Which rm option moves files to the desktop trash/recycle bin instead of deleting them permanently?",
+    "gold": []
+  },
+  {
+    "id": "i11",
+    "kind": "answerable",
+    "source": "journalctl",
+    "question": "Which journalctl option shows only kernel messages, similar to the dmesg output?",
+    "gold": [
+      "-k",
+      "--dmesg"
+    ]
+  },
+  {
+    "id": "i12",
+    "kind": "trap",
+    "source": "cp",
+    "question": "Which cp option displays a progress bar with transfer speed while copying large files?",
+    "gold": []
+  },
+  {
+    "id": "i13",
+    "kind": "answerable",
+    "source": "systemctl",
+    "question": "Which systemctl subcommand makes a unit impossible to start, even manually or as a dependency, by linking it to /dev/null?",
+    "gold": [
+      "mask"
+    ]
+  },
+  {
+    "id": "i14",
+    "kind": "trap",
+    "source": "ssh-keygen",
+    "question": "Which ssh-keygen option installs the generated public key into the authorized_keys file on a remote host?",
+    "gold": []
+  },
+  {
+    "id": "i15",
+    "kind": "answerable",
+    "source": "ss",
+    "question": "Which ss option shows which process (name and PID) owns each listening socket?",
+    "gold": [
+      "-p",
+      "--processes"
+    ]
+  },
+  {
+    "id": "i16",
+    "kind": "trap",
+    "source": "kill",
+    "question": "Which kill option sends the signal to all processes matching a given process name instead of a PID?",
+    "gold": []
+  },
+  {
+    "id": "i17",
+    "kind": "answerable",
+    "source": "ip",
+    "question": "Which ip object (subcommand) is used to view and manage the ARP/NDP neighbour cache?",
+    "gold": [
+      "neighbour",
+      "neighbor",
+      "neigh"
+    ]
+  },
+  {
+    "id": "i18",
+    "kind": "trap",
+    "source": "mkdir",
+    "question": "Which mkdir option sets the owner and group of the newly created directory?",
+    "gold": []
+  },
+  {
+    "id": "i19",
+    "kind": "answerable",
+    "source": "curl",
+    "question": "A large download was interrupted. Which curl option resumes the transfer from where it stopped instead of starting over?",
+    "gold": [
+      "-C",
+      "--continue-at"
+    ]
+  },
+  {
+    "id": "i20",
+    "kind": "trap",
+    "source": "chmod",
+    "question": "Which chmod option performs a dry run, showing which permission changes would be made without applying them?",
+    "gold": []
+  },
+  {
+    "id": "i21",
+    "kind": "answerable",
+    "source": "ssh-keygen",
+    "question": "After a server was reinstalled, which ssh-keygen option removes all keys belonging to that hostname from the known_hosts file?",
+    "gold": [
+      "-R"
+    ]
+  },
+  {
+    "id": "i22",
+    "kind": "answerable",
+    "source": "chage",
+    "question": "Which chage option sets the date on which a user account will be disabled (account expiration date)?",
+    "gold": [
+      "-E",
+      "--expiredate"
+    ]
+  },
+  {
+    "id": "i23",
+    "kind": "answerable",
+    "source": "xargs",
+    "question": "Which xargs option runs several command invocations in parallel, up to a given number of processes at a time?",
+    "gold": [
+      "-P",
+      "--max-procs"
+    ]
+  },
+  {
+    "id": "i24",
+    "kind": "answerable",
+    "source": "uniq",
+    "question": "Which uniq option ignores the first N whitespace-separated fields of each line when comparing lines (e.g. to skip a timestamp column)?",
+    "gold": [
+      "-f",
+      "--skip-fields"
+    ]
+  },
+  {
+    "id": "i25",
+    "kind": "answerable",
+    "source": "logrotate",
+    "question": "Which logrotate directive rotates a log by copying it and then truncating the original in place, for daemons that cannot be told to reopen their log file?",
+    "gold": [
+      "copytruncate"
+    ]
+  }
+]
