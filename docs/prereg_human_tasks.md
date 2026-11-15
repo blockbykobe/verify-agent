@@ -50,3 +50,10 @@ Solutions deduplicated by (task, exact script); 3 tests of each verifier per sol
 * Solutions are retries of the same models, not independent samples.
 * The author knows the project's hypotheses; he writes tasks before seeing any result on them.
 * Claude Code still writes `setup.sh`/`solution.sh` and the wrapping of `check.sh`.
+
+## Addendum (2026-11-16, still before any task is written)
+
+A power check (`audit/extra_analyses.py`, section 3) shows that the task-level sign-flip test in H6 (i) can reach
+p < 0.05 only with at least 5 tasks that have both good and bad solutions, and only if Haiku's tests are better on all
+of them; in Experiment 1c only 6 of 10 tasks were mixed. The target is therefore **10 tasks** (minimum 8), not 5–10.
+Nothing else in the plan changes.

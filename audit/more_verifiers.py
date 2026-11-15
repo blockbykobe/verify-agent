@@ -37,6 +37,7 @@ N_TESTS = 10
 N_BY_MODEL = {"qwen2.5-coder:32b": 5, "claude-haiku-5-5-run2": 5}  # дополнение к плану: 32B медленная, 5 тестов на задачу
 TEMPERATURE = 0.7  # как в experiment.py
 PAUSE = 60  # с между моделями — видеокарта остывает
+COOL_BY_MODEL = {"qwen2.5-coder:32b": 180}  # с после каждой задачи (5 запросов подряд, затем пауза)
 
 
 def fname(model):
@@ -72,6 +73,8 @@ def generate(url, only=None):
                     f.write(json.dumps({"model": model, "task": t.name, "i": i, "test": test, "raw": raw},
                                        ensure_ascii=False) + "\n")
             print(f"{model} {t.name} done", flush=True)
+            if model in COOL_BY_MODEL:  # долгая модель: пауза после каждой задачи, чтобы видеокарта остывала
+                time.sleep(COOL_BY_MODEL[model])
         httpx.post(f"{url}/api/generate", json={"model": model, "keep_alive": 0}, timeout=60)  # выгрузить из видеопамяти
         if mi < len(models) - 1:
             print(f"pause {PAUSE}s", flush=True)

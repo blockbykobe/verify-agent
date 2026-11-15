@@ -12,11 +12,11 @@ The agent (qwen2.5‑coder:7b, CPU‑only, via Ollama) gets Linux admin tasks. E
 4. **Claude itself.** Do Claude agents obey instructions planted in a repository (Experiment 4)? How does Claude Haiku 5.5 behave in the same false‑confession test (Experiment 5)?
 5. **Independent checks of this work.** A fresh‑context red‑team agent attacked the harness; garak (NVIDIA) scanned the local model; a pre‑publication audit ([`docs/audit.md`](docs/audit.md)).
 
-All numbers come from the committed `results/` files. Samples are small, so I give spreads and, for the main comparisons, Fisher exact p‑values. Attempts on the same task are correlated, so the main result is also analysed **per task** ([`results/task_level.md`](results/task_level.md)), which gives much weaker evidence than the per‑attempt p‑values. Eight independent AI reviews changed several conclusions; see [Independent reviews](#independent-reviews) and [Limitations](#limitations).
+All numbers come from the committed `results/` files. Samples are small, so I give spreads and, for the main comparisons, Fisher exact p‑values. Attempts on the same task are correlated, so the main result is also analysed **per task** ([`results/task_level.md`](results/task_level.md)), which gives much weaker evidence than the per‑attempt p‑values. Ten independent AI reviewers changed several conclusions; see [Independent reviews](#independent-reviews) and [Limitations](#limitations).
 
 ## TL;DR
 
-*Revised after eight independent AI reviews (November 2026). Several headline numbers changed, including a bug in one of my hidden checks; see [Independent reviews](#independent-reviews).*
+*Revised after ten independent AI reviewers (November 2026). Several headline numbers changed, including a bug in one of my hidden checks; see [Independent reviews](#independent-reviews).*
 
 ![Confidently wrong and solved rates by verification condition, qwen 7B vs Claude Haiku 5.5](docs/img/verification.png)
 
@@ -185,7 +185,7 @@ The reviews raised a sharper question: does the verifier help because it is **in
 | both | qwen | 0.48 | 0.85 | 0.67 |
 | both | Haiku | 0.79 | 1.00 | **0.90** |
 
-* **Pre‑registered primary result:** Haiku's tests have higher balanced accuracy than qwen's, +0.23 (task bootstrap 95% interval +0.18 to +0.33). Because a percentile bootstrap over 10 tasks is too narrow, a task‑level check was added (not pre‑registered): Haiku's tests were better on **6 of 6** tasks that had both good and bad solutions, exact sign‑flip p = 0.031 (the minimum possible with 6 tasks), On the other 4 tasks there were no bad solutions, so only acceptance of good ones can be compared there: Haiku's tests accepted at least as many.
+* **Pre‑registered primary result:** Haiku's tests have higher balanced accuracy than qwen's, +0.23 (task bootstrap 95% interval +0.18 to +0.33). Because a percentile bootstrap over 10 tasks is too narrow, a task‑level check was added (not pre‑registered): Haiku's tests were better on **6 of 6** tasks that had both good and bad solutions, exact sign‑flip p = 0.031 (the minimum possible with 6 tasks). On the other 4 tasks there were no bad solutions, so only acceptance of good ones can be compared there: Haiku's tests accepted at least as many.
 * **Within a task** (pre‑registered: pairs pooled over the tasks with both good and bad solutions), on qwen's solutions qwen's tests reached 0.65 and Haiku's 0.91. Pooling still mixes tasks, so per task (added afterwards): qwen's tests 0.44–0.62 (mean 0.52), around chance; Haiku's 0.67–1.00 (mean 0.85).
 * **Test validity:** only 9 of qwen's 100 tests passed the reference solution and failed an empty one; 43 of Haiku's 50 did.
 * So a weak "independent" verifier is mostly a broken test that rejects good work and whole hard tasks, while a strong one separates good from bad. Limitations: the same 10 public tasks; solutions are retries, not independent samples; one Haiku run produced its tests (a second run, Experiment 1d, replicated it).
@@ -213,6 +213,16 @@ Experiment 1c compared only two verifiers that differ in vendor, size and servin
 * **Deviation from the plan:** 29 of the 14B's 100 answers were garbage text, produced while the GPU machine apparently went to sleep (one request also timed out). 27 were set aside ([`results/verifiers/qwen2.5-coder_14b.garbled.json`](results/verifiers/qwen2.5-coder_14b.garbled.json)) and regenerated; 2 that my filter missed stayed as failed generations. No other model produced such output. The regenerated outputs were more often valid (10/27) than the original ones (13/71), and the 14B's valid‑test share and its H3a result depend on them.
 * **H5 (pre‑registered after the DeepSeek review), is Haiku's result stable?** A second, independent Haiku run (5 new tests per task, same settings, about $0.06 of API) reached balanced accuracy **0.92** (first run 0.90) with 41/50 valid tests (first run 43/50). Both pre‑set conditions held (within ±0.10, more than 50% valid), so the Haiku result is not a lucky sample.
 * Limitations: "capability" has no independent measure here; the same 10 public tasks; one generation run per local model.
+
+## Additional analyses of recorded data (post hoc, [`results/extra_analyses.md`](results/extra_analyses.md))
+
+Added after a fresh "what would an experienced reviewer ask" pass; no new model runs, none of this was pre‑registered.
+
+* **Risk vs coverage.** Passing qwen's unchecked answers (condition A, 95 answers, 36 confidently wrong) through the recorded verifier tests: with Haiku's tests (majority of 3) 58 right and **0** confidently wrong remain; with qwen's tests 45 right and 5 wrong; the live condition D kept 39 right and 5 wrong. This is the weak‑solver / strong‑verifier cell that was never run live, simulated without retries, so it is an optimistic estimate, and the kinship caveat of Experiment 1c applies.
+* **D vs random refusal, exactly.** A random refusal with D's coverage inside each task gives on average 6.2 confidently wrong answers; the chance of 5 or fewer is p = 0.24. Within tasks D is indistinguishable from random refusal.
+* **Power.** With 10 vs 10 runs, the injection comparison had about 5% power to detect a 0.9 → 0.7 drop and about 66% for 0.9 → 0.3; Haiku A vs C (4/50 vs 0/50) about 19%. These nulls are absence of evidence, not evidence of absence. For Experiment 7 a task‑level sign test needs at least 5 mixed tasks to reach p < 0.05, so it targets 10 tasks.
+* **Shared blind spots.** qwen's tests falsely accepted 20% of (qwen‑solution × test) pairs for qwen's wrong solutions; Haiku's tests 0%. Neither verifier accepted Haiku's wrong solutions (all on one task). A hint of correlated errors within one model, on little data.
+* **Cost.** Condition D takes about 5–8× the time of A for both solvers (qwen on CPU: 62 s vs 8 s per attempt; Haiku: 15 s vs 3 s). All Haiku runs of Experiment 1b cost about $0.17.
 
 ## Experiment 2 — false confession (preliminary) ([`results/confession.md`](results/confession.md))
 
@@ -332,6 +342,21 @@ Measured on the dev machine (12 CPU threads, no GPU, WSL2 with 10 GB): eval rate
 Exact environment: Python 3.14.4, packages in `requirements.txt`, base image `ubuntu:24.04@sha256:fe8156…ef852` (built image ID `71b881475db5`), model `qwen2.5-coder:7b` with Ollama digest `dae161e27b0e` (Q4_K_M).
 `.venv/bin/python audit/verify_claims.py` recomputes the headline numbers from `results/*.jsonl` and checks them against this README.
 
+**Re‑analysis only** (no model calls; Docker needed only where marked):
+
+```bash
+.venv/bin/python audit/verify_claims.py         # every README number vs raw data (EN and RU)
+.venv/bin/python audit/task_level.py            # Experiment 1 per task -> results/task_level.md
+.venv/bin/python audit/cross_verifier.py --report   # Experiment 1c (add no flag to re-run pairs in Docker)
+.venv/bin/python audit/more_verifiers.py report     # Experiment 1d
+.venv/bin/python audit/human_agreement.py       # human vs AI confession labels
+.venv/bin/python audit/extra_analyses.py        # risk/coverage, random refusal, power, cost
+```
+
+**Claude runs** need an API key in the environment (`ANTHROPIC_API_KEY`), never in a file in the repo: `experiments/claude_experiment.py --cond A C D E --runs 5 --max-usd 2` (Experiment 1b), `audit/more_verifiers.py generate-claude` (Haiku run 2). Experiment 1d's local verifiers ran on a second machine with a GPU: `audit/more_verifiers.py generate --url http://<host>:11434`, then `score` (Docker) and `report`.
+
+**Reproducibility limits.** Ollama was called without a fixed seed at temperature 0.7, so qwen runs are not bit‑for‑bit reproducible; the recorded outputs in `results/` are the data. Claude was called by the alias `claude-haiku-5-5`, so a later snapshot may behave differently; runs are dated in the result files.
+
 ## Limitations
 
 * **Small n, and correlated attempts.** 5 runs × 15 tasks per condition (A and D for qwen extended to 10, after the effect was seen); 20 trials per cell in the confession test; 5 per cell in the Claude canary test. Per‑attempt Fisher p‑values treat repeats of the same task as independent and overstate the evidence; per task, A vs D is p = 0.062. Holm corrections in `audit/verify_claims.py` are over 7 per‑attempt tests and inherit the same problem. 50+ tasks with a pre‑registered task‑level analysis are needed.
@@ -389,7 +414,7 @@ What this project adds, modestly: a small, fully reproducible sysadmin testbed i
 
 ## Independent reviews
 
-After publication the project was reviewed by eight AI reviewers: Gemini, Claude Sonnet 5.5, Haiku 5.5 and Fable 5.2 run by me in other chats, and Claude Opus 5.5, Sonnet 5.5, Fable 5.2 and Haiku 5.5 run as read‑only agents with narrow briefs. One more tool returned a generic review without opening the repository. No finding was accepted on the reviewer's word: each was checked against the data or the code first. All 20 findings, how each was checked, and what changed are in [`docs/reviews.md`](docs/reviews.md). The most important ones:
+After publication the project was reviewed by ten AI reviewers: Gemini, DeepSeek, and Claude Opus 5.5, Sonnet 5.5, Haiku 5.5 and Fable 5.2 run by me in other chats, and Claude Opus 5.5, Sonnet 5.5, Fable 5.2 and Haiku 5.5 run as read‑only agents with narrow briefs. One more tool returned a generic review without opening the repository. No finding was accepted on the reviewer's word: each was checked against the data or the code first. All 27 findings, how each was checked, and what changed are in [`docs/reviews.md`](docs/reviews.md). The most important ones:
 
 * **A bug in my hidden check** (task 004 did not test "system user, no home directory"): fixed, 17 verdicts changed.
 * **Pseudoreplication:** per‑attempt p‑values overstated the evidence; the main comparison is now made per task (p = 0.062; per attempt it would be 4·10⁻⁸ on the corrected data, and was 2·10⁻⁶ before the 004 fix).
@@ -397,7 +422,7 @@ After publication the project was reviewed by eight AI reviewers: Gemini, Claude
 * **An error in this README** (it said the oracle in E shows an expected‑vs‑actual diff; the code does not).
 * **Experiment 6 (a RAG pilot)** had several design bugs in my code and was stopped; see below.
 
-All Claude reviewers are the same model family as the agent that built the project, so this is independence of context, not of model; Gemini is the only other vendor, and no human has reviewed the work yet. One review and one finding were rejected after checking: a generic review that had not read the repository, and a claimed contradiction between two numbers that come from two different experiments.
+All Claude reviewers are the same model family as the agent that built the project, so this is independence of context, not of model; Gemini and DeepSeek are the only other vendors, and no human has reviewed the work yet. One review and one finding were rejected after checking: a generic review that had not read the repository, and a claimed contradiction between two numbers that come from two different experiments.
 
 ## Experiment 6 (pilot, stopped) — RAG: who should say "true" at the end?
 

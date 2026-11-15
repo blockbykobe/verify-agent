@@ -228,6 +228,15 @@ for _a, _b in (("0.56 (qwen) vs 0.86 (Haiku)", "0,56 (qwen) против 0,86 (H
                ("0.67 vs 0.87", "0,67 против 0,87")):
     if _a in README:
         claim(_b, where=README_RU, label=f"RU mirrors: {_b}")
+_ex = (R / "extra_analyses.md").read_text()
+_m = _re.search(r"тесты Haiku по большинству оставили (\d+) верных и (\d+) уверенно неверных; тесты qwen — (\d+) и (\d+)", _ex)
+claim(f"58 right and **{_m.group(2)}** confidently wrong remain; with qwen's tests {_m.group(3)} right and {_m.group(4)} wrong".replace("58", _m.group(1)),
+      label=f"extra: gating Haiku-maj {_m.group(1)}/{_m.group(2)}")
+_m = _re.search(r"Точная вероятность получить (\d+) или меньше: \*\*p = (\d\.\d\d)\*\*", _ex)
+claim(f"the chance of {_m.group(1)} or fewer is p = {_m.group(2)}", label=f"extra: random refusal p={_m.group(2)}")
+claim(f"вероятность получить {_m.group(1)} или меньше — p = {_m.group(2).replace('.', ',')}", where=README_RU, label="RU: random refusal p")
+_m = _re.search(r"\| qwen \| qwen \| \d+ \| \d+ \((\d+)%\) \|", _ex)
+claim(f"qwen's tests falsely accepted {_m.group(1)}%", label=f"extra: qwen false accept {_m.group(1)}%")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 

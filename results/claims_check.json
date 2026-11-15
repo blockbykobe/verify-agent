@@ -220,6 +220,22 @@
   },
   {
    "ok": true,
+   "claim": "extra: gating Haiku-maj 58/0"
+  },
+  {
+   "ok": true,
+   "claim": "extra: random refusal p=0.24"
+  },
+  {
+   "ok": true,
+   "claim": "RU: random refusal p"
+  },
+  {
+   "ok": true,
+   "claim": "extra: qwen false accept 20%"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]
