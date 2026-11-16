@@ -57,3 +57,9 @@ A power check (`audit/extra_analyses.py`, section 3) shows that the task-level s
 p < 0.05 only with at least 5 tasks that have both good and bad solutions, and only if Haiku's tests are better on all
 of them; in Experiment 1c only 6 of 10 tasks were mixed. The target is therefore **10 tasks** (minimum 8), not 5–10.
 Nothing else in the plan changes.
+
+## Correction (2026-11-16, still before any task is written)
+
+The addendum above and rule (i) of H6 say "at least 5" mixed tasks. The sign-flip test is two-sided: with 5 tasks its
+smallest possible p is 2/32 = 0.0625, so p < 0.05 needs **at least 6** mixed tasks. H6 is therefore reported as
+**not testable** with fewer than 6 such tasks (not 5). The 10-task target is unchanged.
