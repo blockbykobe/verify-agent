@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from pathlib import Path
 from datetime import datetime, timezone
 
 from prompts import FEEDBACK_C, FEEDBACK_EXT, SYSTEM_A, SYSTEM_C, SYSTEM_VERIFIER
@@ -156,8 +157,12 @@ def main() -> None:
     ap.add_argument("--cond", nargs="+", default=["A", "C"])
     ap.add_argument("--runs", type=int, default=3)
     ap.add_argument("--tasks", nargs="*")
+    ap.add_argument("--out", help="каталог результатов (по умолчанию results/); эксперимент 7 — results/exp7/...")
     args = ap.parse_args()
-    RESULTS.mkdir(exist_ok=True)
+    global RESULTS
+    if args.out:
+        RESULTS = Path(args.out)
+    RESULTS.mkdir(parents=True, exist_ok=True)
     tasks = load_tasks(args.tasks)
     for cond in args.cond:
         out = RESULTS / f"{cond}.jsonl"

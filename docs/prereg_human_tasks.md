@@ -86,3 +86,5 @@ smallest possible p is 2/32 = 0.0625, so p < 0.05 needs **at least 6** mixed tas
   author does not approve it, task 105 is dropped.
 * **Validity gate:** all 10 reference solutions pass and a no-op fails (with the task-105 change).
 * Analysis, hypotheses H6/H7 and the minimum of 6 mixed tasks are unchanged.
+* **Approved 2026-11-16 19:20 UTC:** the author approved the task-105 check change ("5 да"); task 105 stays.
+  Runs write to `results/exp7/qwen/` and `results/exp7/haiku/` (new `--out` / `--tasks` options of the runners).

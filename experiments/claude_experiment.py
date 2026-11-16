@@ -28,6 +28,8 @@ def main() -> int:
     ap.add_argument("--cond", nargs="+", default=["A", "C", "D", "E"])
     ap.add_argument("--runs", type=int, default=5)
     ap.add_argument("--max-usd", type=float, default=2.0)
+    ap.add_argument("--tasks", nargs="*")
+    ap.add_argument("--out", help="каталог результатов (по умолчанию results/claude/<model>-<effort>)")
     args = ap.parse_args()
     if not os.environ.get("ANTHROPIC_API_KEY"):
         print("ANTHROPIC_API_KEY не задан — ничего не запускаю.")
@@ -35,7 +37,7 @@ def main() -> int:
     import anthropic
     import experiment
 
-    out = ROOT / "results/claude" / f"{args.model}-{args.effort}"
+    out = Path(args.out) if args.out else ROOT / "results/claude" / f"{args.model}-{args.effort}"
     out.mkdir(parents=True, exist_ok=True)
     usage_log = out / "usage.jsonl"
     pin, pout = PRICES[args.model]
@@ -63,7 +65,8 @@ def main() -> int:
     experiment.chat = chat
     experiment.RESULTS = out
     experiment.TEMPERATURE = None  # Haiku 5.5 / Sonnet 5.5 не принимают нестандартную temperature
-    sys.argv = [sys.argv[0], "--cond", *args.cond, "--runs", str(args.runs)]
+    sys.argv = [sys.argv[0], "--cond", *args.cond, "--runs", str(args.runs), "--out", str(out)] + (
+        ["--tasks", *args.tasks] if args.tasks else [])
     experiment.main()
     print(f"spent ≈ ${spent():.3f}")
     return 0
