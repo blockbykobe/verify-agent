@@ -261,6 +261,17 @@ claim(f"balanced accuracy **{_m.group(1)}**, {_m.group(2)}/50 valid tests", labe
 _m = _re.search(r"\| qwen \| (\d+) \| (\d+) \| (\d+) \|\n\| haiku \| (\d+) \| (\d+) \| (\d+) \|", _hc)
 claim(f"refused in {int(_m.group(1)) + int(_m.group(4))} of 60", label=f"1e refusals {int(_m.group(1)) + int(_m.group(4))}/60")
 claim(f"отказался в {int(_m.group(1)) + int(_m.group(4))} из 60", where=README_RU, label="RU: 1e refusals")
+_e7 = (R / "exp7/summary.md").read_text()
+_m = _re.search(r"Haiku лучше в (\d+) из (\d+) смешанных задач, точный знаковый тест p = (\d\.\d+); двухуровневый бутстрэп разницы \[([+-]\d\.\d\d); ([+-]\d\.\d\d)\]", _e7)
+claim(f"better on {_m.group(1)} of the {_m.group(2)} tasks with both good and bad solutions (exact sign‑flip p = {_m.group(3)}", label=f"exp7 H6 {_m.group(1)}/{_m.group(2)} p={_m.group(3)}")
+claim(f"{_m.group(4)} to {_m.group(5)}", label=f"exp7 bootstrap {_m.group(4)}..{_m.group(5)}")
+_m = _re.search(r"qwen ([\d.]+), Haiku ([\d.]+), разница ([+-][\d.]+)", _e7)
+claim(f"| Balanced accuracy, averaged over the 8 mixed tasks | {_m.group(1)} | **{_m.group(2)}** |", label=f"exp7 task-avg {_m.group(1)}/{_m.group(2)}")
+claim(f"difference is {_m.group(3)}", label=f"exp7 diff {_m.group(3)}")
+_e7c = (R / "exp7/cross_verifier.md").read_text()
+_m = _re.search(r"\| qwen \| 50 \| \d+ \(\d+%\) \| \d+ \(\d+%\) \| (\d+) \((\d+)%\) \|\n\| haiku \| (\d+) \| \d+ \(\d+%\) \| \d+ \(\d+%\) \| (\d+) \((\d+)%\) \|", _e7c)
+claim(f"| {_m.group(1)}/50 ({_m.group(2)}%) | **{_m.group(4)}/{_m.group(3)} ({_m.group(5)}%)** |", label=f"exp7 validity {_m.group(1)}/50 vs {_m.group(4)}/{_m.group(3)}")
+claim(f"| {_m.group(1)}/50 ({_m.group(2)}%) | **{_m.group(4)}/{_m.group(3)} ({_m.group(5)}%)** |", where=README_RU, label="RU: exp7 validity")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 

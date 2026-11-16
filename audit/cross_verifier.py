@@ -287,7 +287,7 @@ def report() -> str:
     bad_h_tasks = sorted({k[1][:3] for k in bad if k[0] == "haiku"})
     L += ["\n## Дополнительно (не из плана, после рецензии Opus 5.5)\n",
           f"* **BA, усреднённая по задачам** (по {len(mixed)} задачам с хорошими и плохими решениями, оба решателя): "
-          f"qwen {tavg['qwen']:.2f}, Haiku {tavg['haiku']:.2f}. Сводная BA (0.67 против 0.90) зависит от того, сколько уникальных "
+          f"qwen {tavg['qwen']:.2f}, Haiku {tavg['haiku']:.2f}. Сводная BA ({ba([p for p in pairs if p['verifier'] == 'qwen'])[2]:.2f} против {ba([p for p in pairs if p['verifier'] == 'haiku'])[2]:.2f}) зависит от того, сколько уникальных "
           "решений у каждой задачи; усреднение по задачам даёт ту же картину.",
           f"* **Двухуровневый бутстрэп** (задачи, внутри них тесты и решения): разница BA Haiku − qwen, 95% интервал "
           f"[{d3[int(.025 * len(d3))]:+.2f}; {d3[int(.975 * len(d3)) - 1]:+.2f}] ({len(d3)} выборок). Интервал шире, чем бутстрэп только по "
@@ -300,7 +300,8 @@ def report() -> str:
           f"Все неверные решения Haiku-решателя — в задачах: {', '.join(bad_h_tasks)}. "
           "Главная разница — в чувствительности (тесты qwen часто валят верные решения).",
           f"* **Тестов qwen, которые проваливают эталонное решение:** "
-          f"{sum(r['ref_rc'] != 0 for r in rows if r['kind'] == 'validity' and r['verifier'] == 'qwen')} из 100."]
+          f"{sum(r['ref_rc'] != 0 for r in rows if r['kind'] == 'validity' and r['verifier'] == 'qwen')} из "
+          f"{sum(1 for r in rows if r['kind'] == 'validity' and r['verifier'] == 'qwen')}."]
     tv1 = truth_v1() if (R / "cross_verifier_truth_v1.jsonl").exists() else None
     if tv1:
         t1 = dict(truth)

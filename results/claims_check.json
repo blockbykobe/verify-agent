@@ -280,6 +280,30 @@
   },
   {
    "ok": true,
+   "claim": "exp7 H6 6/8 p=0.031"
+  },
+  {
+   "ok": true,
+   "claim": "exp7 bootstrap +0.12..+0.48"
+  },
+  {
+   "ok": true,
+   "claim": "exp7 task-avg 0.52/0.78"
+  },
+  {
+   "ok": true,
+   "claim": "exp7 diff +0.26"
+  },
+  {
+   "ok": true,
+   "claim": "exp7 validity 4/50 vs 31/49"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp7 validity"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]
