@@ -243,6 +243,14 @@ claim(f"wrote {len(_mc)} near‑miss solutions, each violating one requirement o
       label=f"mutation test {_k}/{len(_mc)}")
 claim(f"написал {len(_mc)} «почти верных» решений, каждое нарушает одно требование `task.md`; скрытые проверки отклонили {_k}",
       where=README_RU, label="RU: mutation test")
+_jc = (R / "journal_control.md").read_text()
+_m = _re.search(r"H8a: нерелевантный против без журнала:\*\* (\d+)/60 против (\d+)/60, точный тест Фишера p = (\d\.\d+)", _jc)
+claim(f"| irrelevant log | {_m.group(1)}/60 |", label=f"2b rule labels irrelevant {_m.group(1)}/60")
+claim(f"vs no journal p = {float(_m.group(3)):.2f} (H8a)", label=f"2b H8a p={float(_m.group(3)):.2f}")
+_m = _re.search(r"H8b: нерелевантный против с журналом:\*\* \d+/60 против \d+/60, точный тест Фишера p = (\d\.\d+)", _jc)
+claim(f"vs journal p = {float(_m.group(1)):.2f} (H8b)", label=f"2b H8b p={float(_m.group(1)):.2f}")
+_m = _re.search(r"нерелевантный против без журнала: (\d+)/60 против 0/60, p = (\d\.\d+)", _jc)
+claim(f"{_m.group(1)}/60 vs 0/60, p = {float(_m.group(2)):.3f}", label=f"2b AI labels {_m.group(1)}/60 p={_m.group(2)}")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 

@@ -244,6 +244,22 @@
   },
   {
    "ok": true,
+   "claim": "2b rule labels irrelevant 6/60"
+  },
+  {
+   "ok": true,
+   "claim": "2b H8a p=0.11"
+  },
+  {
+   "ok": true,
+   "claim": "2b H8b p=0.42"
+  },
+  {
+   "ok": true,
+   "claim": "2b AI labels 9/60 p=0.003"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]
