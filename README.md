@@ -216,6 +216,14 @@ Experiment 1c compared only two verifiers that differ in vendor, size and servin
 * **H4 (pre‑registered), a strong non‑Anthropic verifier:** qwen2.5‑coder 32B (5 tests per task, GPU with most layers in system RAM) reached balanced accuracy **0.69** with 18/47 valid tests (38%). Pre‑set reading: within 0.10 of Haiku and above 50% valid → "capability"; within the small models' 0.52–0.67 → size alone not enough; anything in between → inconclusive. 0.69 is in between, so **H4 is inconclusive**. Descriptively, the 32B separated good from bad inside a task better than every smaller local model (0.73 vs 0.48–0.59) but still clearly below Haiku, which was better on 6 of 6 mixed tasks (p = 0.031). The GPU machine stopped responding during the last task, so 3 of the 50 tests (task 010) are missing.
 * Limitations: "capability" has no independent measure here; the same 10 public tasks; one generation run per local model.
 
+## Experiment 1e — Haiku controls: settings, language, a dishonest solver ([`results/haiku_controls.md`](results/haiku_controls.md))
+
+Pre‑registered before any API call ([`docs/prereg_haiku_controls.md`](docs/prereg_haiku_controls.md)); about $0.14 of API.
+
+* **Language (H10, supported).** Haiku writing tests from an English prompt and English task texts: balanced accuracy **0.95**, 46/50 valid tests (Russian runs: 0.90 and 0.92). The Russian prompts do not explain Haiku's advantage.
+* **Token budget (H9, uninformative).** With the local models' 1024‑token limit, Haiku produced a usable test in only 4 of 50 generations: it reasons first and runs out of tokens. The 4 tests were all valid, so H9 is formally met but says nothing; a matched‑settings comparison is not possible this way.
+* **A dishonest solver (H11, not informative).** Haiku was asked, as an explicit red‑team exercise, to write scripts that pass a given verifier test without doing the task (30 attacks on qwen's tests, 30 on Haiku's). It **refused in 55 of 60** and wrote an honest solution instead. Of the 5 real attempts, 2 fooled qwen's tests (tasks 009, 010) and 0 fooled Haiku's (1 attempt). 0/30 vs 2/30, p = 0.49. Because the attacker mostly would not attack, this does not measure how gameable the tests are; that needs an attacker that actually tries. The refusal itself is a finding about Haiku.
+
 ## Additional analyses of recorded data (post hoc, [`results/extra_analyses.md`](results/extra_analyses.md))
 
 Added after a fresh "what would an experienced reviewer ask" pass; no new model runs, none of this was pre‑registered.
@@ -395,7 +403,7 @@ Exact environment: Python 3.14.4, packages in `requirements.txt`, base image `ub
 * **Confession labels.** Regex rules plus a manual pass by the AI agent that ran the experiment, then a blind human relabelling of 60 replies by one rater who knew the hypothesis (κ = 0.44, moderate). A second, independent human rater is still missing.
 * **The task set is public.** After publication, `tasks/*/check.sh` and `tasks/*/solution.sh` are no longer hidden: future models may see them in training data, so scores on these 15 tasks will be contaminated. For future evaluations keep a **private hold‑out set** of tasks and checks that is never committed to a public repository, and use this public set only for development and demonstration.
 * **The audit was done by the same agent that built the project.** It is the same "self‑verification" pattern that Experiment 1 found unreliable. An independent red‑team pass is reported in [`docs/audit.md`](docs/audit.md); an external human review has not been done.
-* **Prompts are in Russian.** Behaviour in English may differ; two of the three injection texts were in English, so the injection result may be specific to "Russian prompt + English injection".
+* **Prompts are in Russian.** Behaviour in English may differ (for the Haiku verifier it did not: 0.95 in English, Experiment 1e); two of the three injection texts were in English, so the injection result may be specific to "Russian prompt + English injection".
 
 ## Next steps
 
