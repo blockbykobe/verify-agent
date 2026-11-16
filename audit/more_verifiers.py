@@ -32,7 +32,8 @@ sys.path.insert(0, str(ROOT / "audit"))
 R = ROOT / "results"
 GEN = R / "verifiers"
 SCORE = R / "more_verifiers.jsonl"
-MODELS = ["qwen2.5-coder:7b", "llama3.1:8b", "gemma2:9b", "qwen2.5-coder:14b", "qwen2.5-coder:32b", "claude-haiku-5-5-run2"]
+MODELS = ["qwen2.5-coder:7b", "llama3.1:8b", "gemma2:9b", "qwen2.5-coder:14b", "qwen2.5-coder:32b", "claude-haiku-5-5-run2",
+          "claude-haiku-5-5-tok1024", "claude-haiku-5-5-en"]  # последние два — эксперимент 1e (audit/haiku_controls.py)
 N_TESTS = 10
 N_BY_MODEL = {"qwen2.5-coder:32b": 5, "claude-haiku-5-5-run2": 5}  # дополнение к плану: 32B медленная, 5 тестов на задачу
 TEMPERATURE = 0.7  # как в experiment.py
