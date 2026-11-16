@@ -206,6 +206,24 @@ def report() -> str:
         if "qwen2.5-coder:14b" in per_task and ref in per_task:
             w, l_, p = signflip("qwen2.5-coder:14b", ref)
             L.append(f"* 14B против {ref}: 14B лучше в {w}, хуже в {l_} задачах из {len(mixed_all)}; точный тест со сменой знака p = {p:.3f}.")
+    m32 = "qwen2.5-coder:32b"
+    if m32 in per_task:
+        ps = [p for p in pairs if p["verifier"] == m32]
+        b32 = cv.ba(ps)[2]
+        vv = [r for r in valid if r["verifier"] == m32]
+        ok = sum(r["ref_rc"] == 0 and r["noop_rc"] != 0 for r in vv)
+        hb = cv.ba([p for p in pairs if p["verifier"] == label["haiku"]])[2]
+        close = abs(hb - b32) <= 0.10 and ok / len(vv) > 0.5
+        small = 0.52 <= b32 <= 0.67
+        verdict = ("как Haiku → довод за «силу»" if close else "в диапазоне малых моделей → размера мало" if small
+                   else "между → не решено (по плану)")
+        w, l_, p = signflip(label["haiku"], m32)
+        L += [f"\n## H4: qwen2.5-coder 32B — сильный проверяющий не от Anthropic\n",
+              f"* BA {b32:.2f} (Haiku {hb:.2f}, порог по плану ≥ {hb - 0.10:.2f}); исправных тестов {ok}/{len(vv)} "
+              f"({100 * ok / len(vv):.0f}%, порог > 50%); диапазон малых моделей по плану 0.52–0.67. **Итог по плану: {verdict}.**",
+              f"* Описательно: Haiku лучше 32B в {w}, хуже в {l_} смешанных задачах из {len(mixed_all)} (p = {p:.3f}).",
+              f"* Готово {len(vv)} тестов из 50: основной ПК перестал отвечать во время последней задачи (010), "
+              "недостающие тесты 010 не сгенерированы."]
     L += ["\n## Как читать (см. README, эксперимент 1d)\n",
           "* H3a формально выполнено, но перевес в трёх задачах 0.001–0.02 — меньше разницы двух прогонов одной 7B; "
           "все тесты 14B для 003 и 004 — из перегенерированных ответов. Считаем H3a не установленным.",

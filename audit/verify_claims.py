@@ -251,6 +251,10 @@ _m = _re.search(r"H8b: нерелевантный против с журнало
 claim(f"vs journal p = {float(_m.group(1)):.2f} (H8b)", label=f"2b H8b p={float(_m.group(1)):.2f}")
 _m = _re.search(r"нерелевантный против без журнала: (\d+)/60 против 0/60, p = (\d\.\d+)", _jc)
 claim(f"{_m.group(1)}/60 vs 0/60, p = {float(_m.group(2)):.3f}", label=f"2b AI labels {_m.group(1)}/60 p={_m.group(2)}")
+_mv2 = (R / "more_verifiers.md").read_text()
+_m = _re.search(r"\| qwen2.5-coder:32b \| \d+ \| [\d.]+ \| [\d.]+ \| \*\*([\d.]+)\*\* \| ([\d.]+) .*?\| (\d+)/(\d+) \(", _mv2)
+claim(f"| qwen2.5‑coder:32b (H4, 5 tests per task) | {_m.group(1)} | {_m.group(2)} | {_m.group(3)}/{_m.group(4)} |", label=f"1d 32B BA {_m.group(1)}, valid {_m.group(3)}/{_m.group(4)}")
+claim(f"| qwen2.5‑coder:32b (H4, 5 тестов на задачу) | {_m.group(1).replace('.', ',')} | {_m.group(2).replace('.', ',')} | {_m.group(3)}/{_m.group(4)} |", where=README_RU, label="RU: 1d 32B row")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
 

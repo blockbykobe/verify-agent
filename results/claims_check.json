@@ -260,6 +260,14 @@
   },
   {
    "ok": true,
+   "claim": "1d 32B BA 0.69, valid 18/47"
+  },
+  {
+   "ok": true,
+   "claim": "RU: 1d 32B row"
+  },
+  {
+   "ok": true,
    "claim": "human labels n=60"
   }
  ]
