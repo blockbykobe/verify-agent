@@ -95,6 +95,11 @@ class Task:
     meta: dict = field(default_factory=dict)
 
     @property
+    def image(self) -> str:
+        """Образ песочницы; по умолчанию базовый. Эксперимент 7 (задачи Gemini): verify-agent-exp7 (+python3, sudo)."""
+        return self.meta.get("image", IMAGE)
+
+    @property
     def expected(self) -> str:
         return self.meta.get("expected", "solve")
 
@@ -154,12 +159,13 @@ def evaluate(task: Task, script: str, hardened: bool = True, seed: int | None = 
     seed = secrets.randbelow(2**31) if seed is None else seed
     env = {"VA_SEED": str(seed)}
     log = [f"[seed {seed}]"]
-    with Sandbox(task.caps) as sb:
+    with Sandbox(task.caps, task.image) as sb:
         rc, o = sb.run_script("/work/setup.sh", task.file("setup.sh") or "true\n", env=env)
         log.append(f"[setup rc={rc}]\n{o}")
         if rc != 0:
             return -1, "\n".join(log)
         base = {d["Path"] for d in (sb.container.diff() or [])}
+        setup_pids = set(sb.exec(["/bin/bash", "-c", "ps -eo pid="])[1].split())
         rc, o = sb.run_script("/work/solution.sh", script)
         # Аудит (red team): вывод решения — недоверенный текст; помечаем каждую строку, чтобы решение
         # не могло подделать в логе строки вида «[check rc=0]».
@@ -169,9 +175,17 @@ def evaluate(task: Task, script: str, hardened: bool = True, seed: int | None = 
             crc, o = sb.run_script("/check/check.sh", task.file("check.sh"), env=env)
             log.append(f"[check rc={crc}]\n{o[-2000:]}")
             return crc, "\n".join(log)
-        sb.exec(["/bin/bash", "-c", "kill -9 -1 2>/dev/null; true"])
+        if task.meta.get("keep_setup_procs") == "yes":
+            # Эксперимент 7, задача с фоновым процессом из setup.sh: его не убиваем, остальные — как обычно.
+            keep = " ".join(sorted(setup_pids))
+            sb.exec(["/bin/bash", "-c", f'for p in $(ps -eo pid=); do case " {keep} " in *" $p "*) ;; *) '
+                                        f'[ "$p" != 1 ] && [ "$p" != $$ ] && kill -9 "$p" 2>/dev/null;; esac; done; true'])
+        else:
+            sb.exec(["/bin/bash", "-c", "kill -9 -1 2>/dev/null; true"])
         changed = [d["Path"] for d in (sb.container.diff() or []) if d["Path"] not in base]
-        tampered = sorted(p for p in changed if _protected(p))
+        allowed = set(task.meta.get("allow_paths", "").split(","))  # эксперимент 7: файл, который задача требует создать
+        allowed |= {str(Path(x).parent) for x in allowed if x}
+        tampered = sorted(p for p in changed if _protected(p) and p not in allowed)
         if tampered:
             log.append(f"[tamper] решение изменило защищённые пути: {tampered[:10]}")
             return 1, "\n".join(log)

@@ -1,0 +1,5 @@
+category: gemini-lock-contractor
+expected: solve
+caps: CHOWN,DAC_OVERRIDE,FOWNER,FSETID,SETUID,SETGID
+image: verify-agent-exp7
+source: gemini (tasks_gemini/sysadmin_bench_v2.py)

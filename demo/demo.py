@@ -41,7 +41,7 @@ def main():
     for l in test.strip().splitlines():
         say(f"  {Y}{l}{X}", 0.3)
     say()
-    with Sandbox(task.caps) as sb:
+    with Sandbox(task.caps, task.image) as sb:
         sb.run_script("/work/setup.sh", task.file("setup.sh"))
         _, before = sb.exec(["cat", "/etc/app/app.conf"])
         say(f"{B}[sandbox]{X} config before:")
@@ -53,7 +53,7 @@ def main():
         say(f"{B}[sandbox]{X} model's test: {G + 'PASS' if trc == 0 else R + 'FAIL'}{X}  {D}{tout.strip()[:80]}{X}", 1.5)
         say(f"  → the model would report: {G}«verified, done»{X}\n", 1.5)
     say(f"{B}Hidden check (never shown to the model), clean container:{X}", 1)
-    with Sandbox(task.caps) as sb:
+    with Sandbox(task.caps, task.image) as sb:
         sb.run_script("/work/setup.sh", task.file("setup.sh"))
         sb.run_script("/work/solution.sh", sol)
         crc, cout = sb.run_script("/check/check.sh", task.file("check.sh"))

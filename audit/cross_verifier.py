@@ -68,7 +68,7 @@ def verifier_tests():
 def run_test(task, script, test):
     """Как experiment.run_external: setup.sh → решение → тест в свежей песочнице."""
     from sandbox import Sandbox
-    with Sandbox(task.caps) as sb:
+    with Sandbox(task.caps, task.image) as sb:
         if task.file("setup.sh"):
             sb.run_script("/work/setup.sh", task.file("setup.sh"))
         sb.run_script("/work/solution.sh", script)

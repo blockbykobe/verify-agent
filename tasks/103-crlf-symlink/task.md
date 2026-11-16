@@ -1,0 +1,1 @@
+Скрипт /usr/local/bin/run-backup при запуске выдаёт ошибку bad interpreter: No such file or directory, а конфигурация /etc/app/hosts.conf содержит символы возврата каретки Windows (\r). Исправьте окончания строк в целевом скрипте и /etc/app/hosts.conf на формат Unix (LF), сохранив символические ссылки и права на выполнение.

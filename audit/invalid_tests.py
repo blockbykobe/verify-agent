@@ -50,7 +50,7 @@ def run():
                     if v["ref_rc"] == 0 or (fam, task, tid) in done:
                         continue
                     tk = tasks[task]
-                    with Sandbox(tk.caps) as sb:
+                    with Sandbox(tk.caps, tk.image) as sb:
                         if tk.file("setup.sh"):
                             sb.run_script("/work/setup.sh", tk.file("setup.sh"))
                         sb.run_script("/work/solution.sh", tk.file("solution.sh"))

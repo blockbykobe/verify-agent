@@ -63,3 +63,26 @@ Nothing else in the plan changes.
 The addendum above and rule (i) of H6 say "at least 5" mixed tasks. The sign-flip test is two-sided: with 5 tasks its
 smallest possible p is 2/32 = 0.0625, so p < 0.05 needs **at least 6** mixed tasks. H6 is therefore reported as
 **not testable** with fewer than 6 such tasks (not 5). The 10-task target is unchanged.
+
+## Addendum 2 (2026-11-16, before any model has seen the new tasks): where the tasks came from
+
+* **Source changed.** The author did not write the tasks by hand: at his request **Gemini (Google)** generated
+  10 tasks with setup and checks (`tasks_gemini/sysadmin_bench_v1.py`); Claude Code reviewed them in the sandbox and
+  listed problems; the author sent that list to Gemini, which produced `tasks_gemini/sysadmin_bench_v2.py`. Both files
+  are committed unchanged. The author selected and approved the tasks. So the experiment now tests "tasks and checks
+  written by a non-Anthropic model", not "tasks from a sysadmin's practice". This still addresses the kinship concern
+  (Claude wrote neither the tasks nor the checks); it no longer tests human-written tasks.
+* **How they run.** `tasks_gemini/build_tasks.py` makes `tasks/101-…110-…`: `setup.sh` and `check.sh` run Gemini's
+  code unchanged (`setup N` / `verify N`) from a temporary copy that is deleted; `setup.sh` also deletes itself.
+  Reference solutions `tasks_gemini/solutions/*.sh` are written by Claude Code (allowed by the plan).
+* **Harness changes, only for these tasks (meta.yaml):** image `verify-agent-exp7` = base image + `python3` + `sudo`
+  (`docker/exp7/Dockerfile`); capabilities CHOWN, DAC_OVERRIDE, FOWNER, FSETID, SETUID, SETGID (from the existing
+  allow-list); task 106 keeps its background writer alive when the harness kills the solution's processes; task 108 may
+  create `/usr/local/bin/backup-site.sh` (the task asks for it) without being flagged as tampering. The sandbox's
+  `no-new-privileges`, no network and the other limits are unchanged.
+* **One check change, pending the author's approval:** in task 105 Gemini's check runs `sudo` as user deploy, which
+  can never work under `no-new-privileges`. Proposed replacement (`tasks_gemini/overrides/5.py`, diff in that file):
+  root asks sudo the same questions (`sudo -l -U deploy`, `sudo -l -U deploy /usr/sbin/nginx -V` / `-c …`). If the
+  author does not approve it, task 105 is dropped.
+* **Validity gate:** all 10 reference solutions pass and a no-op fails (with the task-105 change).
+* Analysis, hypotheses H6/H7 and the minimum of 6 mixed tasks are unchanged.

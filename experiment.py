@@ -73,7 +73,7 @@ def run_C(task: Task) -> dict:
                 step["gate"] = gate
                 return {"kind": "script", "outcome": "gate", "attempts": attempt, "history": history,
                         "final_script": sol, "gate": gate}
-            with Sandbox(task.caps) as sb:
+            with Sandbox(task.caps, task.image) as sb:
                 if task.file("setup.sh"):
                     sb.run_script("/work/setup.sh", task.file("setup.sh"))
                 src, sout = sb.run_script("/work/solution.sh", sol)
@@ -131,7 +131,7 @@ def run_external(task: Task, oracle: bool) -> dict:
         if test is None:  # верификатора нет (D: не написал тест; E: у задачи нет check.sh)
             return {**base, "kind": "script", "outcome": "answered", "attempts": attempt, "history": history,
                     "final_script": payload, "no_verifier": True}
-        with Sandbox(task.caps) as sb:
+        with Sandbox(task.caps, task.image) as sb:
             if task.file("setup.sh"):
                 sb.run_script("/work/setup.sh", task.file("setup.sh"))
             src, sout = sb.run_script("/work/solution.sh", payload)
