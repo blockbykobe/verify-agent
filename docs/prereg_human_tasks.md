@@ -88,3 +88,15 @@ smallest possible p is 2/32 = 0.0625, so p < 0.05 needs **at least 6** mixed tas
 * Analysis, hypotheses H6/H7 and the minimum of 6 mixed tasks are unchanged.
 * **Approved 2026-11-16 19:20 UTC:** the author approved the task-105 check change ("5 да"); task 105 stays.
   Runs write to `results/exp7/qwen/` and `results/exp7/haiku/` (new `--out` / `--tasks` options of the runners).
+
+## Addendum 3 (2026-11-17, after the run; deviations found by a review)
+
+* `audit/exp7.py` was committed at 19:23:06 UTC, about two minutes after the runs started (19:21:16); by then only
+  24 condition-A answers existed, no verifier tests and no cross-verifier pairs. Its commit message said "before data";
+  that was inaccurate.
+* The plan said "qwen 10 tests per task"; condition D yields one verifier test per run, so with 5 runs there are 5.
+* The task-105 check change also adds a `-c` case and drops Gemini's implicit NOPASSWD check (`sudo -n` as deploy);
+  all 26 passing task-105 solutions contain NOPASSWD, so no verdict depends on it.
+* Fixed after the run, no effect on the results: a NaN guard in the sign test, the kinship verdict now depends on H6,
+  and the reused 1c report header now names this experiment. The harness's `keep_setup_procs` kills the solution's
+  processes in one pass over a `ps` snapshot (unlike `kill -9 -1`), which only matters for task 106.

@@ -25,6 +25,9 @@ cv.R = E7
 cv.CACHE = E7 / "cross_verifier.jsonl"
 cv.SRC = {"qwen": E7 / "qwen", "haiku": E7 / "haiku"}
 cv.SOLVABLE = [str(100 + i) for i in range(1, 11)]
+cv.HEADER = ("Эксперимент 7: тот же анализ, что в 1c, на задачах Gemini 101–110; план — "
+             "[`docs/prereg_human_tasks.md`](../../docs/prereg_human_tasks.md); решения и тесты — из новых запусков "
+             "(results/exp7/). Скрипт: `audit/exp7.py`.\n")
 BASE_1C = 0.30  # разница BA, усреднённой по задачам, в 1c (0.86 − 0.56)
 
 
@@ -43,7 +46,8 @@ def readout():
     mixed = [t for t in tasks if len({p["good"] for p in pairs if p["task"] == t}) == 2]
     per = {v: {t: cv.ba([p for p in pairs if p["task"] == t and p["verifier"] == v])[2] for t in mixed}
            for v in ("qwen", "haiku")}
-    dd = [per["haiku"][t] - per["qwen"][t] for t in mixed]
+    # задача без тестов одного из проверяющих (BA = NaN) в знаковый тест не входит
+    dd = [per["haiku"][t] - per["qwen"][t] for t in mixed if per["haiku"][t] == per["haiku"][t] and per["qwen"][t] == per["qwen"][t]]
     better = sum(x > 0 for x in dd)
     p = signflip(dd) if dd else float("nan")
     rep = (E7 / "cross_verifier.md").read_text()
@@ -77,7 +81,18 @@ def readout():
         d = tavg["haiku"] - tavg["qwen"]
         L += ["", f"* **Родство:** BA, усреднённая по смешанным задачам: qwen {tavg['qwen']:.2f}, Haiku {tavg['haiku']:.2f}, "
               f"разница {d:+.2f} (в 1c {BASE_1C:+.2f}). Правило плана: меньше {BASE_1C / 2:+.2f} → родство, вероятно, "
-              f"часть эффекта 1c. **Итог: {'родство вероятно' if d < BASE_1C / 2 else 'родство не главное объяснение'}.**"]
+              f"часть эффекта 1c. **Итог: {'родство вероятно' if d < BASE_1C / 2 else ('родство не главное объяснение' if h6 == 'подтверждено' else 'не решено (H6 не подтверждено)')}.**"]
+    L += ["\n## Решатели по задачам (по плану, описательно): верно / уверенно неверно\n",
+          "| Задача | qwen A | qwen C | qwen D | Haiku A | Haiku C | Haiku D |", "|---|---|---|---|---|---|---|"]
+    runs = {(w, c): [json.loads(l) for l in (E7 / w / f"{c}.jsonl").read_text().splitlines()]
+            for w in ("qwen", "haiku") for c in "ACD"}
+    for t in sorted({r["task"] for r in runs[("qwen", "A")]}):
+        cells = []
+        for w in ("qwen", "haiku"):
+            for c in "ACD":
+                a = [r for r in runs[(w, c)] if r["task"] == t and r["outcome"] in ("answered", "verified")]
+                cells.append(f"{sum(r['hidden_rc'] == 0 for r in a)} / {sum(r['hidden_rc'] != 0 for r in a)}")
+        L.append(f"| {t} | " + " | ".join(cells) + " |")
     text = "\n".join(L) + "\n"
     (E7 / "summary.md").write_text(text)
     print(text)

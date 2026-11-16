@@ -25,6 +25,8 @@ CACHE = R / "cross_verifier.jsonl"
 SRC = {"qwen": R, "haiku": R / "claude/claude-haiku-5-5-low"}
 SOLVABLE = [f"{i:03d}" for i in range(1, 11)]
 K = 3  # тестов каждого проверяющего на решение
+HEADER = ("План анализа зафиксирован до запуска: [`docs/prereg_cross_verifier.md`](../docs/prereg_cross_verifier.md). "
+          "Скрипт: `audit/cross_verifier.py`. Новых обращений к моделям нет.\n")
 
 
 def h(s: str) -> str:
@@ -162,8 +164,7 @@ def report() -> str:
              for r in rows if r["kind"] == "pair" and (r["solver"], r["task"], r["sid"]) in truth]
     f = lambda x: "—" if x != x else f"{x:.2f}"
     L = ["# Перекрёстная проверка «решатель × проверяющий»\n",
-         "План анализа зафиксирован до запуска: [`docs/prereg_cross_verifier.md`](../docs/prereg_cross_verifier.md). "
-         "Скрипт: `audit/cross_verifier.py`. Новых обращений к моделям нет.\n",
+         HEADER,
          f"Уникальных решений: qwen {sum(1 for k in truth if k[0] == 'qwen')} "
          f"(верных {sum(v for k, v in truth.items() if k[0] == 'qwen')}), Haiku {sum(1 for k in truth if k[0] == 'haiku')} "
          f"(верных {sum(v for k, v in truth.items() if k[0] == 'haiku')}). Пар «решение × тест»: {len(pairs)}.\n",

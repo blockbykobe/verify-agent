@@ -1,6 +1,6 @@
 # Перекрёстная проверка «решатель × проверяющий»
 
-План анализа зафиксирован до запуска: [`docs/prereg_cross_verifier.md`](../docs/prereg_cross_verifier.md). Скрипт: `audit/cross_verifier.py`. Новых обращений к моделям нет.
+Эксперимент 7: тот же анализ, что в 1c, на задачах Gemini 101–110; план — [`docs/prereg_human_tasks.md`](../../docs/prereg_human_tasks.md); решения и тесты — из новых запусков (results/exp7/). Скрипт: `audit/exp7.py`.
 
 Уникальных решений: qwen 108 (верных 22), Haiku 175 (верных 130). Пар «решение × тест»: 1698.
 
