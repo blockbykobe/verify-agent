@@ -32,7 +32,10 @@ def h(s: str) -> str:
 
 
 def load_rows(who, cond):
-    return [r for r in map(json.loads, (SRC[who] / f"{cond}.jsonl").read_text().splitlines())
+    f = SRC[who] / f"{cond}.jsonl"
+    if not f.exists():  # эксперимент 7: условия E нет
+        return []
+    return [r for r in map(json.loads, f.read_text().splitlines())
             if r["expected"] == "solve" and r["task"][:3] in SOLVABLE]
 
 
