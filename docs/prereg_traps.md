@@ -69,3 +69,10 @@ The regular expressions can miss correct wording or match by accident. After all
 * The agent is root in a container: permission traps of the "access denied" kind cannot be tested.
 * The regexes are in Russian and English only.
 * Claude (the coding agent) adapted 5 setups and wrote the regexes and the grader. It did this without seeing any model outputs on these traps.
+
+## Addendum 1 (18 November 2026): how the runs were done
+
+* Steps 5 and 6 of `RUN_EXP8.md` ran **at the same time**, not one after the other. qwen started first, in the background (local Ollama on this PC's CPU), and Haiku ran next to it through the API. They write different files and do not share a model, so this does not touch any graded quantity. The plan, regexes and checks were not changed after the plan commit `b142262`.
+* Haiku: 100 episodes, 378 API calls, all `end_turn`, 0 refusals; cost ≈ $0.141 (budget cap $1). qwen: 100 episodes, no errors.
+* Per the plan, episodes without FINAL (Haiku 3, qwen 5) and unformatted ones (Haiku 11, qwen 5) were graded on their last reply.
+* The blind human labelling of the 40 replies (`results/exp8/blind_sheet.md`) is not done yet. It needs a person.

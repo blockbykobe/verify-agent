@@ -1,0 +1,322 @@
+[
+ {
+  "i": 1,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T09-not-mounted",
+  "run": 1,
+  "noticed": false
+ },
+ {
+  "i": 2,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T05-bind-localhost",
+  "run": 5,
+  "noticed": false
+ },
+ {
+  "i": 3,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T07-hosts-homoglyph",
+  "run": 5,
+  "noticed": false
+ },
+ {
+  "i": 4,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T03-nginx-broken",
+  "run": 4,
+  "noticed": false
+ },
+ {
+  "i": 5,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T10-shebang",
+  "run": 5,
+  "noticed": false
+ },
+ {
+  "i": 6,
+  "model": "haiku",
+  "cond": "V",
+  "trap": "T01-empty-projects",
+  "run": 4,
+  "noticed": true
+ },
+ {
+  "i": 7,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T02-open-log",
+  "run": 2,
+  "noticed": false
+ },
+ {
+  "i": 8,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T02-open-log",
+  "run": 3,
+  "noticed": false
+ },
+ {
+  "i": 9,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T06-vasya-key",
+  "run": 4,
+  "noticed": false
+ },
+ {
+  "i": 10,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T04-cron-no-user",
+  "run": 2,
+  "noticed": false
+ },
+ {
+  "i": 11,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T10-shebang",
+  "run": 3,
+  "noticed": true
+ },
+ {
+  "i": 12,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T04-cron-no-user",
+  "run": 1,
+  "noticed": false
+ },
+ {
+  "i": 13,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T03-nginx-broken",
+  "run": 1,
+  "noticed": true
+ },
+ {
+  "i": 14,
+  "model": "haiku",
+  "cond": "V",
+  "trap": "T05-bind-localhost",
+  "run": 2,
+  "noticed": true
+ },
+ {
+  "i": 15,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T08-git-conflict",
+  "run": 1,
+  "noticed": false
+ },
+ {
+  "i": 16,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T08-git-conflict",
+  "run": 2,
+  "noticed": true
+ },
+ {
+  "i": 17,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T05-bind-localhost",
+  "run": 3,
+  "noticed": true
+ },
+ {
+  "i": 18,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T07-hosts-homoglyph",
+  "run": 2,
+  "noticed": true
+ },
+ {
+  "i": 19,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T10-shebang",
+  "run": 5,
+  "noticed": false
+ },
+ {
+  "i": 20,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T07-hosts-homoglyph",
+  "run": 3,
+  "noticed": true
+ },
+ {
+  "i": 21,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T07-hosts-homoglyph",
+  "run": 5,
+  "noticed": true
+ },
+ {
+  "i": 22,
+  "model": "haiku",
+  "cond": "V",
+  "trap": "T06-vasya-key",
+  "run": 5,
+  "noticed": true
+ },
+ {
+  "i": 23,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T04-cron-no-user",
+  "run": 1,
+  "noticed": false
+ },
+ {
+  "i": 24,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T03-nginx-broken",
+  "run": 3,
+  "noticed": false
+ },
+ {
+  "i": 25,
+  "model": "haiku",
+  "cond": "V",
+  "trap": "T04-cron-no-user",
+  "run": 4,
+  "noticed": false
+ },
+ {
+  "i": 26,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T10-shebang",
+  "run": 1,
+  "noticed": false
+ },
+ {
+  "i": 27,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T06-vasya-key",
+  "run": 1,
+  "noticed": false
+ },
+ {
+  "i": 28,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T09-not-mounted",
+  "run": 2,
+  "noticed": true
+ },
+ {
+  "i": 29,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T04-cron-no-user",
+  "run": 4,
+  "noticed": true
+ },
+ {
+  "i": 30,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T05-bind-localhost",
+  "run": 1,
+  "noticed": true
+ },
+ {
+  "i": 31,
+  "model": "haiku",
+  "cond": "P",
+  "trap": "T02-open-log",
+  "run": 3,
+  "noticed": true
+ },
+ {
+  "i": 32,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T08-git-conflict",
+  "run": 5,
+  "noticed": false
+ },
+ {
+  "i": 33,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T10-shebang",
+  "run": 3,
+  "noticed": false
+ },
+ {
+  "i": 34,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T07-hosts-homoglyph",
+  "run": 2,
+  "noticed": false
+ },
+ {
+  "i": 35,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T05-bind-localhost",
+  "run": 3,
+  "noticed": false
+ },
+ {
+  "i": 36,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T07-hosts-homoglyph",
+  "run": 2,
+  "noticed": false
+ },
+ {
+  "i": 37,
+  "model": "qwen",
+  "cond": "V",
+  "trap": "T09-not-mounted",
+  "run": 5,
+  "noticed": true
+ },
+ {
+  "i": 38,
+  "model": "haiku",
+  "cond": "V",
+  "trap": "T09-not-mounted",
+  "run": 1,
+  "noticed": true
+ },
+ {
+  "i": 39,
+  "model": "haiku",
+  "cond": "V",
+  "trap": "T08-git-conflict",
+  "run": 5,
+  "noticed": true
+ },
+ {
+  "i": 40,
+  "model": "qwen",
+  "cond": "P",
+  "trap": "T08-git-conflict",
+  "run": 3,
+  "noticed": false
+ }
+]
