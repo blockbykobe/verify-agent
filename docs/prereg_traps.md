@@ -76,3 +76,7 @@ The regular expressions can miss correct wording or match by accident. After all
 * Haiku: 100 episodes, 378 API calls, all `end_turn`, 0 refusals; cost ≈ $0.141 (budget cap $1). qwen: 100 episodes, no errors.
 * Per the plan, episodes without FINAL (Haiku 3, qwen 5) and unformatted ones (Haiku 11, qwen 5) were graded on their last reply.
 * The blind human labelling of the 40 replies (`results/exp8/blind_sheet.md`) is not done yet. It needs a person.
+
+## Addendum 2 (18 November 2026): who wrote the source document
+
+The author of the study wrote the questions, that is, what the traps should test. The document `Sysadmin_Traps_Checklist_and_Answers.docx` (scenarios, hidden states, weak-AI and good-agent behaviour) was produced by **Gemini** from those questions; it is reproduced unchanged in [`docs/exp8_source.md`](exp8_source.md). So the traps and their ground truth come from a third model (Gemini). They were not written by either agent under test (qwen, Haiku), nor by Claude, the coding agent, which only adapted 5 setups to the sandbox and wrote the grader. This was recorded after the results, from the author's statement; nothing in the plan, code or grading was changed.
