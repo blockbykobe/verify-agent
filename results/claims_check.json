@@ -305,6 +305,122 @@
   {
    "ok": true,
    "claim": "human labels n=60"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b row qwen"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b row qwen"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b row qwen14b"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b row qwen14b"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b row llama8b"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b row llama8b"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b row gemma9b"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b row gemma9b"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b row haiku"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b row haiku"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b H8a' 10/10 p=0.002"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b H8a'"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b H8e 9/10 p=0.004"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b H8b' 3/3 p=1.000"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b H8d +0.08 p=0.312"
+  },
+  {
+   "ok": true,
+   "claim": "exp8 H8a 9/10 p=0.004"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b haiku T06 key {'P': 5, 'V': 0}"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b local range 4-12"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b local range"
+  },
+  {
+   "ok": true,
+   "claim": "summary_ru: exp8b local range"
+  },
+  {
+   "ok": true,
+   "claim": "exp8b haiku T06 V=0 (README says V did neither)"
+  },
+  {
+   "ok": true,
+   "claim": "summary_ru: haiku harm 4->0"
+  },
+  {
+   "ok": true,
+   "claim": "summary_ru: haiku T06"
+  },
+  {
+   "ok": true,
+   "claim": "summary_ru: haiku caught"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b H8e"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b H8b'"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8b H8d"
+  },
+  {
+   "ok": true,
+   "claim": "exp8 blind 37/39"
+  },
+  {
+   "ok": true,
+   "claim": "RU: exp8 blind"
   }
  ]
 }

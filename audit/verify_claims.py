@@ -13,6 +13,7 @@ R = ROOT / "results"
 README = (ROOT / "README.md").read_text()
 README_RU = (ROOT / "README_ru.md").read_text()
 NOTES = (ROOT / "docs/application_notes.md").read_text()
+SUMMARY_RU = (ROOT / "docs/summary_ru.md").read_text()
 
 
 def load(name):
@@ -274,6 +275,78 @@ claim(f"| {_m.group(1)}/50 ({_m.group(2)}%) | **{_m.group(4)}/{_m.group(3)} ({_m
 claim(f"| {_m.group(1)}/50 ({_m.group(2)}%) | **{_m.group(4)}/{_m.group(3)} ({_m.group(5)}%)** |", where=README_RU, label="RU: exp7 validity")
 hl = json.loads((R / "human_labels/labels_owner.json").read_text())["labels"]
 claim(f"relabelled {len(hl)} replies", label=f"human labels n={len(hl)}")
+
+# ---------------- Experiment 8 / 8b (false premises) — recomputed from raw JSONL
+import importlib.util as _ilu
+_spec = _ilu.spec_from_file_location("_a8", ROOT / "audit" / "exp8.py")
+_a8 = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_a8)
+_TRAPS8 = sorted({json.loads(l)["trap"] for l in (R / "exp8b/haiku_P.jsonl").read_text().splitlines()})
+_e8b = {(mm, c): load(f"exp8b/{mm}_{c}.jsonl") for mm in ("qwen", "qwen14b", "llama8b", "gemma9b", "haiku") for c in "PV"}
+_names8 = {"qwen": "qwen2.5‑coder 7B", "qwen14b": "qwen2.5‑coder 14B", "llama8b": "Llama 3.1 8B", "gemma9b": "Gemma 2 9B",
+           "haiku": "Claude Haiku 5.5"}
+for mm, nm in _names8.items():
+    cells = []
+    for c in "PV":
+        rows = _e8b[(mm, c)]
+        cells.append(f"{sum(r['caught'] for r in rows)}/{len(rows)}")
+    harms = [f"{sum(bool(r['harm']) for r in _e8b[(mm, c)] if r['harm'] is not None)}/"
+             f"{sum(r['harm'] is not None for r in _e8b[(mm, c)])}" for c in "PV"]
+    if mm == "haiku":
+        row = f"| {nm} | **{cells[0]}** | **{cells[1]}** | {harms[0]} | **{harms[1]}** |"
+    else:
+        row = f"| {nm} | {cells[0]} | {cells[1]} | {harms[0]} | {harms[1]} |"
+    claim(row, label=f"exp8b row {mm}")
+    claim(row, where=README_RU, label=f"RU: exp8b row {mm}")
+
+
+def _rate8(rows, t):
+    r = [x for x in rows if x["trap"] == t]
+    return sum(bool(x["caught"]) for x in r) / len(r)
+
+
+def _sf8(a, b):
+    dd = [_rate8(a, t) - _rate8(b, t) for t in _TRAPS8]
+    return sum(d > 1e-12 for d in dd), sum(d < -1e-12 for d in dd), _a8.signflip(dd), sum(dd) / len(dd)
+
+
+_b, _w, _p, _ = _sf8(_e8b[("haiku", "P")], _e8b[("qwen", "P")])
+claim(f"on {_b} of 10 traps (exact sign‑flip p = {_p:.3f}, H8a′)", label=f"exp8b H8a' {_b}/10 p={_p:.3f}")
+claim(f"на {_b} ловушках из 10 (точный знаковый тест, p = {_p:.3f}".replace(".", ","), where=README_RU, label="RU: exp8b H8a'")
+_b, _w, _p, _ = _sf8(_e8b[("haiku", "P")], _e8b[("qwen14b", "P")])
+claim(f"on {_b} of 10 traps (p = {_p:.3f}, H8e)", label=f"exp8b H8e {_b}/10 p={_p:.3f}")
+_b, _w, _p, _ = _sf8(_e8b[("qwen", "V")], _e8b[("qwen", "P")])
+claim(f"better on {_b} traps, worse on {_w}, p = {_p:.3f}", label=f"exp8b H8b' {_b}/{_w} p={_p:.3f}")
+_b, _w, _p, _d = _sf8(_e8b[("qwen14b", "P")], _e8b[("qwen", "P")])
+claim(f"(H8d: qwen 14B vs 7B, {_d:+.2f}, p = {_p:.3f})", label=f"exp8b H8d {_d:+.2f} p={_p:.3f}")
+_b, _w, _p, _ = _sf8(load("exp8/haiku_P.jsonl"), load("exp8/qwen_P.jsonl"))
+claim(f"In Experiment 8 it was {_b} of 10, p = {_p:.3f}", label=f"exp8 H8a {_b}/10 p={_p:.3f}")
+_t6 = {c: sum(bool(r.get("t06_key_removed")) for r in _e8b[("haiku", c)] if r["trap"] == "T06-vasya-key") for c in "PV"}
+claim(f"in {_t6['P']} of 5 runs and did harm in "
+      f"{sum(bool(r['harm']) for r in _e8b[('haiku', 'P')] if r['harm'] is not None)} of 30", label=f"exp8b haiku T06 key {_t6}")
+_loc = [sum(r["caught"] for r in _e8b[(mm, c)]) for mm in ("qwen", "qwen14b", "llama8b", "gemma9b") for c in "PV"]
+claim(f"caught in {min(_loc)}–{max(_loc)} of 50 episodes, under both prompts", label=f"exp8b local range {min(_loc)}-{max(_loc)}")
+claim(f"в {min(_loc)}–{max(_loc)} эпизодах из 50 при обоих промптах", where=README_RU, label="RU: exp8b local range")
+claim(f"в {min(_loc)}–{max(_loc)} эпизодах из 50", where=SUMMARY_RU, label="summary_ru: exp8b local range")
+claim(f"in 5 of 5 runs" if _t6["V"] == 0 else "T06 V nonzero", label=f"exp8b haiku T06 V={_t6['V']} (README says V did neither)")
+_hv = sum(bool(r["harm"]) for r in _e8b[("haiku", "V")] if r["harm"] is not None)
+_hp = sum(bool(r["harm"]) for r in _e8b[("haiku", "P")] if r["harm"] is not None)
+claim(f"({_hp} из 30 → {_hv} из 30", where=SUMMARY_RU, label=f"summary_ru: haiku harm {_hp}->{_hv}")
+claim(f"({_t6['P']} из 5 → {_t6['V']} из 5)", where=SUMMARY_RU, label="summary_ru: haiku T06")
+_cp = sum(r["caught"] for r in _e8b[("haiku", "P")]); _cv = sum(r["caught"] for r in _e8b[("haiku", "V")])
+claim(f"Haiku поймал {_cp} из 50 (с инструкцией «сначала проверь» — {_cv} из 50)", where=SUMMARY_RU, label="summary_ru: haiku caught")
+for _lbl, _a, _bb in (("H8e", ("haiku", "P"), ("qwen14b", "P")), ("H8b'", ("qwen", "V"), ("qwen", "P")), ("H8d", ("qwen14b", "P"), ("qwen", "P"))):
+    _x = _sf8(_e8b[_a], _e8b[_bb])
+    claim(f"p = {_x[2]:.3f}, {_lbl}".replace(".", ",", 1) if _lbl == "H8e" else f"p = {_x[2]:.3f})".replace(".", ","),
+          where=README_RU, label=f"RU: exp8b {_lbl}")
+_spec = _ilu.spec_from_file_location("_b8", ROOT / "audit" / "exp8_blind.py")
+_b8 = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_b8)
+_lab = _b8.parse(_re.search(r"Version 1[^:]*:\*\*(.*)", (R / "exp8/blind_labels.md").read_text()).group(1))
+_key8 = {k["i"]: k for k in json.loads((R / "exp8/blind_key.json").read_text())}
+_h = [_lab[i] for i in range(2, 41)]; _r = [bool(_key8[i]["noticed"]) for i in range(2, 41)]
+_ag = sum(x == y for x, y in zip(_h, _r))
+claim(f"agree with the regex on {_ag} of {len(_h)} replies (Cohen's κ = {_b8.kappa(_h, _r):.2f})", label=f"exp8 blind {_ag}/{len(_h)}")
+claim(f"Совпадение с regex — {_ag} из {len(_h)} (κ Коэна = {_b8.kappa(_h, _r):.2f})".replace("0.", "0,"), where=README_RU,
+      label="RU: exp8 blind")
 
 print("p-values (Fisher exact, two-sided) with Holm correction over", m, "comparisons:")
 running = 0.0
