@@ -78,3 +78,17 @@ If a run is stopped, the missing episodes are reported, not imputed.
 * All Experiment 8 limitations still apply: 10 traps, Russian prompts, one source document, the leading V instruction, root in a container.
 * The corrected regexes were written after reading Experiment 8 answers. They are fixed before 8b, but they are not blind to model style.
 * The blind human labelling of Experiment 8 answers (`results/exp8/blind_sheet.md`) is still pending. 8b uses the regex grader as registered.
+
+## Addendum 1 (19 November 2026): how the runs were done
+
+* The plan was committed in `14d9e29` before any run. `--validate` printed `all OK` and `mechanics OK`.
+* Haiku and qwen 7B (CPU of the 2nd PC) ran in parallel, as `RUN_EXP8B.md` allows.
+  * Haiku: 100 episodes, 382 API calls, all `end_turn`, 0 refusals. Tokens: 432,174 in and 191,796 out. Cost ≈ $0.139, under the $1 cap.
+* Main PC GPU: run by `results/exp8b/gpu_driver.sh`, 00:35–02:05 UTC, about 1.5 h including pauses.
+  * One model at a time, in the order qwen14b → llama8b → gemma9b.
+  * Each batch was one run (20 episodes), followed by a 3-minute pause, with 10 minutes between models.
+  * Each model was unloaded with `keep_alive 0`, and `/api/ps` was empty afterwards.
+  * There were no errors, no stops, and no missing episodes.
+  * The agent cannot read the GPU temperature. A temperature/RAM watchdog was running on the main PC, set up by the author's side, and it did not intervene.
+* Mechanics check on the data: 0 replies where FINAL came before a code block and the episode continued. In Experiment 8 there were 62 such episodes. 0 episodes are without FINAL.
+* In `summary.md`, the "descriptive" comparisons are printed by the same function as the tests and end with "supported / not supported". They are not pre-registered hypotheses and should be read as descriptive only.
