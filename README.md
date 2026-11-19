@@ -456,7 +456,7 @@ What this project adds, modestly: a small, fully reproducible sysadmin testbed i
 
 ## Independent reviews
 
-After publication the project was reviewed by ten AI reviewers: Gemini, DeepSeek, and Claude Opus 5.5, Sonnet 5.5, Haiku 5.5 and Fable 5.2 run by me in other chats, and Claude Opus 5.5, Sonnet 5.5, Fable 5.2 and Haiku 5.5 run as read‑only agents with narrow briefs. One more tool returned a generic review without opening the repository. No finding was accepted on the reviewer's word: each was checked against the data or the code first. All 31 findings, how each was checked, and what changed are in [`docs/reviews.md`](docs/reviews.md). The most important ones:
+After publication the project was reviewed by ten AI reviewers: Gemini, DeepSeek, and Claude Opus 5.5, Sonnet 5.5, Haiku 5.5 and Fable 5.2 run by me in other chats, and Claude Opus 5.5, Sonnet 5.5, Fable 5.2 and Haiku 5.5 run as read‑only agents with narrow briefs. One more tool returned a generic review without opening the repository. No finding was accepted on the reviewer's word: each was checked against the data or the code first. All 32 findings, how each was checked, and what changed are in [`docs/reviews.md`](docs/reviews.md). The most important ones:
 
 * **A bug in my hidden check** (task 004 did not test "system user, no home directory"): fixed, 17 verdicts changed.
 * **Pseudoreplication:** per‑attempt p‑values overstated the evidence; the main comparison is now made per task (p = 0.062; per attempt it would be 4·10⁻⁸ on the corrected data, and was 2·10⁻⁶ before the 004 fix).
